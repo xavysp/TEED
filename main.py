@@ -14,7 +14,8 @@ from thop import profile
 
 from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
-from modelB3 import LDC
+# from modelB3 import LDC
+from model import LDC # LDC-B3 modified
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -223,7 +224,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
     test_dir = test_inf['data_dir']
-    is_testing =True
+    is_testing =False
 
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
@@ -291,7 +292,7 @@ def parse_args():
                         help='Result directory')
     parser.add_argument('--log_interval_vis',
                         type=int,
-                        default=100,
+                        default=20,# 100
                         help='The NO B to wait before printing test predictions. 200')
 
     parser.add_argument('--epochs',
