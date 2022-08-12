@@ -13,10 +13,10 @@ DATASET_NAMES = [
     'BIPED-B3',
     'BIPED-B5',
     'BIPED-B6',
-    'BSDS',
+    'BSDS', # 5
     'BRIND', # 6
     'BSDS300',
-    'CID',
+    'CID', #8
     'DCD',
     'MDBD', #10
     'PASCAL',

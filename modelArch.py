@@ -4,13 +4,13 @@
 # LDC parameters:
 # 155665
 # Check Relu, Gelu, Mish, Smish and
-# Mish
+# AF SMISH
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from utils.AF.Fmish import mish as Fmish
-from utils.AF.Xmish import Mish
+from utils.AF.Fsmish import smish as Fsmish
+from utils.AF.Xsmish import Smish
 
 
 def weight_init(m):
@@ -42,7 +42,7 @@ class CoFusion(nn.Module):
         #                        stride=1, padding=1)# before 64
         self.conv3 = nn.Conv2d(32, out_ch, kernel_size=3,
                                stride=1, padding=1)# before 64  instead of 32
-        self.gelu = Mish()#nn.ReLU(inplace=True)
+        self.gelu = Smish()#nn.ReLU(inplace=True)
 
         self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
         # self.norm_layer2 = nn.GroupNorm(4, 32)  # before 64
@@ -64,7 +64,7 @@ class _DenseLayer(nn.Sequential):
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        self.add_module('gelu1', Mish()),
+        self.add_module('gelu1', Smish()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True)),
         # self.add_module('norm2', nn.BatchNorm2d(out_features))
@@ -72,7 +72,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(Fmish(x1))  # F.relu()
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
         #                                 align_corners=False)
@@ -106,7 +106,7 @@ class UpConvBlock(nn.Module):
             pad = all_pads[up_scale]  # kernel_size-1
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
-            layers.append(Mish())
+            layers.append(Smish())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
