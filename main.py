@@ -4,7 +4,7 @@ from __future__ import print_function
 import argparse
 import os
 import time, platform
-
+#    k   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
 import cv2
 import numpy as np
 import torch
@@ -448,6 +448,7 @@ def main(args):
     print('-------------------------------------------------------')
     print('LDC parameters:')
     print(num_param)
+    print( " ***** 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 *****")
     print('-------------------------------------------------------')
 
     # Main training loop
