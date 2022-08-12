@@ -39,6 +39,7 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
     if not arg.is_testing:
         assert len(tensor.shape) == 4, tensor.shape
         img_shape = tensor.shape
+        print("image tensor shape --*--", img_shape)
         img_width, img_height = img_shape[1].item(),img_shape[0].item()
         print(f"image width {img_width}. image height {img_height}")
 
