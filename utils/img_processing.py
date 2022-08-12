@@ -38,8 +38,8 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
     os.makedirs(output_dir, exist_ok=True)
     if not arg.is_testing:
         assert len(tensor.shape) == 4, tensor.shape
-        img_shape = np.array(img_shape)
-        print(f"image width {img_shape[1]}. image height {img_shape[0]}")
+        img_width, img_height = tensor.shape[1],tensor.shape[0]
+        print(f"image width {img_width}. image height {img_height}")
 
         for tensor_image, file_name in zip(tensor, file_names):
             image_vis = kn.utils.tensor_to_image(
@@ -47,7 +47,7 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
             image_vis = (255.0*(1.0 - image_vis)).astype(np.uint8)
             output_file_name = os.path.join(output_dir, file_name)
             print('image vis size', image_vis.shape)
-            image_vis =cv2.resize(image_vis, (img_shape[1], img_shape[0]))
+            image_vis =cv2.resize(image_vis, (img_width, img_height))
             assert cv2.imwrite(output_file_name, image_vis)
             print(f"Image saved in {output_file_name}")
     else:
