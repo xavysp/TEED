@@ -292,7 +292,7 @@ def parse_args():
                         help='Result directory')
     parser.add_argument('--log_interval_vis',
                         type=int,
-                        default=20,# 100
+                        default=100,# 100
                         help='The NO B to wait before printing test predictions. 200')
 
     parser.add_argument('--epochs',
