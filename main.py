@@ -15,7 +15,8 @@ from thop import profile
 from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 # from modelB3 import LDC
-from model import LDC # LDC-B3 modified
+# from model import LDC # LDC-B3 modified
+from modelArch import LDC # LDC-B3 modified
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -276,7 +277,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='16/16_model.pth',# 37 for biped 60 MDBD
+                        default='14/14_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -297,7 +298,7 @@ def parse_args():
 
     parser.add_argument('--epochs',
                         type=int,
-                        default=25,
+                        default=22,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=5e-5, type=float,
@@ -309,7 +310,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TDC-BIPED xavier init normal+ init normal CatsLoss2 Cofusion',
+                        default='TDC-BIPED AF=smish xavier init normal+ init normal CatsLoss2 Cofusion',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
