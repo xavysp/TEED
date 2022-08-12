@@ -38,20 +38,19 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
     os.makedirs(output_dir, exist_ok=True)
     if not arg.is_testing:
         assert len(tensor.shape) == 4, tensor.shape
-        img_shape = tensor.shape
-        print("image tensor shape --*--", img_shape)
+        img_shape = tensor.shape # [batchSize, channels, height, width]
+        # print("image tensor shape --*--", img_shape)
         img_height,img_width = img_shape[2],img_shape[3]
-        print(f"image width {img_width}. image height {img_height}")
 
         for tensor_image, file_name in zip(tensor, file_names):
             image_vis = kn.utils.tensor_to_image(
                 torch.sigmoid(tensor_image))#[..., 0]
             image_vis = (255.0*(1.0 - image_vis)).astype(np.uint8)
             output_file_name = os.path.join(output_dir, file_name)
-            print('image vis size', image_vis.shape)
+            # print('image vis size', image_vis.shape)
             image_vis =cv2.resize(image_vis, (img_width, img_height))
             assert cv2.imwrite(output_file_name, image_vis)
-            print(f"Image saved in {output_file_name}")
+            # print(f"Image saved in {output_file_name}")
     else:
         if is_inchannel:
 

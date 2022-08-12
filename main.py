@@ -478,12 +478,12 @@ def main(args):
         os.makedirs(output_dir_epoch,exist_ok=True)
         os.makedirs(img_test_dir,exist_ok=True)
         print("**************** Validating the training zero first **********")
-        validate_one_epoch(epoch,
-                           dataloader_val,
-                           model,
-                           device,
-                           img_test_dir,
-                           arg=args)
+        # validate_one_epoch(epoch,
+        #                    dataloader_val,
+        #                    model,
+        #                    device,
+        #                    img_test_dir,
+        #                    arg=args)
 
         avg_loss =train_one_epoch(epoch,dataloader_train,
                         model, criterion,
