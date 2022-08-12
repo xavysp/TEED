@@ -49,6 +49,7 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
             print('image vis size', image_vis.shape)
             image_vis =cv2.resize(image_vis, (img_shape[1], img_shape[0]))
             assert cv2.imwrite(output_file_name, image_vis)
+            print(f"Image saved in {output_file_name}")
     else:
         if is_inchannel:
 
