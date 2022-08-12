@@ -44,6 +44,8 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
                 torch.sigmoid(tensor_image))#[..., 0]
             image_vis = (255.0*(1.0 - image_vis)).astype(np.uint8)
             output_file_name = os.path.join(output_dir, file_name)
+            print(f"image width {img_shape[1]}. image height {img_shape[0]}")
+            print('image vis size', image_vis.shape)
             image_vis =cv2.resize(image_vis, dsize=(img_shape[1], img_shape[0]))
             assert cv2.imwrite(output_file_name, image_vis)
     else:
