@@ -16,8 +16,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 # from modelB3 import LDC
 # from model import LDC # LDC-B3 modified
-# from modelArch import LDC # LDC-B3 modified
-from modelRelu import LDC # LDC-B3 modified
+from modelArch import LDC # LDC-B3 modified
+# from modelRelu import LDC # LDC-B3 modified
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -218,7 +218,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=5,
                         help='Choose a dataset for testing: 0 - 8')
     # ----------- test -------0--
 
@@ -226,7 +226,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
     test_dir = test_inf['data_dir']
-    is_testing =False
+    is_testing =True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10
@@ -277,7 +277,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='19/19_model.pth',# 37 for biped 60 MDBD
+                        default='14/14_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -370,11 +370,11 @@ def main(args):
         from torch.utils.tensorboard import SummaryWriter # for torch 1.4 or greather
         tb_writer = SummaryWriter(log_dir=training_dir)
         # saving training settings
-        training_notes =['LDC, Xavier Normal Init, LR= ' + str(args.lr) + ' WD= '
+        training_notes =[args.version_notes+ ' RL= ' + str(args.lr) + ' WD= '
                           + str(args.wd) + ' image size = ' + str(args.img_width)
                           + ' adjust LR=' + str(args.adjust_lr) +' LRs= '
                           + str(args.lrs)+' Loss Function= CAST-loss2.py '
-                          + str(time.asctime())+args.version_notes]
+                          + str(time.asctime())]
         info_txt = open(os.path.join(training_dir, 'training_settings.txt'), 'w')
         info_txt.write(str(training_notes))
         info_txt.close()
