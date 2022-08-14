@@ -1,1 +1,1 @@
-['TDC-BIPED AF=Mish  xavier init normal+ init normal CatsLoss2 Cofusion RL= 5e-05 WD= 5e-06 image size = 352 adjust LR=[6, 12, 18] LRs= [0.0007, 0.0003, 1e-05] Loss Function= CAST-loss2.py Sun Aug 14 09:35:40 2022']
+['TDC-BIPED AF=Mish  xavier init normal+ init normal CatsLoss2 Cofusion RL= 5e-05 WD= 5e-06 image size = 352 adjust LR=[6, 12, 18] LRs= [0.0007, 0.0003, 1e-05] Loss Function= CAST-loss2.py Sun Aug 14 11:10:29 2022']
