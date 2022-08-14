@@ -15,8 +15,8 @@ from thop import profile
 from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 # from modelB3 import LDC
-# from model import LDC # LDC-B3 modified
-from modelArch import LDC # LDC-B3 modified smish
+from model import LDC # LDC-B3 modified
+# from modelArch import LDC # LDC-B3 modified smish
 # from modelRelu import LDC # LDC-B3 modified
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
