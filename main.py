@@ -16,7 +16,7 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 # from modelB3 import LDC
 # from model import LDC # LDC-B3 modified
-from modelArch import LDC # LDC-B3 modified
+from modelArch import LDC # LDC-B3 modified smish
 # from modelRelu import LDC # LDC-B3 modified
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
@@ -310,7 +310,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TDC-BIPED AF=RELU  xavier init normal+ init normal CatsLoss2 Cofusion',
+                        default='TDC-BIPED AF=Mish  xavier init normal+ init normal CatsLoss2 Cofusion',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
