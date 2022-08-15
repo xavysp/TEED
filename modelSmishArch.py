@@ -68,16 +68,16 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.smish= Smish()#nn.ReLU(inplace=True)
+        # self.smish= Smish()#nn.ReLU(inplace=True)
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
         # self.norm_layer2 = nn.GroupNorm(4, 32)  # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.smish(self.PSconv1(self.DWconv1(x))) # [8, 32, 352, 352]
+        attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn2 = Fsmish(self.PSconv1(self.DWconv2(attn)))# commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(attn))# commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1))
