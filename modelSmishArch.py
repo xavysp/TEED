@@ -31,10 +31,6 @@ def weight_init(m):
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
 
-class DW2D(nn.Module):
-    def __int__(self,fin, fout):
-        super(DW2D, self).__int__()
-
 
 class CoFusion(nn.Module):
 
@@ -64,12 +60,14 @@ class CoFusionDWC(nn.Module):
 
     def __init__(self, in_ch, out_ch):
         super(CoFusionDWC, self).__init__()
-        self.conv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
+        self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
                                stride=1, padding=1, groups=in_ch) # before 64
-        self.conv1 = nn.PixelShuffle(0)
+        self.PSconv1 = nn.PixelShuffle(1)
 
-        self.conv3 = nn.Conv2d(32, out_ch, kernel_size=3,
-                               stride=1, padding=1)# before 64  instead of 32
+        self.DWconv2 = nn.Conv2d(24, 24*1, kernel_size=3,
+                               stride=1, padding=1,groups=24)# before 64  instead of 32
+        # self.PSconv2 = nn.PixelShuffle(1)
+
         self.smish= Smish()#nn.ReLU(inplace=True)
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
@@ -77,12 +75,12 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.smish(self.norm_layer1(self.conv1(x))) # [8, 32, 352, 352]
+        attn = self.smish(self.PSconv1(self.DWconv1(x))) # [8, 32, 352, 352]
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn = F.softmax(self.conv3(attn), dim=1)# commented for evaluation [8, 3, 352, 352]
+        attn2 = Fsmish(self.PSconv1(self.DWconv2(attn)))# commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
-        return ((x * attn).sum(1)).unsqueeze(1)
+        return ((attn2 * attn).sum(1)).unsqueeze(1)
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
@@ -191,7 +189,7 @@ class DoubleConvBlock(nn.Module):
 
 
 class LDC(nn.Module):
-    """ Definition of the DXtrem network. """
+    """ Definition of  Tiny Dense CNN for Edge Detection. """
 
     def __init__(self):
         super(LDC, self).__init__()
@@ -214,7 +212,8 @@ class LDC(nn.Module):
         self.up_block_3 = UpConvBlock(64, 2)
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
-        self.block_cat = CoFusion(3,3)# cats fusion method
+        # self.block_cat = CoFusion(3,3)# cats fusion method
+        self.block_cat = CoFusionDWC(3,3)# cats fusion method
 
 
         self.apply(weight_init)
