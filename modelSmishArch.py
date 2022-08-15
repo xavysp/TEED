@@ -80,7 +80,7 @@ class CoFusionDWC(nn.Module):
         attn2 = Fsmish(self.PSconv1(self.DWconv2(attn)))# commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
-        return ((attn2 * attn).sum(1)).unsqueeze(1)
+        return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1))
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
