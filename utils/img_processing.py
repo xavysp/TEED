@@ -5,6 +5,9 @@ import numpy as np
 import torch
 import kornia as kn
 
+from skimage.metrics import mean_squared_error, peak_signal_noise_ratio
+from sklearn.metrics import mean_absolute_error
+
 
 def image_normalization(img, img_min=0, img_max=255,
                         epsilon=1e-12):
@@ -230,3 +233,44 @@ def visualize_result(imgs_list, arg):
             else:
                 pass
     return imgs
+
+
+
+if __name__ == '__main__':
+
+    img_base_dir='tmp_edge'
+    gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
+    vers = 'LDC B6'
+    list_img = os.listdir(img_base_dir)
+    list_gt = os.listdir(gt_base_dir)
+    mse_list=[]
+    psnr_list=[]
+    mae_list=[]
+
+    for img_name, gt_name in zip(list_img,list_gt):
+
+        # print(img_name, '   ', gt_name)
+        tmp_img = cv2.imread(os.path.join(img_base_dir,img_name),0)
+        tmp_img = cv2.bitwise_not(tmp_img)
+        tmp_gt = cv2.imread(os.path.join(gt_base_dir,gt_name),0)
+
+        tmp_img = image_normalization(tmp_img, img_max=1.)
+        tmp_gt = image_normalization(tmp_gt, img_max=1.)
+        psnr = peak_signal_noise_ratio(tmp_gt, tmp_img)
+        mse = mean_squared_error(tmp_gt, tmp_img)
+        mae = mean_absolute_error(tmp_gt, tmp_img)
+
+        psnr_list.append(psnr)
+        mse_list.append(mse)
+        mae_list.append(mae)
+        print(f"PSNR= {psnr} in {img_name}")
+
+    av_psnr =np.array(psnr_list).mean()
+    av_mse =np.array(mse_list).mean()
+    av_mae =np.array(mae_list).mean()
+    print(" MSE results: mean ", av_mse)
+    print(" MAE results: mean ", av_mae)
+    # print(mse_list)
+    print(" PSNR results: mean", av_psnr)
+    # print(psnr_list)
+    print('version: ',vers)
