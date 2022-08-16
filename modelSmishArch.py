@@ -76,12 +76,12 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
+        attn = self.smish(self.PSconv1(self.DWconv1(x))) # [8, 32, 352, 352] self.smish(
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
         attn2 = self.PSconv1(self.DWconv2(attn))# commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
-        return Fmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish
+        return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
