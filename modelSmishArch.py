@@ -72,7 +72,6 @@ class CoFusionDWC(nn.Module):
         # self.smish= Smish()#nn.ReLU(inplace=True)
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
-        # self.norm_layer2 = nn.GroupNorm(4, 32)  # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
