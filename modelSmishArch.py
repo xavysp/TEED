@@ -17,8 +17,8 @@ from utils.AF.Fmish import mish as Fmish
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
-        if m.weight.data.shape[1] == torch.Size([1]):
-            torch.nn.init.normal_(m.weight, mean=0.0,)
+        # if m.weight.data.shape[1] == torch.Size([1]):
+        #     torch.nn.init.normal_(m.weight, mean=0.0,)
 
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
@@ -27,8 +27,8 @@ def weight_init(m):
     if isinstance(m, (nn.ConvTranspose2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
 
-        if m.weight.data.shape[1] == torch.Size([1]):
-            torch.nn.init.normal_(m.weight, std=0.1)
+        # if m.weight.data.shape[1] == torch.Size([1]):
+        #     torch.nn.init.normal_(m.weight, std=0.1)
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
 
@@ -81,7 +81,7 @@ class CoFusionDWC(nn.Module):
         attn2 = self.PSconv1(self.DWconv2(attn))# commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
-        return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1))
+        return Fmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
