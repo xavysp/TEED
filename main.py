@@ -18,7 +18,8 @@ from loss2 import *
 # from model import LDC # LDC-B3 modified AF mish
 # from modelArch import LDC # LDC-B3 modified smish
 # from modelRelu import LDC # LDC-B3 modified
-from modelSmishArch import LDC # LDC-B3 modified
+# from modelSmishArch import LDC # LDC-B3 modified V10
+from modelV10B2 import LDC # LDC-B3 modified V10 B2
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
