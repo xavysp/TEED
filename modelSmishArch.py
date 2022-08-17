@@ -197,9 +197,7 @@ class LDC(nn.Module):
         self.block_1 = DoubleConvBlock(3, 16, 16, stride=2,)
         self.block_2 = DoubleConvBlock(16, 32, use_act=False)
         self.dblock_3 = _DenseBlock(2, 32, 64) # [128,256,100,100]
-        # self.dblock_4 = _DenseBlock(3, 64, 96)# 128
-        # self.dblock_5 = _DenseBlock(3, 96, 32) # 128, 16
-        # self.dblock_6 = _DenseBlock(3, 512, 256)
+
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         # left skip connections, figure in Journal
