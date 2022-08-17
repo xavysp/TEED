@@ -18,8 +18,8 @@ from loss2 import *
 # from model import LDC # LDC-B3 modified AF mish
 # from modelArch import LDC # LDC-B3 modified smish
 # from modelRelu import LDC # LDC-B3 modified
-# from modelSmishArch import LDC # LDC-B3 modified V10
-from modelV10B2 import LDC # LDC-B3 modified V10 B2
+from modelSmishArch import LDC # LDC-B3 modified V10
+# from modelV10B2 import LDC # LDC-B3 modified V10 B2
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -39,7 +39,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
     # Put model in training mode
     model.train()
 
-    l_weight0 = [0.7,0.7,1.1,0.7,1.3] # for bdcn loss2-B4
+    l_weight0 = [0.7,0.7,1.1,1.3] # for bdcn loss2-B4
     # l_weight0 = [0.7, 0.7, 1.1, 1.1, 0.3, 0.3, 1.3] # for bdcn loss2-B6
 
     # l_weight = [[0.05, 2.], [0.05, 2.], [0.05, 2.],
@@ -53,20 +53,21 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
 
-        # loss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2
-        loss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
-
+        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2
+        # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
+        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss
+        tLoss = loss2+loss1
         optimizer.zero_grad()
-        loss.backward()
+        tLoss.backward()
         optimizer.step()
-        loss_avg.append(loss.item())
+        loss_avg.append(tLoss.item())
         if epoch==0 and (batch_id==100 and tb_writer is not None):
             tmp_loss = np.array(loss_avg).mean()
             tb_writer.add_scalar('loss', tmp_loss,epoch)
 
         if batch_id % 10 == 0:
             print(time.ctime(), 'Epoch: {0} Sample {1}/{2} Loss: {3}'
-                  .format(epoch, batch_id, len(dataloader), format(loss.item(),'.4f')))
+                  .format(epoch, batch_id, len(dataloader), format(tLoss.item(),'.4f')))
         if batch_id % log_interval_vis == 0:
             res_data = []
 
@@ -91,7 +92,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             vis_imgs = cv2.resize(vis_imgs,
                                   (int(vis_imgs.shape[1]*0.8), int(vis_imgs.shape[0]*0.8)))
             img_test = 'Epoch: {0} Sample {1}/{2} Loss: {3}' \
-                .format(epoch, batch_id, len(dataloader), loss.item())
+                .format(epoch, batch_id, len(dataloader), tLoss.item())
 
             BLACK = (0, 0, 255)
             font = cv2.FONT_HERSHEY_SIMPLEX
@@ -279,7 +280,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='10/10_model.pth',# 37 for biped 60 MDBD
+                        default='5/5_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -312,7 +313,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V10 TDC-BIPED AF=Smish -USNet BN+noAF  Just xav init normal CatsLoss2 CofusionM-WDCplus(return Fsmish())',
+                        default=' V10 TDC-BIPED AF=Smish -USNet BN+noAF  Just xav init normal BDCNloss2+CatsLoss2 CofusionM-WDCplus(return Fsmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
