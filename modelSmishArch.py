@@ -69,15 +69,15 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.relu= nn.ReLU(inplace=True) # Smish()#
+        # self.relu= nn.ReLU(inplace=True) # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.relu(self.PSconv1(self.DWconv1(x))) # [8, 32, 352, 352] self.smish(
+        attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn2 = self.relu(self.PSconv1(self.DWconv2(attn)))# commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(attn))#self.relu( commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish
@@ -133,7 +133,7 @@ class UpConvBlock(nn.Module):
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
             layers.append(nn.BatchNorm2d(out_features))
-            layers.append(Smish())
+            # layers.append(Smish())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
