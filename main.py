@@ -381,6 +381,7 @@ def main(args):
         info_txt = open(os.path.join(training_dir, 'training_settings.txt'), 'w')
         info_txt.write(str(training_notes))
         info_txt.close()
+        print("Training details> ",training_notes)
 
     # Get computing device
     device = torch.device('cpu' if torch.cuda.device_count() == 0
