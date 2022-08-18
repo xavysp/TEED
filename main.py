@@ -280,7 +280,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='14/14_model.pth',# 37 for biped 60 MDBD
+                        default='16/16_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -313,7 +313,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V10-1 TDC-BIPED AF=Smish -USNet BN+noAF  Just xav init normal BDCNloss2+CatsLoss2 CofusionM-WDCplus(return Fsmish())',
+                        default=' V10-2 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionM-WDCplus(return Fsmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
