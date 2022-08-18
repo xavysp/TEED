@@ -352,6 +352,7 @@ def parse_args():
                         type=float)  # [103.939,116.779,123.68,137.86] [104.00699, 116.66877, 122.67892]
     # BRIND mean = [104.007, 116.669, 122.679, 137.86]
     # BIPED mean_bgr processed [160.913,160.275,162.239,137.86]
+    # test BSDS with [97.939,116.779,123.68]
     args = parser.parse_args()
     return args
 
