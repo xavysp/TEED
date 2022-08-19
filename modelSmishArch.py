@@ -133,7 +133,7 @@ class UpConvBlock(nn.Module):
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
             layers.append(nn.BatchNorm2d(out_features))
-            # layers.append(Smish())
+            layers.append(Smish())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
@@ -147,18 +147,22 @@ class UpConvBlock(nn.Module):
 
 
 class SingleConvBlock(nn.Module):
-    def __init__(self, in_features, out_features, stride):
+    def __init__(self, in_features, out_features, stride, use_ac=False):
         super(SingleConvBlock, self).__init__()
         # self.use_bn = use_bs
+        self.use_ac=use_ac
         self.conv = nn.Conv2d(in_features, out_features, 1, stride=stride,
                               bias=True)
+        if self.use_ac:
+            self.smish = Smish()
         # self.bn = nn.BatchNorm2d(out_features)
 
     def forward(self, x):
         x = self.conv(x)
-        # if self.use_bn:
-        #     x = self.bn(x)
-        return x
+        if self.use_ac:
+            return self.smish(x)
+        else:
+            return x
 
 
 class DoubleConvBlock(nn.Module):
