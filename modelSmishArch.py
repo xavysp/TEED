@@ -77,7 +77,7 @@ class CoFusionDWC(nn.Module):
         # fusecat = torch.cat(x, dim=1)
         attn = self.smish(self.PSconv1(self.DWconv1(x))) # [8, 32, 352, 352] self.smish(
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn2 = self.smish(self.PSconv1(self.DWconv2(attn)))#self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish
