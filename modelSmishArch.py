@@ -143,7 +143,7 @@ class UpConvBlock(nn.Module):
         return 1 if idx == up_scale - 1 else self.constant_features
 
     def forward(self, x):
-        return Fsmish(self.features(x))
+        return self.features(x)
 
 
 class SingleConvBlock(nn.Module):
