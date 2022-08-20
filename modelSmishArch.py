@@ -137,7 +137,7 @@ class UpConvBlock(nn.Module):
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
-        return layers# Fsmish()
+        return Fsmish(layers)# Fsmish()
 
     def compute_out_features(self, idx, up_scale):
         return 1 if idx == up_scale - 1 else self.constant_features
