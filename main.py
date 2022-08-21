@@ -221,7 +221,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=5,
                         help='Choose a dataset for testing: 0 - 8')
     # ----------- test -------0--
 
@@ -229,7 +229,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
     test_dir = test_inf['data_dir']
-    is_testing =False
+    is_testing =True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10
@@ -280,7 +280,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='14/14_model.pth',# 37 for biped 60 MDBD
+                        default='11/11_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -306,14 +306,14 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=5e-5, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[7e-4,5e-5,1e-5], type=float,
+    parser.add_argument('--lrs', default=[8e-4,5e-5,1e-5], type=float,
                         help='LR for set epochs')
     parser.add_argument('--wd', type=float, default=0., metavar='WD',
                         help='weight decay (Good 5e-6 LDC 0.)')
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V10-11 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDC2smish+(return Fsmish())',
+                        default=' V10-12 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDC2smish+(return Fsmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
