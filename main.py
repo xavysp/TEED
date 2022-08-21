@@ -358,7 +358,6 @@ def parse_args():
 
 
 def main(args):
-    """Main function."""
 
     print(f"Number of GPU's available: {torch.cuda.device_count()}")
     print(f"Pytorch version: {torch.__version__}")
