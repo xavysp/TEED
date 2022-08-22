@@ -313,7 +313,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V10-13 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDC2smish+(return Fsmish())',
+                        default=' V10-14 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDC2smish+(return Relu())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
