@@ -133,7 +133,7 @@ class UpConvBlock(nn.Module):
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
             layers.append(nn.BatchNorm2d(out_features))
-            # layers.append(Smish())
+            layers.append(Smish())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
