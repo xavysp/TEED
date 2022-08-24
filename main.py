@@ -308,12 +308,12 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[5e-5,1e-5,5e-6], type=float,
                         help='LR for set epochs')
-    parser.add_argument('--wd', type=float, default=1e-6, metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
                         help='weight decay (Good 5e-6 LDC 0.)')
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V7-7 TDC-BIPED AF=Smish -USNet BN+AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish())',
+                        default=' V7-8 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
