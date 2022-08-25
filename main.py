@@ -309,7 +309,7 @@ def parse_args():
     parser.add_argument('--lrs', default=[5e-5,1e-5,5e-6], type=float,
                         help='LR for set epochs')
     parser.add_argument('--wd', type=float, default=5e-6, metavar='WD',
-                        help='weight decay (Good 1e-5 LDC 0.)') # left test with 5e-5
+                        help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
