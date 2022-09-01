@@ -281,7 +281,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='14/14_model.pth',# 37 for biped 60 MDBD
+                        default='11/11_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -309,12 +309,12 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[5e-5,1e-5,5e-6], type=float,
                         help='LR for set epochs')
-    parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
+    parser.add_argument('--wd', type=float, default=3e-5, metavar='WD',
                         help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V11-4 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish())',
+                        default=' V11-5 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -352,8 +352,9 @@ def parse_args():
                         default=[103.939,116.779,123.68,137.86],
                         type=float)  # [103.939,116.779,123.68,137.86] [104.00699, 116.66877, 122.67892]
     # BRIND mean = [104.007, 116.669, 122.679, 137.86]
-    # BIPED mean_bgr processed [160.913,160.275,162.239,137.86]
+    # BIPEDaug mean_bgr processed [159.510, 159.451,162.230,137.86]
     # test BSDS with [97.939,116.779,123.68]
+    # BIPED ori [103.939,116.779,123.68,137.86]
     args = parser.parse_args()
     return args
 
