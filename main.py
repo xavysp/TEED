@@ -222,7 +222,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=5,
                         help='Choose a dataset for testing: 0 - 8')
     # ----------- test -------0--
 
@@ -281,7 +281,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='14/14_model.pth',# 37 for biped 60 MDBD
+                        default='9/9_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -309,12 +309,12 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[5e-5,1e-5,5e-6], type=float,
                         help='LR for set epochs')
-    parser.add_argument('--wd', type=float, default=7e-6, metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
                         help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[6,12,18], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V11-7 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
+                        default=' V11-9 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -348,9 +348,14 @@ def parse_args():
                         default=True,
                         type=bool,
                         help='If true crop training images, else resize images to match image width and height.')
-    parser.add_argument('--mean_pixel_values',
-                        default=[159.510, 159.451,162.230,137.86],
+    parser.add_argument('--mean_test',
+                        default=test_inf['mean'],
+                        type=float)
+    parser.add_argument('--mean_train',
+                        default=train_inf['mean'],
                         type=float)  # [103.939,116.779,123.68,137.86] [104.00699, 116.66877, 122.67892]
+
+
     # BRIND mean = [104.007, 116.669, 122.679, 137.86]
     # BIPEDaug mean_bgr processed [159.510, 159.451,162.230,137.86]
     # test BSDS with [97.939,116.779,123.68]
@@ -402,8 +407,6 @@ def main(args):
         dataset_train = BipedDataset(args.input_dir,
                                      img_width=args.img_width,
                                      img_height=args.img_height,
-                                     mean_bgr=args.mean_pixel_values[0:3] if len(
-                                         args.mean_pixel_values) == 4 else args.mean_pixel_values,
                                      train_mode='train',
                                      arg=args
                                      )
@@ -416,8 +419,6 @@ def main(args):
                               test_data=args.test_data,
                               img_width=args.test_img_width,
                               img_height=args.test_img_height,
-                              mean_bgr=args.mean_pixel_values[0:3] if len(
-                                  args.mean_pixel_values) == 4 else args.mean_pixel_values,
                               test_list=args.test_list, arg=args
                               )
     dataloader_val = DataLoader(dataset_val,
