@@ -198,7 +198,7 @@ def visualize_result(imgs_list, arg):
             tmp = np.transpose(tmp, [1, 2, 0])
             tmp = restore_rgb([
                 arg.channel_swap,
-                arg.mean_pixel_values[:3]
+                arg.mean_train[:3]
             ], tmp)
             tmp = np.uint8(image_normalization(tmp))
         else:
