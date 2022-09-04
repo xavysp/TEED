@@ -1,1 +1,1 @@
-[' V11-11 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean RL= 0.0001 WD= 1e-05 image size = 352 adjust LR=[6, 12, 18] LRs= [7e-05, 0.0001, 1e-05] Loss Function= CAST-loss2.py Sat Sep  3 21:33:06 2022']
+[' V12-1 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean RL= 0.0003 WD= 1e-05 image size = 352 adjust LR=[2, 5, 8] LRs= [7e-05, 0.0001, 5e-05] Loss Function= CAST-loss2.py Sun Sep  4 05:14:05 2022']
