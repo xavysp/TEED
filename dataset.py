@@ -155,7 +155,8 @@ def dataset_info(dataset_name, is_linux=True):
                      'test_list': 'test_pair.lst',
                      'data_dir': 'C:/Users/xavysp/dataset/BSDS',  # mean_rgb
                      'yita': 0.5,
-                    'mean':[104.007, 116.669, 122.679, 137.86] },# [104.007, 116.669, 122.679, 137.86]
+                    'mean':[104.007, 116.669, 122.679, 137.86] },
+            # [104.007, 116.669, 122.679, 137.86]
             #[159.510, 159.451,162.230,137.86]
             'BRIND': {
                 'img_height': 512,  # 321
