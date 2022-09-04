@@ -281,7 +281,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='7/7_model.pth',# 37 for biped 60 MDBD
+                        default='11/11_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -305,16 +305,16 @@ def parse_args():
                         default=13,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=3e-4, type=float,
+    parser.add_argument('--lr', default=5e-4, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[7e-5,1e-4,5e-5], type=float,
+    parser.add_argument('--lrs', default=[1e-4,3e-4,1e-4], type=float,
                         help='LR for set epochs')
     parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
                         help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
-    parser.add_argument('--adjust_lr', default=[2,5,8], type=int,
+    parser.add_argument('--adjust_lr', default=[3,5,8], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V12-1 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
+                        default=' V12-2 TDC-BIPED AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -465,7 +465,7 @@ def main(args):
     k=0
     set_lr = args.lrs#[25e-4, 5e-6]
     for epoch in range(ini_epoch,args.epochs):
-        if epoch%7==0:
+        if epoch%5==0: # before 7
 
             seed = seed+1000
             np.random.seed(seed)
