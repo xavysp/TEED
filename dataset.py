@@ -96,10 +96,11 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 720, #720 # 1088
                 'img_width': 1280, # 1280 5 1920
                 'test_list': 'test_pair.lst',
-                'train_list': 'train_pair.lst',
+                'train_list': 'train_pair0.lst',
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':[159.510, 159.451,162.230,137.86]
+                # train_pairB5.lst this for DexiNed and LDC train_pair0.lst
             },
             'CLASSIC': {
                 'img_height': 512,#
@@ -155,8 +156,8 @@ def dataset_info(dataset_name, is_linux=True):
                      'test_list': 'test_pair.lst',
                      'data_dir': 'C:/Users/xavysp/dataset/BSDS',  # mean_rgb
                      'yita': 0.5,
-                    'mean':[104.007, 116.669, 122.679, 137.86] },
-            # [104.007, 116.669, 122.679, 137.86]
+                    'mean':[103.939, 116.669, 122.679, 137.86] },
+            # [103.939, 116.669, 122.679, 137.86]
             #[159.510, 159.451,162.230,137.86]
             'BRIND': {
                 'img_height': 512,  # 321
