@@ -20,7 +20,7 @@ DATASET_NAMES = [
     'DCD',
     'MDBD', #10
     'PASCAL',
-    'NYUD',
+    'NYUD', #12
     'CLASSIC'
 ]  # 8
 
