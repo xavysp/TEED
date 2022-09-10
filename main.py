@@ -309,7 +309,7 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[6e-7,1e-4,3e-4], type=float,
                         help='LR for epochs')
-    parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-7, metavar='WD',
                         help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[2,4,6], type=int,
                         help='Learning rate step size.')  # [6,9,19]
@@ -331,11 +331,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=256,
+                        default=352,
                         help='Image width for training.') # BIPED 352 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=256,
+                        default=352,
                         help='Image height for training.') # BIPED 480 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],
