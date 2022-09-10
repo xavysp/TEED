@@ -309,7 +309,7 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[6e-7,1e-4,3e-4], type=float,
                         help='LR for epochs')
-    parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
+    parser.add_argument('--wd', type=float, default=0.0, metavar='WD',
                         help='weight decay (Good 1e-5 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[2,4,6], type=int,
                         help='Learning rate step size.')  # [6,9,19]
