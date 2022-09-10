@@ -13,7 +13,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from thop import profile
 
-from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
+from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipbriDataset
 from loss2 import *
 # from modelB3 import LDC
 # from model import LDC # LDC-B3 modified AF mish
@@ -233,7 +233,7 @@ def parse_args():
     is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
-    TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10
+    TRAIN_DATA = DATASET_NAMES[13] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
     train_inf = dataset_info(TRAIN_DATA, is_linux=IS_LINUX)
     train_dir = train_inf['data_dir']
 
@@ -281,7 +281,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='4/4_model.pth',# 37 for biped 60 MDBD
+                        default='8/8_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -305,16 +305,16 @@ def parse_args():
                         default=15,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=5e-5, type=float,
+    parser.add_argument('--lr', default=1e-3, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[25e-4,5e-4,3e-4], type=float,
+    parser.add_argument('--lrs', default=[7e-4,5e-4,3e-4], type=float,
                         help='LR for epochs')
-    parser.add_argument('--wd', type=float, default=1e-4, metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-7, metavar='WD',
                         help='weight decay (Good 1e-7 LDC 0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[2,4,6], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V13-2 TDC-BIPEDext AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
+                        default=' V12-9X00 TDC-BIPBRI AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -331,11 +331,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=352,
+                        default=256,
                         help='Image width for training.') # BIPED 352 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=352,
+                        default=256,
                         help='Image height for training.') # BIPED 480 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],
@@ -361,10 +361,10 @@ def parse_args():
     # test BSDS with [97.939,116.779,123.68]
     # BIPED ori [103.939,116.779,123.68,137.86]
     args = parser.parse_args()
-    return args
+    return args, train_inf
 
 
-def main(args):
+def main(args, train_inf):
 
     print(f"Number of GPU's available: {torch.cuda.device_count()}")
     print(f"Pytorch version: {torch.__version__}")
@@ -404,15 +404,28 @@ def main(args):
             ini_epoch=8
             model.load_state_dict(torch.load(checkpoint_path2,
                                          map_location=device))
-        dataset_train = BipedDataset(args.input_dir,
-                                     img_width=args.img_width,
-                                     img_height=args.img_height,
-                                     train_mode='train',
-                                     arg=args
-                                     )
-        dataloader_train = DataLoader(dataset_train,
-                                      batch_size=args.batch_size,
-                                      shuffle=True,
+        if args.train_data.lower()=='bipbri':
+            dataset_train = bipbriDataset(args.input_dir,
+                                         img_width=args.img_width,
+                                         img_height=args.img_height,
+                                         train_mode='train',
+                                         arg=args, extra_inf=train_inf
+                                         )
+            dataloader_train = DataLoader(dataset_train,
+                                          batch_size=args.batch_size,
+                                          shuffle=True,
+                                          num_workers=args.workers)
+        else:
+
+            dataset_train = BipedDataset(args.input_dir,
+                                         img_width=args.img_width,
+                                         img_height=args.img_height,
+                                         train_mode='train',
+                                         arg=args
+                                         )
+            dataloader_train = DataLoader(dataset_train,
+                                          batch_size=args.batch_size,
+                                          shuffle=True,
                                       num_workers=args.workers)
 
     dataset_val = TestDataset(args.input_val_dir,
@@ -523,5 +536,5 @@ def main(args):
     print('-------------------------------------------------------')
 
 if __name__ == '__main__':
-    args = parse_args()
-    main(args)
+    args, train_info = parse_args()
+    main(args, train_info)
