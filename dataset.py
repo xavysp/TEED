@@ -41,7 +41,7 @@ def dataset_info(dataset_name, is_linux=True):
             'BRIND': {
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
-                'train_list': 'train_pair2.lst',
+                'train_list': 'train_pair.lst',
                 'test_list': 'test_pair.lst',
                 'data_dir': '/root/datasets/BRIND',  # mean_rgb
                 'yita': 0.5,
@@ -548,12 +548,12 @@ class BipedDataset(Dataset):
             # New addidings
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # # BRIND
-        # gt[gt > 0.1] +=0.2#0.4
-        # gt = np.clip(gt, 0., 1.)
-        # for BIPED
-        gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        gt = np.clip(gt, 0., 1.)  # BIPED
+        # BRIND
+        gt[gt > 0.1] +=0.2#0.4
+        gt = np.clip(gt, 0., 1.)
+        # # for BIPED
+        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED
+        # gt = np.clip(gt, 0., 1.)  # BIPED
         # # for MDBD
         # gt[gt > 0.3] +=0.7#0.4
         # gt = np.clip(gt, 0., 1.)
