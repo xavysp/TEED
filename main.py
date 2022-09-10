@@ -222,7 +222,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=6,
+                        default=-1,
                         help='Choose a dataset for testing: 0 - 8')
     # ----------- test -------0--
 
