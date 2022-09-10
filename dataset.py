@@ -34,7 +34,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_width': 512, #481
                 'train_list': 'train_pair.lst',
                 'test_list': 'test_pair.lst',
-                'data_dir': '/root/datasets/BSDS',  # mean_rgb
+                'data_dir': '/root/workspace/datasets/BSDS',  # mean_rgb
                 'yita': 0.5,
                 'mean': [104.007, 116.669, 122.679, 137.86]
             },
@@ -52,7 +52,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_width': 512, #481
                 'test_list': 'test_pair.lst',
                 'train_list': None,
-                'data_dir': '/root/datasets/BSDS300',  # NIR
+                'data_dir': '/root/workspace/datasets/BSDS300',  # NIR
                 'yita': 0.5,
                 'mean': [104.007, 116.669, 122.679, 137.86]
             },
@@ -294,7 +294,7 @@ class TestDataset(Dataset):
                     f"Test list not provided for dataset: {self.test_data}")
 
             list_name = os.path.join(self.data_root, self.test_list)
-            if self.test_data.upper() == 'BIPED':
+            if self.test_data.upper() in ['BIPED', 'BRIND']:
 
                 with open(list_name) as f:
                     files = json.load(f)
@@ -548,12 +548,12 @@ class BipedDataset(Dataset):
             # New addidings
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # BRIND
-        gt[gt > 0.1] +=0.2#0.4
-        gt = np.clip(gt, 0., 1.)
-        # # for BIPED
-        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        # gt = np.clip(gt, 0., 1.)  # BIPED
+        # # BRIND
+        # gt[gt > 0.1] +=0.2#0.4
+        # gt = np.clip(gt, 0., 1.)
+        # for BIPED
+        gt[gt > 0.2] += 0.6  # 0.5 for BIPED
+        gt = np.clip(gt, 0., 1.)  # BIPED
         # # for MDBD
         # gt[gt > 0.3] +=0.7#0.4
         # gt = np.clip(gt, 0., 1.)
