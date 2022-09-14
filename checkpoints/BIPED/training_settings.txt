@@ -1,0 +1,1 @@
+[' V13-5 TDC-BIPED-aug0 AF=Smish -USNet AF  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean RL= 5e-05 WD= 0.0003 image size = 352 adjust LR=[3, 6] LRs= [0.0003, 5e-05] Loss Function= CAST-loss2.py Tue Sep 13 20:23:04 2022']
