@@ -108,7 +108,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 720, #720 # 1088
                 'img_width': 1280, # 1280 5 1920
                 'test_list': 'test_pair.lst',
-                'train_list': 'train_pair0.lst',
+                'train_list': 'train_pairB5.lst',
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':[159.510, 159.451,162.230,137.86]
@@ -694,7 +694,7 @@ class bipbriDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 300#208  # l BIPED=208-352, # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 256#208  # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
