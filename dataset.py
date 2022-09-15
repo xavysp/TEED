@@ -25,7 +25,7 @@ DATASET_NAMES = [
     'CLASSIC'
 ]  # 8
 
-BIPED_mean = [129.510, 129.451,132.230,137.86]
+BIPED_mean = [119.510, 119.451,122.230,137.86]
 
 def dataset_info(dataset_name, is_linux=True):
     if is_linux:
@@ -301,7 +301,7 @@ class TestDataset(Dataset):
         self.img_width = img_width
         self.data_index = self._build_index()
 
-        print(f"mean_bgr: {self.mean_bgr}")
+        print(f"Test> mean_bgr: {self.mean_bgr}")
 
     def _build_index(self):
         sample_indices = []
