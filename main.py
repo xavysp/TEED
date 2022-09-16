@@ -280,7 +280,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='8/8_model.pth',# 37 for biped 60 MDBD
+                        default='10/10_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -304,9 +304,9 @@ def parse_args():
                         default=15,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=7e-5, type=float,
+    parser.add_argument('--lr', default=5e-5, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[5e-5], type=float,
+    parser.add_argument('--lrs', default=[3e-5], type=float,
                         help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
     parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
                         help='weight decay (Good 1e-7 LDC 0.)') # Test left= WD 5e-5
