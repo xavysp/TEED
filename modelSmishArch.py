@@ -58,7 +58,7 @@ class CoFusion(nn.Module):
         return ((x * attn).sum(1)).unsqueeze(1)
 
 class CoFusionDWC(nn.Module):
-
+    # with depth wise convolution
     def __init__(self, in_ch, out_ch):
         super(CoFusionDWC, self).__init__()
         self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
