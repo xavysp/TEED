@@ -318,7 +318,7 @@ def parse_args():
                         help='version notes')
     parser.add_argument('--batch_size',
                         type=int,
-                        default=8,
+                        default=1,
                         metavar='B',
                         help='the mini-batch size (default: 8)')
     parser.add_argument('--workers',
