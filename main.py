@@ -73,15 +73,15 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             res_data = []
 
             img = images.cpu().numpy()
-            res_data.append(img[2])
+            res_data.append(img[0])
 
             ed_gt = labels.cpu().numpy()
-            res_data.append(ed_gt[2])
+            res_data.append(ed_gt[0])
 
             # tmp_pred = tmp_preds[2,...]
             for i in range(len(preds_list)):
                 tmp = preds_list[i]
-                tmp = tmp[2]
+                tmp = tmp[0]
                 # print(tmp.shape)
                 tmp = torch.sigmoid(tmp).unsqueeze(dim=0)
                 tmp = tmp.cpu().detach().numpy()
