@@ -22,6 +22,7 @@ DATASET_NAMES = [
     'PASCAL',
     'NYUD', #12
     'BIPBRI',
+    'UDED', # 14 just for testing
     'CLASSIC'
 ]  # 8
 
@@ -41,6 +42,15 @@ def dataset_info(dataset_name, is_linux=True):
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
                 'yita': 0.5,
                 'mean': [159.510, 159.451,162.230,137.86]
+            },
+            'UDED': {
+                'img_height': 512,  # 321
+                'img_width': 512,  # 481
+                'train_list': None,
+                'test_list': 'test_pair.lst',
+                'data_dir': '/root/workspace/datasets/UDED',  # mean_rgb
+                'yita': 0.5,
+                'mean': [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {
                 'img_height': 512, #321
@@ -175,6 +185,15 @@ def dataset_info(dataset_name, is_linux=True):
                 'data_dir2': 'C:/Users/xavysp/dataset/BRIND',  # mean_rgb
                 'yita': 0.5,
                 'mean': BIPED_mean
+            },
+            'UDED': {
+                'img_height': 512,  # 321
+                'img_width': 512,  # 481
+                'train_list': None,
+                'test_list': 'test_pair.lst',
+                'data_dir': 'C:/Users/xavysp/dataset/UDED',  # mean_rgb
+                'yita': 0.5,
+                'mean': [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {'img_height': 480,  # 321
                      'img_width': 480,  # 481
@@ -318,7 +337,7 @@ class TestDataset(Dataset):
                     f"Test list not provided for dataset: {self.test_data}")
 
             list_name = os.path.join(self.data_root, self.test_list)
-            if self.test_data.upper() in ['BIPED', 'BRIND']:
+            if self.test_data.upper() in ['BIPED', 'BRIND','UDED']:
 
                 with open(list_name) as f:
                     files = json.load(f)
@@ -384,6 +403,10 @@ class TestDataset(Dataset):
         # gt[gt< 51] = 0 # test without gt discrimination
         if self.test_data == "CLASSIC":
             gt = None
+        img_h, img_w = img.shape[0],img.shape[1]
+        if img_w<450 or img_h<450:
+            # img = cv2.resize(img,(0,0), fx=1.35,fy=1.35)
+            img = cv2.resize(img,(512,512))
 
         # # For FPS
         # img = cv2.resize(img, (496,320))
@@ -663,7 +686,7 @@ class bipbriDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
-        if i_w> self.img_width and i_h>self.img_height: #before np.random.random() > 0.4 bef 420
+        if i_w> 400 and i_h>400: #before np.random.random() > 0.4 bef 420
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
 

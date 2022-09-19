@@ -270,6 +270,11 @@ def parse_args():
     parser.add_argument('--is_testing',type=bool,
                         default=is_testing,
                         help='Script in testing mode.')
+    parser.add_argument('--scale_img',
+                        type=bool,
+                        default=True,
+                        help='re-scale test image 1.25')  # Just for test
+
     parser.add_argument('--double_img',
                         type=bool,
                         default=False,
@@ -280,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='7/7_model.pth',# 37 for biped 60 MDBD
+                        default='2/2_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -500,7 +505,7 @@ def main(args, train_inf):
         img_test_dir = os.path.join(output_dir_epoch, args.test_data + '_res')
         os.makedirs(output_dir_epoch,exist_ok=True)
         os.makedirs(img_test_dir,exist_ok=True)
-        print("**************** Validating the training and from the scratch **********")
+        print("**************** Validating the training from the scratch **********")
         # validate_one_epoch(epoch,
         #                    dataloader_val,
         #                    model,
