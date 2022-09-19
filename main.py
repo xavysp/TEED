@@ -66,7 +66,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             tmp_loss = np.array(loss_avg).mean()
             tb_writer.add_scalar('loss', tmp_loss,epoch)
 
-        if batch_id % (10*8) == 0:
+        if batch_id % (10) == 0:
             print(time.ctime(), 'Epoch: {0} Sample {1}/{2} Loss: {3}'
                   .format(epoch, batch_id, len(dataloader), format(tLoss.item(),'.4f')))
         if batch_id % log_interval_vis == 0:
@@ -285,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='2/2_model.pth',# 37 for biped 60 MDBD
+                        default='3/3_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -301,7 +301,7 @@ def parse_args():
                         help='Result directory')
     parser.add_argument('--log_interval_vis',
                         type=int,
-                        default=100*8,# 100
+                        default=100,# 100
                         help='The NO B to wait before printing test predictions. 200')
 
     parser.add_argument('--epochs',
@@ -323,7 +323,7 @@ def parse_args():
                         help='version notes')
     parser.add_argument('--batch_size',
                         type=int,
-                        default=1,
+                        default=8,
                         metavar='B',
                         help='the mini-batch size (default: 8)')
     parser.add_argument('--workers',

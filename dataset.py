@@ -708,13 +708,13 @@ class bipbriDataset(Dataset):
 
         else:
             # New addidings
-            if img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
-                img_width = ((img.shape[1] // 8) + 1) * 8
-                img_height = ((img.shape[0] // 8) + 1) * 8
-                img = cv2.resize(img, (img_width, img_height))
-                gt = cv2.resize(gt, (img_width, img_height))
-            # img = cv2.resize(img, dsize=(crop_size, crop_size))
-            # gt = cv2.resize(gt, dsize=(crop_size, crop_size))
+            # if img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
+            #     img_width = ((img.shape[1] // 8) + 1) * 8
+            #     img_height = ((img.shape[0] // 8) + 1) * 8
+            #     img = cv2.resize(img, (img_width, img_height))
+            #     gt = cv2.resize(gt, (img_width, img_height))
+            img = cv2.resize(img, dsize=(crop_size, crop_size))
+            gt = cv2.resize(gt, dsize=(crop_size, crop_size))
         # # BRIND
         # gt[gt > 0.1] +=0.2#0.4
         # gt = np.clip(gt, 0., 1.)
