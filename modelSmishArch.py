@@ -223,19 +223,41 @@ class LDC(nn.Module):
 
     def slice(self, tensor, slice_shape):
         t_shape = tensor.shape
-        height, width = slice_shape
-        if t_shape[-1]!=slice_shape[-1]:
+        img_h, img_w = slice_shape
+        if img_w!=t_shape[-1] or img_h!=t_shape[2]:
             new_tensor = F.interpolate(
-                tensor, size=(height, width), mode='bicubic',align_corners=False)
+                tensor, size=(img_h, img_w), mode='bicubic',align_corners=False)
+
         else:
             new_tensor=tensor
         # tensor[..., :height, :width]
         return new_tensor
+    def resize_input(self,tensor):
+        t_shape = tensor.shape
+        if t_shape[2] % 8 != 0 or t_shape[3] % 8 != 0:
+            img_w= ((t_shape[3]// 8) + 1) * 8
+            img_h = ((t_shape[2] // 8) + 1) * 8
+            new_tensor = F.interpolate(
+                tensor, size=(img_h, img_w), mode='bicubic', align_corners=False)
+        else:
+            new_tensor = tensor
+        return new_tensor
 
-    def forward(self, x):
+    # Based on BDCN Implementation @ https://github.com/pkuCactus/BDCN
+    def crop_bdcn(data1, h, w, crop_h, crop_w):
+        _, _, h1, w1 = data1.size()
+        assert (h <= h1 and w <= w1)
+        data = data1[:, :, crop_h:crop_h + h, crop_w:crop_w + w]
+        return data
+
+
+    def forward(self, x, single_test=False):
         assert x.ndim == 4, x.shape
          # supose the image size is 352x352
         # Block 1
+        img_H, img_W = x.shape[2],x.shape[-1]
+        if single_test:
+            x = self.resize_input(x)
         block_1 = self.block_1(x) # [8,16,176,176]
         block_1_side = self.side_1(block_1) # 16 [8,32,88,88]
 
@@ -259,7 +281,6 @@ class LDC(nn.Module):
         block_cat = torch.cat(results, dim=1)  # Bx6xHxW
         block_cat = self.block_cat(block_cat)  # Bx1xHxW
 
-        # return results
         results.append(block_cat)
         return results
 

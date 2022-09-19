@@ -129,7 +129,7 @@ def validate_one_epoch(epoch, dataloader, model, device, output_dir, arg=None):
                                      arg=arg)
 
 
-def test(checkpoint_path, dataloader, model, device, output_dir, args):
+def test(checkpoint_path, dataloader, model, device, output_dir, args,resize_input=False):
     if not os.path.isfile(checkpoint_path):
         raise FileNotFoundError(
             f"Checkpoint filte note found: {checkpoint_path}")
@@ -161,7 +161,7 @@ def test(checkpoint_path, dataloader, model, device, output_dir, args):
             end = time.perf_counter()
             if device.type == 'cuda':
                 torch.cuda.synchronize()
-            preds = model(images)
+            preds = model(images, single_test=resize_input)
             if device.type == 'cuda':
                 torch.cuda.synchronize()
             tmp_duration = time.perf_counter() - end
@@ -177,7 +177,7 @@ def test(checkpoint_path, dataloader, model, device, output_dir, args):
     print("FPS: %f.4" % (len(dataloader)/total_duration))
     # print("Time spend in the Dataset: %f.4" % total_duration.sum(), "seconds")
 
-def testPich(checkpoint_path, dataloader, model, device, output_dir, args):
+def testPich(checkpoint_path, dataloader, model, device, output_dir, args, resize_input=False):
     # a test model plus the interganged channels
     if not os.path.isfile(checkpoint_path):
         raise FileNotFoundError(
@@ -200,8 +200,8 @@ def testPich(checkpoint_path, dataloader, model, device, output_dir, args):
             start_time = time.time()
             images2 = images[:, [1, 0, 2], :, :]  #GBR
             # images2 = images[:, [2, 1, 0], :, :] # RGB
-            preds = model(images)
-            preds2 = model(images2)
+            preds = model(images,single_test=resize_input)
+            preds2 = model(images2,single_test=resize_input)
             tmp_duration = time.time() - start_time
             total_duration.append(tmp_duration)
             save_image_batch_to_disk([preds,preds2],
@@ -228,7 +228,7 @@ def parse_args():
 
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
-    test_dir = test_inf['data_dir']
+
     is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
@@ -280,7 +280,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='8/8_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -442,11 +442,14 @@ def main(args, train_inf):
 
         output_dir = os.path.join(args.res_dir, args.train_data+"2"+ args.test_data)
         print(f"output_dir: {output_dir}")
+        if_resize_img = False if args.test_data in ['BIPED','CID','MDBD'] else True
         if args.double_img:
             # run twice the same image changing the image's channels
-            testPich(checkpoint_path, dataloader_val, model, device, output_dir, args)
+            testPich(checkpoint_path, dataloader_val, model, device,
+                     output_dir, args,if_resize_img)
         else:
-            test(checkpoint_path, dataloader_val, model, device, output_dir, args)
+            test(checkpoint_path, dataloader_val, model, device,
+                 output_dir, args,if_resize_img)
 
         # Count parameters:
         num_param = count_parameters(model)
