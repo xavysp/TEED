@@ -109,7 +109,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
     loss_avg = np.array(loss_avg).mean()
     return loss_avg
 
-def validate_one_epoch(epoch, dataloader, model, device, output_dir, arg=None):
+def validate_one_epoch(epoch, dataloader, model, device, output_dir, arg=None,test_resize=False):
     # XXX This is not really validation, but testing
 
     # Put model in eval mode
@@ -121,7 +121,7 @@ def validate_one_epoch(epoch, dataloader, model, device, output_dir, arg=None):
             # labels = sample_batched['labels'].to(device)
             file_names = sample_batched['file_names']
             image_shape = sample_batched['image_shape']
-            preds = model(images)
+            preds = model(images,single_test=test_resize)
             # print('pred shape', preds[0].shape)
             save_image_batch_to_disk(preds[-1],
                                      output_dir,
@@ -438,11 +438,11 @@ def main(args, train_inf):
                                 shuffle=False,
                                 num_workers=args.workers)
     # Testing
+    if_resize_img = False if args.test_data in ['BIPED', 'CID', 'MDBD'] else True
     if args.is_testing:
 
         output_dir = os.path.join(args.res_dir, args.train_data+"2"+ args.test_data)
         print(f"output_dir: {output_dir}")
-        if_resize_img = False if args.test_data in ['BIPED','CID','MDBD'] else True
         if args.double_img:
             # run twice the same image changing the image's channels
             testPich(checkpoint_path, dataloader_val, model, device,
@@ -506,7 +506,7 @@ def main(args, train_inf):
         #                    model,
         #                    device,
         #                    img_test_dir,
-        #                    arg=args)
+        #                    arg=args,test_resize=if_resize_img)
 
         avg_loss =train_one_epoch(epoch,dataloader_train,
                         model, criterion,
@@ -520,7 +520,7 @@ def main(args, train_inf):
                            model,
                            device,
                            img_test_dir,
-                           arg=args)
+                           arg=args, test_resize=if_resize_img)
 
         # Save model after end of every epoch
         torch.save(model.module.state_dict() if hasattr(model, "module") else model.state_dict(),

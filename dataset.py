@@ -663,7 +663,7 @@ class bipbriDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
-        if i_w> self.img_width and i_h>self.img_height: #before np.random.random() > 0.4
+        if i_w> self.img_width and i_h>self.img_height: #before np.random.random() > 0.4 bef 420
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
 
