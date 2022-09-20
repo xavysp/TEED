@@ -224,6 +224,7 @@ def parse_args():
                         type=int,
                         default=-1,
                         help='Choose a dataset for testing: 0 - 8')
+    # UDED=14
     # ----------- test -------0--
 
 
@@ -271,11 +272,6 @@ def parse_args():
     parser.add_argument('--is_testing',type=bool,
                         default=is_testing,
                         help='Script in testing mode.')
-    parser.add_argument('--scale_img',
-                        type=bool,
-                        default=True,
-                        help='re-scale test image 1.25')  # Just for test
-
     parser.add_argument('--double_img',
                         type=bool,
                         default=False,
@@ -286,7 +282,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='2/2_model.pth',# 37 for biped 60 MDBD
+                        default='8/8_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -314,7 +310,7 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[4e-5], type=float,
                         help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
-    parser.add_argument('--wd', type=float, default=1e-6, metavar='WD',
+    parser.add_argument('--wd', type=float, default=3e-6, metavar='WD',
                         help='weight decay (Good 1e-5 and  0.)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
