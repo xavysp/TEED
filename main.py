@@ -26,6 +26,7 @@ from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
 
 IS_LINUX = True if platform.system()=="Linux" else False
+
 def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
                     log_interval_vis, tb_writer, args=None):
 
@@ -73,15 +74,15 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             res_data = []
 
             img = images.cpu().numpy()
-            res_data.append(img[0])
+            res_data.append(img[2])
 
             ed_gt = labels.cpu().numpy()
-            res_data.append(ed_gt[0])
+            res_data.append(ed_gt[2])
 
             # tmp_pred = tmp_preds[2,...]
             for i in range(len(preds_list)):
                 tmp = preds_list[i]
-                tmp = tmp[0]
+                tmp = tmp[2]
                 # print(tmp.shape)
                 tmp = torch.sigmoid(tmp).unsqueeze(dim=0)
                 tmp = tmp.cpu().detach().numpy()
