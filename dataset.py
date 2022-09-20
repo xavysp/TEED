@@ -295,7 +295,6 @@ def dataset_info(dataset_name, is_linux=True):
         }
     return config[dataset_name]
 
-
 class TestDataset(Dataset):
     def __init__(self,
                  data_root,
@@ -337,7 +336,7 @@ class TestDataset(Dataset):
                     f"Test list not provided for dataset: {self.test_data}")
 
             list_name = os.path.join(self.data_root, self.test_list)
-            if self.test_data.upper() in ['BIPED', 'BRIND','UDED']:
+            if self.test_data.upper() in ['BIPED', 'BRIND']:
 
                 with open(list_name) as f:
                     files = json.load(f)
@@ -402,12 +401,30 @@ class TestDataset(Dataset):
     def transform(self, img, gt):
         # gt[gt< 51] = 0 # test without gt discrimination
         if self.test_data == "CLASSIC":
+            img_height = self.img_height
+            img_width = self.img_width
+            print(
+                f"actual size: {img.shape}, target size: {(img_height, img_width,)}")
+            # img = cv2.resize(img, (self.img_width, self.img_height))
+            img = cv2.resize(img, (img_width, img_height))
             gt = None
-        img_h, img_w = img.shape[0],img.shape[1]
-        if img_w<512 or img_h<512:
-            # img = cv2.resize(img,(0,0), fx=1.35,fy=1.35)
-            img = cv2.resize(img,(self.args.test_img_width,self.args.test_img_height))
 
+        # Make images and labels at least 512 by 512
+        elif img.shape[0] < 512 or img.shape[1] < 512:
+            img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
+            gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
+
+        # Make sure images and labels are divisible by 2^4=16
+        elif img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
+            img_width = ((img.shape[1] // 8) + 1) * 8
+            img_height = ((img.shape[0] // 8) + 1) * 8
+            img = cv2.resize(img, (img_width, img_height))
+            gt = cv2.resize(gt, (img_width, img_height))
+        else:
+            img_width = self.args.test_img_width
+            img_height = self.args.test_img_height
+            img = cv2.resize(img, (img_width, img_height))
+            gt = cv2.resize(gt, (img_width, img_height))
         # # For FPS
         # img = cv2.resize(img, (496,320))
         # if self.yita is not None:
@@ -430,7 +447,6 @@ class TestDataset(Dataset):
             gt = torch.from_numpy(np.array([gt])).float()
 
         return img, gt
-
 
 class BipedDataset(Dataset):
     train_modes = ['train', 'test', ]
@@ -686,7 +702,7 @@ class bipbriDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
-        if i_w> 420 and i_h>420: #before np.random.random() > 0.4 bef 420
+        if i_w> 420 and i_h>420: #before np.random.random() > 0.4
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
 
@@ -697,7 +713,7 @@ class bipbriDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 300#300  # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 300#208  # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
@@ -708,11 +724,6 @@ class bipbriDataset(Dataset):
 
         else:
             # New addidings
-            # if img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
-            #     img_width = ((img.shape[1] // 8) + 1) * 8
-            #     img_height = ((img.shape[0] // 8) + 1) * 8
-            #     img = cv2.resize(img, (img_width, img_height))
-            #     gt = cv2.resize(gt, (img_width, img_height))
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
         # # BRIND
