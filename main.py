@@ -285,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='1/1_model.pth',# 37 for biped 60 MDBD
+                        default='3/3_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -443,7 +443,7 @@ def main(args, train_inf):
                                 shuffle=False,
                                 num_workers=args.workers)
     # Testing
-    if_resize_img = False if args.test_data in ['BIPED', 'CID', 'MDBD'] else True
+    if_resize_img = False if args.test_data in ['BIPED', 'CID', 'MDBD','BIPBRI'] else True
     if args.is_testing:
 
         output_dir = os.path.join(args.res_dir, args.train_data+"2"+ args.test_data)
@@ -506,12 +506,12 @@ def main(args, train_inf):
         os.makedirs(output_dir_epoch,exist_ok=True)
         os.makedirs(img_test_dir,exist_ok=True)
         print("**************** Validating the training from the scratch **********")
-        # validate_one_epoch(epoch,
-        #                    dataloader_val,
-        #                    model,
-        #                    device,
-        #                    img_test_dir,
-        #                    arg=args,test_resize=if_resize_img)
+        validate_one_epoch(epoch,
+                           dataloader_val,
+                           model,
+                           device,
+                           img_test_dir,
+                           arg=args,test_resize=if_resize_img)
 
         avg_loss =train_one_epoch(epoch,dataloader_train,
                         model, criterion,

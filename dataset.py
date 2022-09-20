@@ -404,9 +404,9 @@ class TestDataset(Dataset):
         if self.test_data == "CLASSIC":
             gt = None
         img_h, img_w = img.shape[0],img.shape[1]
-        if img_w<450 or img_h<450:
+        if img_w<512 or img_h<512:
             # img = cv2.resize(img,(0,0), fx=1.35,fy=1.35)
-            img = cv2.resize(img,(512,512))
+            img = cv2.resize(img,(self.args.test_img_width,self.args.test_img_height))
 
         # # For FPS
         # img = cv2.resize(img, (496,320))
