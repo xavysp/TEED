@@ -41,7 +41,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
                 'yita': 0.5,
-                'mean': [159.510, 159.451,162.230,137.86]
+                'mean': BIPED_mean
             },
             'UDED': {
                 'img_height': 512,  # 321
