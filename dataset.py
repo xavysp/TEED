@@ -319,7 +319,6 @@ class TestDataset(Dataset):
         self.img_width = img_width
         self.data_index = self._build_index()
 
-        print(f"Test> mean_bgr: {self.mean_bgr}")
 
     def _build_index(self):
         sample_indices = []

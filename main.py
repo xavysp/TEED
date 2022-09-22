@@ -369,6 +369,8 @@ def main(args, train_inf):
 
     print(f"Number of GPU's available: {torch.cuda.device_count()}")
     print(f"Pytorch version: {torch.__version__}")
+    print(f'Trainimage mean: {args.mean_train}')
+    print(f'Test image mean: {args.mean_test}')
 
     # Tensorboard summary writer
 
@@ -456,7 +458,7 @@ def main(args, train_inf):
         # Count parameters:
         num_param = count_parameters(model)
         print('-------------------------------------------------------')
-        print('LDC parameters:')
+        print('TED parameters:')
         print(num_param)
         print('-------------------------------------------------------')
         return
