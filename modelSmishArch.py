@@ -256,8 +256,8 @@ class LDC(nn.Module):
          # supose the image size is 352x352
         # Block 1
         # img_H, img_W = x.shape[2],x.shape[-1]
-        if single_test:
-            x = self.resize_input(x)
+        # if single_test:
+        #     x = self.resize_input(x)
         block_1 = self.block_1(x) # [8,16,176,176]
         block_1_side = self.side_1(block_1) # 16 [8,32,88,88]
 

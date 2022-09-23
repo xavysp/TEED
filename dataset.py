@@ -26,7 +26,7 @@ DATASET_NAMES = [
     'CLASSIC'
 ]  # 8
 
-BIPED_mean = [119.510, 119.451,122.230,137.86]
+BIPED_mean = [114.510, 114.451,117.230,137.86]
 
 def dataset_info(dataset_name, is_linux=True):
     if is_linux:
@@ -414,12 +414,13 @@ class TestDataset(Dataset):
             gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
 
         # Make sure images and labels are divisible by 2^4=16
-        # elif img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
-        #     img_width = ((img.shape[1] // 8) + 1) * 8
-        #     img_height = ((img.shape[0] // 8) + 1) * 8
-        #     img = cv2.resize(img, (img_width, img_height))
-        #     gt = cv2.resize(gt, (img_width, img_height))
-        # else:
+        elif img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
+            img_width = ((img.shape[1] // 8) + 1) * 8
+            img_height = ((img.shape[0] // 8) + 1) * 8
+            img = cv2.resize(img, (img_width, img_height))
+            gt = cv2.resize(gt, (img_width, img_height))
+        else:
+            pass
         #     img_width = self.args.test_img_width
         #     img_height = self.args.test_img_height
         #     img = cv2.resize(img, (img_width, img_height))
