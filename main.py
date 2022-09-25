@@ -54,10 +54,12 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         images = sample_batched['images'].to(device)  # BxCxHxW
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
-
-        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2
+        # tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
+        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
+        # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
-        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss
+        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
+        # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [fused]
         tLoss = loss2+loss1
         optimizer.zero_grad()
         tLoss.backward()
@@ -282,7 +284,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='10/10_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -312,10 +314,10 @@ def parse_args():
                         help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
     parser.add_argument('--wd', type=float, default=5e-6, metavar='WD',
                         help='weight decay (Good 1e-5 and  5e-6)') # Test left= WD 5e-5
-    parser.add_argument('--adjust_lr', default=[3], type=int,
+    parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V5-5 TDC-BIPBRI- augB0 AF=Smish -USNet---noBN  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
+                        default=' V5-5 TDC-BIPBRI- augB0 AF=Smish -USNet---noBN  Just xav init normal CatsLoss2+BDCNloss2 CofusionWDCNOsmish+(return Fmish()) NewImean',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
