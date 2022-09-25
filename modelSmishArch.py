@@ -254,6 +254,7 @@ class LDC(nn.Module):
     def forward(self, x, single_test=False):
         assert x.ndim == 4, x.shape
          # supose the image size is 352x352
+
         # Block 1
         # img_H, img_W = x.shape[2],x.shape[-1]
         # if single_test:
