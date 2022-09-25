@@ -25,8 +25,8 @@ DATASET_NAMES = [
     'UDED', # 14 just for testing
     'CLASSIC'
 ]  # 8
-
-BIPED_mean = [114.510, 114.451,117.230,137.86]
+# [108, 109.451,112.230,137.86]
+BIPED_mean = [103.939,116.779,123.68,137.86]
 
 def dataset_info(dataset_name, is_linux=True):
     if is_linux:
