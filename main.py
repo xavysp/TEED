@@ -55,11 +55,11 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
         # tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
-        # loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
-        loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
+        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
+        # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
-        # loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
-        loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
+        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
+        # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
         tLoss = loss2+loss1
         optimizer.zero_grad()
         tLoss.backward()
@@ -317,7 +317,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V5-9 TDC-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal CatsLoss2+BDCNloss2 CofusionWDCNOsmish+(return Fmish())',
+                        default=' V5-9 TDC-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal BDCNloss2+CatsLoss2 CofusionWDCNOsmish+sum not multi(return Fmish())',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
