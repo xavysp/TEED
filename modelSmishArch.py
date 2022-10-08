@@ -82,7 +82,8 @@ class CoFusionDWC(nn.Module):
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         # return Fmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
-        return Fmish(((attn2 +attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
+        # return Fmish(((attn2 +attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
+        return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish
 
 class _DenseLayer(nn.Sequential):
