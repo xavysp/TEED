@@ -39,10 +39,10 @@ def bdrloss(prediction, label, radius,device='cpu'):
     pred_texture_sum = F.conv2d(prediction * (1-label) * mask, filt, bias=None, stride=1, padding=radius)
 
     # softmax_map = torch.clamp(pred_bdr_sum / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
-    softmax_map = torch.clamp((pred_bdr_sum*pred_texture_sum+1e-10) / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
+    softmax_map = torch.clamp( torch.sigmoid(pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
     #input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
     # cost = -label * torch.log(softmax_map) # old
-    cost = -label * torch.tanh(1+torch.log(softmax_map))
+    cost = label * torch.tanh(1+torch.log(softmax_map))
     cost[label == 0] = 0
 
     return torch.sum(cost.float().mean((1, 2, 3)))
@@ -98,8 +98,8 @@ def cats_loss(prediction, label, l_weight=[0.,0.], device='cpu'):
     cost = torch.sum(cost.float().mean((1, 2, 3)))  # by me
     label_w = (label != 0).float()
     textcost = textureloss(prediction.float(), label_w.float(), mask_radius=4, device=device)
-    # bdrcost = bdrloss(prediction.float(), label_w.float(), radius=4, device=device)
+    bdrcost = bdrloss(prediction.float(), label_w.float(), radius=4, device=device)
 
-    # return cost + bdr_factor * bdrcost + tex_factor * textcost
+    return cost + bdr_factor * bdrcost + tex_factor * textcost
     # return cost + bdr_factor * bdrcost
-    return cost + tex_factor * textcost
+    # return cost + tex_factor * textcost
