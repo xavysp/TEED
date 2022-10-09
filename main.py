@@ -376,6 +376,7 @@ def main(args, train_inf):
 
     # Tensorboard summary writer
 
+    torch.autograd.set_detect_anomaly(True)
     tb_writer = None
     training_dir = os.path.join(args.output_dir,args.train_data)
     os.makedirs(training_dir,exist_ok=True)
