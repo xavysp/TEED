@@ -67,8 +67,8 @@ def textureloss(prediction, label, mask_radius, device='cpu'):
 
     # loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10)) # old
     # input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
-    # loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10)) # old
-    loss = -torch.log(torch.clamp(torch.sigmoid(pred_sums), 1e-10, 1-1e-10))
+    loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10)) # old
+    # loss = -torch.log(torch.clamp(torch.sigmoid(pred_sums), 1e-10, 1-1e-10))
     loss[mask == 0] = 0
 
     return torch.sum(loss.float().mean((1, 2, 3)))
