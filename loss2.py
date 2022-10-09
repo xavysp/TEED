@@ -42,7 +42,7 @@ def bdrloss(prediction, label, radius,device='cpu'):
     softmax_map = torch.clamp(torch.sigmoid(pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
     #input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
     # cost = -label * torch.log(softmax_map) # old
-    cost = -label * torch.log(1+softmax_map)
+    cost = label * torch.log(1+softmax_map)
     cost[label == 0] = 0
 
     return torch.sum(cost.float().mean((1, 2, 3)))
