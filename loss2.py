@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+from utils.AF.Fsmish import smish as Fsmish
 
 
 def bdcn_loss2(inputs, targets, l_weight=1.1):
@@ -38,11 +39,11 @@ def bdrloss(prediction, label, radius,device='cpu'):
     mask[label == 1] = 0
     pred_texture_sum = F.conv2d(prediction * (1-label) * mask, filt, bias=None, stride=1, padding=radius)
 
-    # softmax_map = torch.clamp(pred_bdr_sum / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
-    softmax_map = torch.clamp(torch.sigmoid(pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
+    softmax_map = torch.clamp(pred_bdr_sum / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
+    # softmax_map = torch.clamp(Fsmish(pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
     #input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
     # cost = -label * torch.log(softmax_map) # old
-    cost = label * torch.log(1+softmax_map)
+    cost = label * torch.log(1 + torch.sigmoid(softmax_map))
     cost[label == 0] = 0
 
     return torch.sum(cost.float().mean((1, 2, 3)))
