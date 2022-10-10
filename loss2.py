@@ -39,11 +39,8 @@ def bdrloss(prediction, label, radius,device='cpu'):
     mask[label == 1] = 0
     pred_texture_sum = F.conv2d(prediction * (1-label) * mask, filt, bias=None, stride=1, padding=radius)
 
-    softmax_map = torch.clamp(pred_bdr_sum / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
-    # softmax_map = torch.clamp(Fsmish(pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)# old
-    #input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
-    # cost = -label * torch.log(softmax_map) # old
-    cost = label * torch.sigmoid(softmax_map)
+    softmax_map = torch.clamp(pred_bdr_sum / (pred_texture_sum + pred_bdr_sum + 1e-10), 1e-10, 1 - 1e-10)
+    cost = -label * torch.log(softmax_map)
     cost[label == 0] = 0
 
     return torch.sum(cost.float().mean((1, 2, 3)))
@@ -66,10 +63,7 @@ def textureloss(prediction, label, mask_radius, device='cpu'):
 
     mask = 1 - torch.gt(label_sums, 0).float()
 
-    # loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10)) # old
-    # input * torch.tanh(torch.log(1 + torch.sigmoid(input)))
-    loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10)) # old
-    # loss = F.tanh(-torch.log(torch.clamp(pred_sums, 1e-10, 1-1e-10)))
+    loss = -torch.log(torch.clamp(1-pred_sums/9, 1e-10, 1-1e-10))
     loss[mask == 0] = 0
 
     return torch.sum(loss.float().mean((1, 2, 3)))
