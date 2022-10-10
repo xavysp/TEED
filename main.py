@@ -284,7 +284,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='0/0_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -376,7 +376,7 @@ def main(args, train_inf):
 
     # Tensorboard summary writer
 
-    torch.autograd.set_detect_anomaly(True)
+    # torch.autograd.set_detect_anomaly(True)
     tb_writer = None
     training_dir = os.path.join(args.output_dir,args.train_data)
     os.makedirs(training_dir,exist_ok=True)
