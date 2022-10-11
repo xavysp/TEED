@@ -41,7 +41,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
     # Put model in training mode
     model.train()
 
-    l_weight0 = [0.7,0.7,1.1,1.3] # for bdcn loss2-B4
+    l_weight0 = [0.7,1.1,1.1,1.3] # for bdcn loss2-B4
     # l_weight0 = [0.7, 0.7, 1.1, 1.1, 0.3, 0.3, 1.3] # for bdcn loss2-B6
 
     # l_weight = [[0.05, 2.], [0.05, 2.], [0.05, 2.],
@@ -54,13 +54,13 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         images = sample_batched['images'].to(device)  # BxCxHxW
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
-        # tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
-        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
+        tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
+        # loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
         # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
-        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
+        # loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
         # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
-        tLoss = loss2+loss1
+        # tLoss = loss2+loss1
         optimizer.zero_grad()
         tLoss.backward()
         optimizer.step()
@@ -224,7 +224,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=True,
                         help='Choose a dataset for testing: 0 - 8')
     # UDED=14
     # ----------- test -------0--
@@ -310,14 +310,14 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=5e-4, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[1e-5], type=float,
+    parser.add_argument('--lrs', default=[5e-5], type=float,
                         help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
     parser.add_argument('--wd', type=float, default=0., metavar='WD',
                         help='weight decay (Good 1e-5 and  5e-6)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V5-9 TDC-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2+CatsLoss3(3loss) +CofusionWDCN+sum+1smish',
+                        default=' V5-9 TDC-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN+sum+1smish',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
