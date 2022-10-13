@@ -41,14 +41,14 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
     # Put model in training mode
     model.train()
 
-    l_weight0 = [1.1,0.7,0.4,1.3] # for bdcn loss2-B4
+    l_weight0 = [1.1,0.7,1.1,1.3] # for bdcn loss2-B4
     # l_weight0 = [0.7, 0.7, 1.1, 1.1, 0.3, 0.3, 1.3] # for bdcn loss2-B6
 
     # l_weight = [[0.05, 2.], [0.05, 2.], [0.05, 2.],
     #             [0.1, 1.], [0.1, 1.], [0.1, 1.],
     #             [0.01, 4.]]  # for cats loss
     l_weight = [[0.05, 2.], [0.05, 2.], [0.1, 1.],
-                [0.01, 1.]]  # for cats loss [0.01, 4.]
+                [0.01, 4.]]  # for cats loss [0.01, 4.]
     loss_avg =[]
     for batch_id, sample_batched in enumerate(dataloader):
         images = sample_batched['images'].to(device)  # BxCxHxW
