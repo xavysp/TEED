@@ -33,7 +33,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
 
     imgs_res_folder = os.path.join(args.output_dir, 'current_res')
     os.makedirs(imgs_res_folder,exist_ok=True)
-
+    show_log = args.show_log
     if isinstance(criterions, list):
         criterion1, criterion2 = criterions
     else:
@@ -70,7 +70,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             tmp_loss = np.array(loss_avg).mean()
             tb_writer.add_scalar('loss', tmp_loss,epoch)
 
-        if batch_id % (10) == 0:
+        if batch_id % (show_log) == 0:
             print(time.ctime(), 'Epoch: {0} Sample {1}/{2} Loss: {3}'
                   .format(epoch, batch_id, len(dataloader), format(tLoss.item(),'.4f')))
         if batch_id % log_interval_vis == 0:
@@ -301,9 +301,9 @@ def parse_args():
                         help='Result directory')
     parser.add_argument('--log_interval_vis',
                         type=int,
-                        default=100,# 100
+                        default=200,# 100
                         help='The NO B to wait before printing test predictions. 200')
-
+    parser.add_argument('--show_log', type=int, default=20, help='display logs')
     parser.add_argument('--epochs',
                         type=int,
                         default=15,

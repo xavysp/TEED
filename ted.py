@@ -207,19 +207,19 @@ class TED(nn.Module):
         super(TED, self).__init__()
         self.block_1 = DoubleConvBlock(3, 16, 16, stride=2,)
         self.block_2 = DoubleConvBlock(16, 32, use_act=False)
-        self.dblock_3 = _DenseBlock(1, 32, 32) # [128,256,100,100] before (2, 32, 64)
+        self.dblock_3 = _DenseBlock(1, 32, 48) # [128,256,100,100] before (2, 32, 64)
 
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
         # left skip connections, figure in Journal
         self.side_1 = SingleConvBlock(16, 32, 2)
 
-        self.pre_dense_3 = SingleConvBlock(32, 32, 1)
+        self.pre_dense_3 = SingleConvBlock(32, 48, 1)  # before (32, 64, 1)
 
         # USNet
         self.up_block_1 = UpConvBlock(16, 1)
         self.up_block_2 = UpConvBlock(32, 1)
-        self.up_block_3 = UpConvBlock(32, 2)
+        self.up_block_3 = UpConvBlock(48, 2) # (32, 64, 1)
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
