@@ -75,18 +75,18 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.smish(self.PSconv1(self.DWconv1(self.smish(x)))) # [8, 32, 352, 352] self.smish(
-        # attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
+        # attn = self.smish(self.PSconv1(self.DWconv1(self.smish(x)))) # [8, 32, 352, 352] self.smish(
+        attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
         # attn = self.smish(self.PSconv1(self.DWconv1(x)))
 
-        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
         # attn2 = self.PSconv1(self.DWconv2(self.smish(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        attn2 = self.smish(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        # attn2 = self.smish(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         # return Fmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
-        # return Fmish(((attn2 +attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
-        return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
+        # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish
 
 class _DenseLayer(nn.Sequential):
