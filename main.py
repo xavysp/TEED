@@ -19,7 +19,8 @@ from loss2 import *
 # from model import LDC # LDC-B3 modified AF mish
 # from modelArch import LDC # LDC-B3 modified smish
 # from modelRelu import LDC # LDC-B3 modified
-from modelSmishArch import LDC # LDC-B3 modified V10
+# from modelSmishArch import LDC # LDC-B3 modified V10
+from ted import TED # LDC-B3 modified V10
 # from modelV10B2 import LDC # LDC-B3 modified V10 B2
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
@@ -284,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='7/7_model.pth',# 37 for biped 60 MDBD
+                        default='6/6_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -317,7 +318,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V5-9 TDC-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish',
+                        default=' V5-9 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -401,7 +402,7 @@ def main(args, train_inf):
                           else 'cuda')
 
     # Instantiate model and move it to the computing device
-    model = LDC().to(device)
+    model = TED().to(device)
     # model = nn.DataParallel(model)
     ini_epoch =0
     if not args.is_testing:
