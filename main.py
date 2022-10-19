@@ -225,7 +225,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=0,
                         help='Choose a dataset for testing: 0 - 8')
     # UDED=14
     # ----------- test -------0--
@@ -234,7 +234,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing = False
+    is_testing = True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -285,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='6/6_model.pth',# 37 for biped 60 MDBD
+                        default='10/10_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -311,9 +311,9 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=5e-4, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[1e-5], type=float,
+    parser.add_argument('--lrs', default=[5e-5], type=float,
                         help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
-    parser.add_argument('--wd', type=float, default=5e-5, metavar='WD',
+    parser.add_argument('--wd', type=float, default=0., metavar='WD',
                         help='weight decay (Good 1e-5 and  5e-6)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [6,9,19]
