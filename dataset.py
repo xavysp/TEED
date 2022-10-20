@@ -64,7 +64,9 @@ def dataset_info(dataset_name, is_linux=True):
             'BRIND': {
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
-                'train_list': 'train_pair.lst',
+                'train_list': 'train_pair_all.lst',
+                # all train_pair_all.lst
+                # less train_pair.lst
                 'test_list': 'test_pair.lst',
                 'data_dir': '/root/workspace/datasets/BRIND',  # mean_rgb
                 'yita': 0.5,
@@ -206,7 +208,9 @@ def dataset_info(dataset_name, is_linux=True):
             'BRIND': {
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
-                'train_list': 'train_pair2.lst',
+                'train_list': 'train_pair_all.lst',
+                # all train_pair_all.lst
+                # less train_pair.lst
                 'test_list': 'test_pair.lst',
                 'data_dir': 'C:/Users/xavysp/dataset/BRIND',  # mean_rgb
                 'yita': 0.5,
