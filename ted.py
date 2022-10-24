@@ -33,11 +33,29 @@ def weight_init(m):
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
 
-
 class CoFusion(nn.Module):
+    # from LDC
 
     def __init__(self, in_ch, out_ch):
         super(CoFusion, self).__init__()
+        self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
+                               stride=1, padding=1) # before 64
+        self.conv3= nn.Conv2d(32, out_ch, kernel_size=3,
+                               stride=1, padding=1)# before 64  instead of 32
+        self.relu = nn.ReLU()
+        self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
+
+    def forward(self, x):
+        # fusecat = torch.cat(x, dim=1)
+        attn = self.relu(self.norm_layer1(self.conv1(x)))
+        attn = F.softmax(self.conv3(attn), dim=1)
+        return ((x * attn).sum(1)).unsqueeze(1)
+
+
+class CoFusion2(nn.Module):
+
+    def __init__(self, in_ch, out_ch):
+        super(CoFusion2, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
                                stride=1, padding=1) # before 64
         # self.conv2 = nn.Conv2d(32, 32, kernel_size=3,
@@ -80,8 +98,8 @@ class CoFusionDWC(nn.Module):
         # attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
         # attn = self.smish(self.PSconv1(self.DWconv1(x)))
 
-        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        # attn2 = self.PSconv1(self.DWconv2(self.smish(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.smish(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
         # attn2 = self.smish(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)

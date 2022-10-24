@@ -237,7 +237,7 @@ def parse_args():
     is_testing = False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
-    TRAIN_DATA = DATASET_NAMES[6] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
+    TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
     train_inf = dataset_info(TRAIN_DATA, is_linux=IS_LINUX)
     train_dir = train_inf['data_dir']
 
@@ -309,14 +309,14 @@ def parse_args():
                         default=15,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=5e-4, type=float,
+    parser.add_argument('--lr', default=1e-4, type=float,
                         help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[5e-5], type=float,
-                        help='LR for epochs') #  [0.0007, 5e-05, 1e-05]
+    parser.add_argument('--lrs', default=None, type=float,
+                        help='LR for epochs') #  [5e-5] [0.0007, 5e-05, 1e-05]
     parser.add_argument('--wd', type=float, default=1e-5, metavar='WD',
                         help='weight decay (Good 1e-5  1e-7 and  5e-6)') # Test left= WD 5e-5
-    parser.add_argument('--adjust_lr', default=[4], type=int,
-                        help='Learning rate step size.')  # [6,9,19]
+    parser.add_argument('--adjust_lr', default=None, type=int,
+                        help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
                         default=' V5-9 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish',
                         type=str,
