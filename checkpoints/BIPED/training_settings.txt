@@ -1,1 +1,1 @@
-[' V5-9 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish RL= 0.0001 WD= 1e-05 image size = 352 adjust LR=None LRs= None Loss Function= CAST-loss2.py Tue Oct 25 01:27:08 2022']
+[' V5-9 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish RL= 0.0008 WD= 1e-06 image size = 352 adjust LR=[4] LRs= [8e-05] Loss Function= CAST-loss2.py Tue Oct 25 06:37:59 2022']
