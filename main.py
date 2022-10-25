@@ -97,7 +97,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
             vis_imgs = cv2.resize(vis_imgs,
                                   (int(vis_imgs.shape[1]*0.8), int(vis_imgs.shape[0]*0.8)))
             img_test = 'Epoch: {0} Sample {1}/{2} Loss: {3}' \
-                .format(epoch, batch_id, len(dataloader), tLoss.item())
+                .format(epoch, batch_id, len(dataloader), round(tLoss.item(),4))
 
             BLACK = (0, 0, 255)
             font = cv2.FONT_HERSHEY_SIMPLEX
@@ -285,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='7/7_model.pth',# 37 for biped 60 MDBD
+                        default='4/4_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -309,11 +309,11 @@ def parse_args():
                         default=15,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=2e-4, type=float,
+    parser.add_argument('--lr', default=5e-5, type=float,
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=None, type=float,
                         help='LR for epochs') #  [5e-5] [0.0007, 5e-05, 1e-05]
-    parser.add_argument('--wd', type=float, default=1e-7, metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-6, metavar='WD',
                         help='weight decay (Good 1e-5  1e-7 and  5e-6)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=None, type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
