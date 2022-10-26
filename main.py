@@ -234,7 +234,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing = False
+    is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -313,12 +313,12 @@ def parse_args():
                         help='Initial learning rate. =5e-5')
     parser.add_argument('--lrs', default=[8e-5], type=float,
                         help='LR for epochs') #  [5e-5] [0.0007, 5e-05, 1e-05]
-    parser.add_argument('--wd', type=float, default=0., metavar='WD',
+    parser.add_argument('--wd', type=float, default=1e-8, metavar='WD',
                         help='weight decay (Good 1e-5  1e-7 and  5e-6)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V7 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish',
+                        default=' V8 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2 +CofusionWDCN-sum +1smish',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
