@@ -238,9 +238,9 @@ def visualize_result(imgs_list, arg):
 if __name__ == '__main__':
 
     img_base_dir='tmp_edge'
-    gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
-    # gt_base_dir='C:/Users/xavysp/dataset/BRIND/test_edges'
-    vers = 'LDC last BIPED'
+    # gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
+    gt_base_dir='C:/Users/xavysp/dataset/UDED/gt'
+    vers = 'TEED model in UDED'
     list_img = os.listdir(img_base_dir)
     list_gt = os.listdir(gt_base_dir)
     mse_list=[]
