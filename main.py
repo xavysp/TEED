@@ -225,7 +225,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=14,
                         help='Choose a dataset for testing: 0 - 8')
     # UDED=14
     # ----------- test -------0--
@@ -234,7 +234,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =False
+    is_testing =True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -318,7 +318,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14-1 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2+cats2loss +CofusionLDC',
+                        default=' V14 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2+cats2loss +CofusionLDC',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',

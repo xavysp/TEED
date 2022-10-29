@@ -242,9 +242,9 @@ class TED(nn.Module):
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
-        # self.block_cat = CoFusionDWC(3,3)# cats fusion modified
+        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
         # self.block_cat = CoFusion2(3,3)# cats fusion method
-        self.block_cat = CoFusion(3,3)# cats fusion method ori
+        # self.block_cat = CoFusion(3,3)# cats fusion method ori
 
 
         self.apply(weight_init)
