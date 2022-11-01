@@ -53,7 +53,7 @@ class CoFusion(nn.Module):
 
 
 class CoFusion2(nn.Module):
-
+        # TEDv14-2
     def __init__(self, in_ch, out_ch):
         super(CoFusion2, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
@@ -242,8 +242,8 @@ class TED(nn.Module):
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
-        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
-        # self.block_cat = CoFusion2(3,3)# cats fusion method
+        # self.block_cat = CoFusionDWC(3,3)# cats fusion modified
+        self.block_cat = CoFusion2(3,3)# cats fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method ori
 
 
