@@ -102,11 +102,11 @@ class CoFusionDWC(nn.Module):
         attn2 = self.PSconv1(self.DWconv2(self.smish(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
         # attn2 = self.smish(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
 
-        # return ((fusecat * attn).sum(1)).unsqueeze(1)
-        # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
+        # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
+        return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
         # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
-        return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
+        # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
