@@ -104,9 +104,9 @@ class CoFusionDWC(nn.Module):
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
-        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #Fsmish Ori mine
+        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
-        # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish
+        return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
@@ -242,8 +242,8 @@ class TED(nn.Module):
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
-        # self.block_cat = CoFusionDWC(3,3)# cats fusion modified
-        self.block_cat = CoFusion2(3,3)# cats fusion method
+        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
+        # self.block_cat = CoFusion2(3,3)# cats fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method ori
 
 
