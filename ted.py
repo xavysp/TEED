@@ -53,7 +53,7 @@ class CoFusion(nn.Module):
 
 
 class CoFusion2(nn.Module):
-        # TEDv14-2
+        # TEDv14-3
     def __init__(self, in_ch, out_ch):
         super(CoFusion2, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
@@ -69,9 +69,9 @@ class CoFusion2(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.smish(self.conv1(x))
+        attn = self.conv1(self.smish(x))
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn = Fsmish(self.conv3(attn)) # before , )dim=1)
+        attn = self.conv3(self.smish(attn)) # before , )dim=1)
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return ((x * attn).sum(1)).unsqueeze(1)

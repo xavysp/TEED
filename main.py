@@ -306,7 +306,7 @@ def parse_args():
     parser.add_argument('--show_log', type=int, default=20, help='display logs')
     parser.add_argument('--epochs',
                         type=int,
-                        default=15,
+                        default=7,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
@@ -318,7 +318,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14-2 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2+cats2loss +CofusionLDC',
+                        default=' V14-3 TED-BIPED augB0 AF=Smish -USNet---noBN  Just xav init normal bdcnLoss2+cats2loss +Cofusion2',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
