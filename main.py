@@ -335,11 +335,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=256,
+                        default=300,
                         help='Image width for training.') # BIPED 352 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=256,
+                        default=300,
                         help='Image height for training.') # BIPED 480 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],
