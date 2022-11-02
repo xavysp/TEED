@@ -318,7 +318,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14p2 TED-BIPED BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
+                        default=' V14p3 TED-BIPED BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -335,11 +335,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=288,
+                        default=256,
                         help='Image width for training.') # BIPED 352 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=288,
+                        default=256,
                         help='Image height for training.') # BIPED 480 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],
