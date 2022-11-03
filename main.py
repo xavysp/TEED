@@ -309,16 +309,16 @@ def parse_args():
                         default=8,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=1e-3, type=float,
-                        help='Initial learning rate. =5e-5')
-    parser.add_argument('--lrs', default=[7e-5], type=float,
-                        help='LR for epochs') #  [5e-5] [0.0007, 5e-05, 1e-05]
-    parser.add_argument('--wd', type=float, default=1e-4, metavar='WD',
-                        help='weight decay (Good 1e-4  1e-5 and  5e-6)') # Test left= WD 5e-5
+    parser.add_argument('--lr', default=5e-5, type=float,
+                        help='Initial learning rate. =5e-5') # 1e-3
+    parser.add_argument('--lrs', default=[4e-5], type=float,
+                        help='LR for epochs') #  [7e-5]
+    parser.add_argument('--wd', type=float, default=0., metavar='WD',
+                        help='weight decay (Good 5e-4  1e-5 and  5e-6)') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14pp3-2 TED-BIPBRI BRIND+BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
+                        default=' V14pp3-3 TED-BIPBRI BRIND+BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
