@@ -36,8 +36,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
                 'train_list': 'train_pair0.lst',
-                # 'train_list2': 'train_pair_all.lst', # brind ori
-                'train_list2': 'train_pair.lst', # for brind mine
+                'train_list2': 'train_pair_all.lst', # brind ori
+                # 'train_list2': 'train_pair.lst', # for brind mine
                 'test_list': None,
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
@@ -197,7 +197,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'test_list': 'test_pair.lst',
                 'data_dir': 'C:/Users/xavysp/dataset/UDED',  # mean_rgb
                 'yita': 0.5,
-                'mean': [93.939,106.779,113.68,137.86] # [104.007, 116.669, 122.679, 137.86]
+                'mean': [183.939,193.779,203.68,137.86] # [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {'img_height': 480,  # 321
                      'img_width': 480,  # 481
@@ -438,6 +438,7 @@ class TestDataset(Dataset):
         img = np.array(img, dtype=np.float32)
         # if self.rgb:
         #     img = img[:, :, ::-1]  # RGB->BGR
+        # print(self.mean_bgr)
         img -= self.mean_bgr
         # img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
         #     0.225, 0.224,0.229] # New normalization
@@ -737,12 +738,12 @@ class bipbriDataset(Dataset):
             # New addidings
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # BRIND
-        gt[gt > 0.1] +=0.2#0.4
-        gt = np.clip(gt, 0., 1.)
-        # # for BIPED
-        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        # gt = np.clip(gt, 0., 1.)  # BIPED
+        # # BRIND
+        # gt[gt > 0.1] +=0.2#0.4
+        # gt = np.clip(gt, 0., 1.)
+        # for BIPED
+        gt[gt > 0.2] += 0.6  # 0.5 for BIPED
+        gt = np.clip(gt, 0., 1.)  # BIPED
 
 
         img = img.transpose((2, 0, 1))
