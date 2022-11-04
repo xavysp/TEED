@@ -285,7 +285,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='7/7_model.pth',# 37 for biped 60 MDBD
+                        default='4/4_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -318,7 +318,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14pp5 TED-BIPBRI BRIND+BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
+                        default=' V14pp6 TED-BIPBRI BRIND+BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -335,11 +335,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=320,
+                        default=352,
                         help='Image width for training.') # BIPED 352/300 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=320,
+                        default=352,
                         help='Image height for training.') # BIPED 352/300 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],
