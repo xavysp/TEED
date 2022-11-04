@@ -51,8 +51,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'test_list': 'test_pair.lst',
                 'data_dir': '/root/workspace/datasets/UDED',  # mean_rgb
                 'yita': 0.5,
-                'mean': BIPED_mean # [104.007, 116.669, 122.679, 137.86]
-            },
+                'mean': [98.939,116.779,123.68,137.86]# [104.007, 116.669, 122.679, 137.86]
+            }, #[98.939,111.779,117.68,137.86]
             'BSDS': {
                 'img_height': 512, #321
                 'img_width': 512, #481
@@ -197,7 +197,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'test_list': 'test_pair.lst',
                 'data_dir': 'C:/Users/xavysp/dataset/UDED',  # mean_rgb
                 'yita': 0.5,
-                'mean': BIPED_mean # [104.007, 116.669, 122.679, 137.86]
+                'mean': [93.939,106.779,113.68,137.86] # [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {'img_height': 480,  # 321
                      'img_width': 480,  # 481
@@ -438,9 +438,9 @@ class TestDataset(Dataset):
         img = np.array(img, dtype=np.float32)
         # if self.rgb:
         #     img = img[:, :, ::-1]  # RGB->BGR
-        # img -= self.mean_bgr
-        img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
-            0.225, 0.224,0.229] # New normalization
+        img -= self.mean_bgr
+        # img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
+        #     0.225, 0.224,0.229] # New normalization
         img = img.transpose((2, 0, 1))
         img = torch.from_numpy(img.copy()).float()
 
@@ -697,9 +697,9 @@ class bipbriDataset(Dataset):
         gt /= 255.  # for LDC input and BDCN
 
         img = np.array(img, dtype=np.float32)
-        # img -= self.mean_bgr
-        img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
-            0.225, 0.224,0.229] # New normalization
+        img -= self.mean_bgr
+        # img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
+        #     0.225, 0.224,0.229] # New normalization
 
         i_h, i_w, _ = img.shape
         #  400 for BIPEd and 352 for BSDS check with 384
@@ -737,12 +737,12 @@ class bipbriDataset(Dataset):
             # New addidings
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # # BRIND
-        # gt[gt > 0.1] +=0.2#0.4
-        # gt = np.clip(gt, 0., 1.)
-        # for BIPED
-        gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        gt = np.clip(gt, 0., 1.)  # BIPED
+        # BRIND
+        gt[gt > 0.1] +=0.2#0.4
+        gt = np.clip(gt, 0., 1.)
+        # # for BIPED
+        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED
+        # gt = np.clip(gt, 0., 1.)  # BIPED
 
 
         img = img.transpose((2, 0, 1))
