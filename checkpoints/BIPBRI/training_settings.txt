@@ -1,1 +1,1 @@
-[' V14pp63 TED-BIPBRIall BRIND+BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum RL= 0.001 WD= 0.0005 image size = 352 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Fri Nov  4 19:19:40 2022']
+[' V14pp64 TED-BIPBRI mine BIPED-trainingdataLoaderSetting AF=Smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC3Smish last sum RL= 0.001 WD= 0.0005 image size = 272 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Sat Nov  5 00:03:40 2022']
