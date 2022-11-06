@@ -314,7 +314,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V15-4 TED-BIPBRIall BIRND+BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC1Smish last sum',
+                        default=' V15-5 TED-BIPBRIall BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC1Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
