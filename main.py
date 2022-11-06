@@ -221,7 +221,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,
+                        default=14,
                         help='Choose a dataset for testing: 0 - 8')
     # UDED=14
     # ----------- test -------0--
@@ -305,7 +305,7 @@ def parse_args():
                         default=8,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
-    parser.add_argument('--lr', default=1e-3, type=float,
+    parser.add_argument('--lr', default=5e-4, type=float,
                         help='Initial learning rate. =5e-5') # 1e-3
     parser.add_argument('--lrs', default=[5e-5], type=float,
                         help='LR for epochs') #  [7e-5]
@@ -314,7 +314,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V15-5 TED-BIPBRIall BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC1Smish last sum',
+                        default=' V15-6 TED-BIPBRI BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC1Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -331,11 +331,11 @@ def parse_args():
                         help='Use Tensorboard for logging.'),
     parser.add_argument('--img_width',
                         type=int,
-                        default=288,
+                        default=352,
                         help='Image width for training.') # BIPED 352/300 BRIND 256 MDBD 480
     parser.add_argument('--img_height',
                         type=int,
-                        default=288,
+                        default=352,
                         help='Image height for training.') # BIPED 352/300 BSDS 352/320
     parser.add_argument('--channel_swap',
                         default=[2, 1, 0],

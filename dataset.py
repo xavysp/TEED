@@ -36,8 +36,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
                 'train_list': 'train_pair0.lst',
-                'train_list2': 'train_pair_all.lst', # brind ori
-                # 'train_list2': 'train_pair.lst', # for brind mine
+                # 'train_list2': 'train_pair_all.lst', # brind ori
+                'train_list2': 'train_pair.lst', # for brind mine
                 'test_list': None,
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
@@ -725,7 +725,7 @@ class bipbriDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 256#300  # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 300#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
