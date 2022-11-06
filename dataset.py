@@ -725,7 +725,7 @@ class bipbriDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 300#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 256#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
