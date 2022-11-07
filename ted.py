@@ -98,8 +98,8 @@ class CoFusionDWC(nn.Module):
         # attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
         # attn = self.AF(self.PSconv1(self.DWconv1(x)))
 
-        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        # attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
         # attn2 = self.AF(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
