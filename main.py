@@ -97,7 +97,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
 
             BLACK = (0, 0, 255)
             font = cv2.FONT_HERSHEY_SIMPLEX
-            font_size = 0.8
+            font_size = 0.9
             font_color = BLACK
             font_thickness = 2
             x, y = 30, 30
@@ -281,7 +281,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='4/4_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -314,7 +314,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default=' V14-1-288 TED-BIPED BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC2Smish last sum',
+                        default=' V14-2-288 TED-BIPED BRIND+BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +CofusionDWC2Smish last sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
