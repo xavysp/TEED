@@ -122,7 +122,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 720, #720 # 1088
                 'img_width': 1280, # 1280 5 1920
                 'test_list': 'test_pair.lst',
-                'train_list': 'train_pair0.lst',
+                # 'train_list': 'train_pair0.lst', # Base augmentation
+                'train_list': 'train_pairB5.lst', # Last augmentation
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':BIPED_mean
@@ -254,6 +255,7 @@ def dataset_info(dataset_name, is_linux=True):
                       'img_width': 1280,  # 1280
                       'test_list': 'test_pair.lst',
                       'train_list': 'train_rgb.lst',
+                      # 'train_list': 'train_rgb.lst',
                       'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
                       'yita': 0.5,
                       'mean':BIPED_mean},
