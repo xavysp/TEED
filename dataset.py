@@ -51,7 +51,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'test_list': 'test_pair.lst',
                 'data_dir': '/root/workspace/datasets/UDED',  # mean_rgb
                 'yita': 0.5,
-                'mean': [98.939,116.779,123.68,137.86]# [104.007, 116.669, 122.679, 137.86]
+                'mean': [104.007, 116.669, 122.679, 137.86]# [104.007, 116.669, 122.679, 137.86]
             }, #[98.939,111.779,117.68,137.86]
             'BSDS': {
                 'img_height': 512, #321
@@ -197,7 +197,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'test_list': 'test_pair.lst',
                 'data_dir': 'C:/Users/xavysp/dataset/UDED',  # mean_rgb
                 'yita': 0.5,
-                'mean':BIPED_mean # [183.939,196.779,203.68,137.86] # [104.007, 116.669, 122.679, 137.86]
+                'mean':[104.007, 116.669, 122.679, 137.86] # [183.939,196.779,203.68,137.86] # [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {'img_height': 480,  # 321
                      'img_width': 480,  # 481
