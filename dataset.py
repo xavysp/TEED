@@ -123,8 +123,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_width': 1280, # 1280 5 1920
                 'test_list': 'test_pair.lst',
                 # 'train_list': 'train_pair0.lst', # Base augmentation
-                'train_list': 'train_pairB3.lst', # another augmentation
-                # 'train_list': 'train_pairB5.lst', # Last augmentation
+                # 'train_list': 'train_pairB3.lst', # another augmentation
+                'train_list': 'train_pairB5.lst', # Last augmentation
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':BIPED_mean
@@ -495,51 +495,51 @@ class BipedDataset(Dataset):
 
         data_root = os.path.abspath(self.data_root)
         sample_indices = []
-        if self.arg.train_data.lower() == 'biped':
+        # if self.arg.train_data.lower() == 'biped':
+        #
+        #     images_path = os.path.join(data_root,
+        #                                'edges/imgs',
+        #                                self.train_mode,
+        #                                self.dataset_type,
+        #                                self.data_type)
+        #     labels_path = os.path.join(data_root,
+        #                                'edges/edge_maps',
+        #                                self.train_mode,
+        #                                self.dataset_type,
+        #                                self.data_type)
+        #
+        #     for directory_name in os.listdir(images_path):
+        #         image_directories = os.path.join(images_path, directory_name)
+        #         for file_name_ext in os.listdir(image_directories):
+        #             file_name = os.path.splitext(file_name_ext)[0]
+        #             sample_indices.append(
+        #                 (os.path.join(images_path, directory_name, file_name + '.jpg'),
+        #                  os.path.join(labels_path, directory_name, file_name + '.png'),)
+        #             )
+        # else:
+        file_path = os.path.join(data_root, self.arg.train_list)
+        if self.arg.train_data.lower() == 'bsds':
 
-            images_path = os.path.join(data_root,
-                                       'edges/imgs',
-                                       self.train_mode,
-                                       self.dataset_type,
-                                       self.data_type)
-            labels_path = os.path.join(data_root,
-                                       'edges/edge_maps',
-                                       self.train_mode,
-                                       self.dataset_type,
-                                       self.data_type)
+            with open(file_path, 'r') as f:
+                files = f.readlines()
+            files = [line.strip() for line in files]
 
-            for directory_name in os.listdir(images_path):
-                image_directories = os.path.join(images_path, directory_name)
-                for file_name_ext in os.listdir(image_directories):
-                    file_name = os.path.splitext(file_name_ext)[0]
-                    sample_indices.append(
-                        (os.path.join(images_path, directory_name, file_name + '.jpg'),
-                         os.path.join(labels_path, directory_name, file_name + '.png'),)
-                    )
+            pairs = [line.split() for line in files]
+            for pair in pairs:
+                tmp_img = pair[0]
+                tmp_gt = pair[1]
+                sample_indices.append(
+                    (os.path.join(data_root, tmp_img),
+                     os.path.join(data_root, tmp_gt),))
         else:
-            file_path = os.path.join(data_root, self.arg.train_list)
-            if self.arg.train_data.lower() == 'bsds':
-
-                with open(file_path, 'r') as f:
-                    files = f.readlines()
-                files = [line.strip() for line in files]
-
-                pairs = [line.split() for line in files]
-                for pair in pairs:
-                    tmp_img = pair[0]
-                    tmp_gt = pair[1]
-                    sample_indices.append(
-                        (os.path.join(data_root, tmp_img),
-                         os.path.join(data_root, tmp_gt),))
-            else:
-                with open(file_path) as f:
-                    files = json.load(f)
-                for pair in files:
-                    tmp_img = pair[0]
-                    tmp_gt = pair[1]
-                    sample_indices.append(
-                        (os.path.join(data_root, tmp_img),
-                         os.path.join(data_root, tmp_gt),))
+            with open(file_path) as f:
+                files = json.load(f)
+            for pair in files:
+                tmp_img = pair[0]
+                tmp_gt = pair[1]
+                sample_indices.append(
+                    (os.path.join(data_root, tmp_img),
+                     os.path.join(data_root, tmp_gt),))
 
         return sample_indices
 
