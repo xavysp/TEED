@@ -1,1 +1,0 @@
-[' V14-6-320-5 TED-BIPED augB5 BRIND+BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-2before1after AF sum RL= 0.001 WD= 3e-05 image size = 320 adjust LR=[4] LRs= [5e-05] Loss Function= CAST-loss2.py Wed Nov  9 22:30:07 2022']
