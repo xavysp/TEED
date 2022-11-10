@@ -408,26 +408,18 @@ class TestDataset(Dataset):
 
     def transform(self, img, gt):
         # gt[gt< 51] = 0 # test without gt discrimination
-        if self.test_data == "CLASSIC":
-            img_height = self.img_height
-            img_width = self.img_width
-            print(
-                f"actual size: {img.shape}, target size: {(img_height, img_width,)}")
-            # img = cv2.resize(img, (self.img_width, self.img_height))
-            img = cv2.resize(img, (img_width, img_height))
-            gt = None
 
         # Make images and labels at least 512 by 512
         if img.shape[0] < 512 or img.shape[1] < 512:
             img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
-            gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
+            # gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
 
         # Make sure images and labels are divisible by 2^4=16
         elif img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
             img_width = ((img.shape[1] // 8) + 1) * 8
             img_height = ((img.shape[0] // 8) + 1) * 8
             img = cv2.resize(img, (img_width, img_height))
-            gt = cv2.resize(gt, (img_width, img_height))
+            # gt = cv2.resize(gt, (img_width, img_height))
         else:
             pass
         #     img_width = self.args.test_img_width
