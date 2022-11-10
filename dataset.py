@@ -36,8 +36,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
                 'train_list': 'train_pair0.lst',
-                # 'train_list2': 'train_pair_all.lst', # brind ori
-                'train_list2': 'train_pair.lst', # for brind mine
+                'train_list2': 'train_pair_all.lst', # brind ori
+                # 'train_list2': 'train_pair.lst', # for brind mine
                 'test_list': None,
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
@@ -122,9 +122,9 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 720, #720 # 1088
                 'img_width': 1280, # 1280 5 1920
                 'test_list': 'test_pair.lst',
-                # 'train_list': 'train_pair0.lst', # Base augmentation
+                'train_list': 'train_pair0.lst', # Base augmentation
                 'train_list': 'train_pairB3.lst', # another augmentation
-                # 'train_list': 'train_pairB5.lst', # Last augmentation
+                'train_list': 'train_pairB5.lst', # Last augmentation
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':BIPED_mean
@@ -709,33 +709,33 @@ class bipbriDataset(Dataset):
         #  400 for BIPEd and 352 for BSDS check with 384
         crop_size = self.img_height if self.img_height == self.img_width else None  # 448# MDBD=480 BIPED=480/400 BSDS=352
 
-        # # for BSDS 352/BRIND
-        # if i_w > crop_size and i_h > crop_size:  # later 400, before crop_size
-        #     i = random.randint(0, i_h - crop_size)
-        #     j = random.randint(0, i_w - crop_size)
-        #     img = img[i:i + crop_size, j:j + crop_size]
-        #     gt = gt[i:i + crop_size, j:j + crop_size]
+        # for BSDS 352/BRIND
+        if i_w > crop_size and i_h > crop_size:  # later 400, before crop_size
+            i = random.randint(0, i_h - crop_size)
+            j = random.randint(0, i_w - crop_size)
+            img = img[i:i + crop_size, j:j + crop_size]
+            gt = gt[i:i + crop_size, j:j + crop_size]
 
-        # for BIPED/MDBD
-        if i_w> 420 and i_h>420: #before np.random.random() > 0.4
-            h,w = gt.shape
-            if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
-
-                LR_img_size = crop_size #l BIPED=256, 240 200 # MDBD= 352 BSDS= 176
-                i = random.randint(0, h - LR_img_size)
-                j = random.randint(0, w - LR_img_size)
-                # if img.
-                img = img[i:i + LR_img_size , j:j + LR_img_size ]
-                gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
-            else:
-                LR_img_size = 256#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
-                i = random.randint(0, h - LR_img_size)
-                j = random.randint(0, w - LR_img_size)
-                # if img.
-                img = img[i:i + LR_img_size, j:j + LR_img_size]
-                gt = gt[i:i + LR_img_size, j:j + LR_img_size]
-                img = cv2.resize(img, dsize=(crop_size, crop_size), )
-                gt = cv2.resize(gt, dsize=(crop_size, crop_size))
+        # # for BIPED/MDBD
+        # if i_w> 420 and i_h>420: #before np.random.random() > 0.4
+        #     h,w = gt.shape
+        #     if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
+        #
+        #         LR_img_size = crop_size #l BIPED=256, 240 200 # MDBD= 352 BSDS= 176
+        #         i = random.randint(0, h - LR_img_size)
+        #         j = random.randint(0, w - LR_img_size)
+        #         # if img.
+        #         img = img[i:i + LR_img_size , j:j + LR_img_size ]
+        #         gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
+        #     else:
+        #         LR_img_size = 256#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
+        #         i = random.randint(0, h - LR_img_size)
+        #         j = random.randint(0, w - LR_img_size)
+        #         # if img.
+        #         img = img[i:i + LR_img_size, j:j + LR_img_size]
+        #         gt = gt[i:i + LR_img_size, j:j + LR_img_size]
+        #         img = cv2.resize(img, dsize=(crop_size, crop_size), )
+        #         gt = cv2.resize(gt, dsize=(crop_size, crop_size))
 
         else:
             # New addidings
