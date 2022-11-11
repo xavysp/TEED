@@ -487,28 +487,7 @@ class BipedDataset(Dataset):
 
         data_root = os.path.abspath(self.data_root)
         sample_indices = []
-        # if self.arg.train_data.lower() == 'biped':
-        #
-        #     images_path = os.path.join(data_root,
-        #                                'edges/imgs',
-        #                                self.train_mode,
-        #                                self.dataset_type,
-        #                                self.data_type)
-        #     labels_path = os.path.join(data_root,
-        #                                'edges/edge_maps',
-        #                                self.train_mode,
-        #                                self.dataset_type,
-        #                                self.data_type)
-        #
-        #     for directory_name in os.listdir(images_path):
-        #         image_directories = os.path.join(images_path, directory_name)
-        #         for file_name_ext in os.listdir(image_directories):
-        #             file_name = os.path.splitext(file_name_ext)[0]
-        #             sample_indices.append(
-        #                 (os.path.join(images_path, directory_name, file_name + '.jpg'),
-        #                  os.path.join(labels_path, directory_name, file_name + '.png'),)
-        #             )
-        # else:
+
         file_path = os.path.join(data_root, self.arg.train_list)
         if self.arg.train_data.lower() == 'bsds':
 
