@@ -57,8 +57,8 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
         loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
         # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
-        # tLoss = loss2+loss1 # ori
-        tLoss = (loss2+loss1)*0.6
+        tLoss = loss2+loss1 # ori
+        # tLoss = (loss2+loss1)*0.6
         optimizer.zero_grad()
         tLoss.backward()
         optimizer.step()
