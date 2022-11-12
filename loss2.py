@@ -95,6 +95,7 @@ def cats_loss(prediction, label, l_weight=[0.,0.], device='cpu'):
     textcost = textureloss(prediction.float(), label_w.float(), mask_radius=4, device=device)
     bdrcost = bdrloss(prediction.float(), label_w.float(), radius=4, device=device)
 
-    return cost + bdr_factor * bdrcost + tex_factor * textcost
+    # return cost + bdr_factor * bdrcost + tex_factor * textcost
+    return (cost + bdr_factor * bdrcost + tex_factor * textcost)*0.5 # mine
     # return cost + bdr_factor * bdrcost
     # return cost + tex_factor * textcost
