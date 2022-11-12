@@ -14,8 +14,8 @@ def xaf(input):
     """
     x = torch.log(1+torch.sigmoid(input))
     # np.clip(fx+0.25,-0.5,0.9)
-    x = torch.clip(x+0.15,-0.5,0.9) # this help ti thin the edge
+    # x = torch.clip(x+0.15,-0.5,0.9) # this help ti thin the edge
     # adding 0.15
-    # x = torch.clip(torch.tanh(x)+0.25,-0.5,0.9)
+    x = torch.clip(torch.tanh(x)+0.25,-0.5,0.9)
     # x = torch.clip(x,-0.5,0.9)
     return input * x
