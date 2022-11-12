@@ -12,6 +12,7 @@ import torch.nn.functional as F
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
+from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Fmish import mish as Fmish
 
 
@@ -105,7 +106,8 @@ class CoFusionDWC(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
