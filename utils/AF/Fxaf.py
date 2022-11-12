@@ -13,11 +13,11 @@ def xaf(input):
     See additional documentation for mish class.
     """
     # x = torch.tanh(-1+(1/(0.1 + torch.exp(-input))))
-    # x = torch.log(1+torch.sigmoid(input))# ori
+    # x = torch.log(1+torch.sigmoid(input))# ori good
     x =(-1+(1/(torch.exp(-input)))) # sigmoid modefied
     # np.clip(fx+0.25,-0.5,0.9)
-    # x = torch.clip(x+0.15,-0.5,0.9) # this help ti thin the edge
-    # adding 0.15
+    x = torch.clip(x+0.25,-0.5,0.9) # this help ti thin the edge
+    # adding 0.25
     # x = torch.clip(torch.tanh(x)+0.25,-0.5,0.9)
     # x = torch.clip(x,-0.5,0.9)
     return input * x
