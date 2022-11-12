@@ -57,7 +57,8 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
         loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
         # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
-        tLoss = loss2+loss1
+        # tLoss = loss2+loss1 # ori
+        tLoss = (loss2+loss1)*0.6
         optimizer.zero_grad()
         tLoss.backward()
         optimizer.step()
@@ -309,7 +310,7 @@ def parse_args():
                         help='Initial learning rate. =5e-5') # 1e-3
     parser.add_argument('--lrs', default=[7e-5], type=float,
                         help='LR for epochs') #  [7e-5]
-    parser.add_argument('--wd', type=float, default=1e-4, metavar='WD',
+    parser.add_argument('--wd', type=float, default=0., metavar='WD',
                         help='weight decay (Good 5e-4  )') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
