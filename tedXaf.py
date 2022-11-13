@@ -106,8 +106,8 @@ class CoFusionDWC(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
-        return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        # return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
@@ -118,7 +118,7 @@ class _DenseLayer(nn.Sequential):
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        self.add_module('af2', Smish()),
+        self.add_module('af2', AF()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True)),
         # self.add_module('norm2', nn.BatchNorm2d(out_features))
