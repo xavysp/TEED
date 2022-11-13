@@ -114,7 +114,7 @@ class CoFusionDWC(nn.Module):
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
         super(_DenseLayer, self).__init__()
-        self.add_module('af1', AF()),
+        # self.add_module('af1', AF()),
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
