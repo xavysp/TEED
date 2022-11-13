@@ -118,7 +118,7 @@ class _DenseLayer(nn.Sequential):
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        self.add_module('af2', AF()),
+        self.add_module('af2', Smish()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True)),
         # self.add_module('norm2', nn.BatchNorm2d(out_features))
@@ -126,8 +126,8 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
 
-        # new_features = super(_DenseLayer, self).forward(Fxaf(x1))  # F.relu() ORI
-        new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu() ORI
+        # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
         #                                 align_corners=False)
