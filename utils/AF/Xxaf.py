@@ -6,14 +6,11 @@ Wang, Xueliang, Honge Ren, and Achuan Wang.
 smish(x) = x * tanh(softplus(x)) = x * tanh(ln(1 + sigmoid(x)))
 """
 
-# import pytorch
 import torch
-import torch.nn.functional as F
 from torch import nn
 
 # import activation functions
 import utils.AF.Fxaf as Func
-
 
 class Xaf(nn.Module):
     """

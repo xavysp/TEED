@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = Xaf # #nn.ReLU(inplace=True)
+# AF = Xaf # #nn.ReLU(inplace=True)
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -89,7 +89,7 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.af= AF()#nn.ReLU(inplace=True) # Smish()#
+        self.af= Xaf()#nn.ReLU(inplace=True) # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
@@ -118,7 +118,7 @@ class _DenseLayer(nn.Sequential):
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        self.add_module('af1', AF()),
+        self.add_module('af1', Xaf()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True)),
         # self.add_module('norm2', nn.BatchNorm2d(out_features))
@@ -161,7 +161,7 @@ class UpConvBlock(nn.Module):
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
             # layers.append(nn.BatchNorm2d(out_features))
-            layers.append(AF())
+            layers.append(Xaf())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
@@ -182,7 +182,7 @@ class SingleConvBlock(nn.Module):
         self.conv = nn.Conv2d(in_features, out_features, 1, stride=stride,
                               bias=True)
         if self.use_ac:
-            self.af = AF()
+            self.af = Xaf()
         # self.bn = nn.BatchNorm2d(out_features)
 
     def forward(self, x):
@@ -208,7 +208,7 @@ class DoubleConvBlock(nn.Module):
         # self.bn1 = nn.BatchNorm2d(mid_features)
         self.conv2 = nn.Conv2d(mid_features, out_features, 3, padding=1)
         # self.bn2 = nn.BatchNorm2d(out_features)
-        self.af= AF()#nn.ReLU(inplace=True)
+        self.af= Xaf()#nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.conv1(x)
