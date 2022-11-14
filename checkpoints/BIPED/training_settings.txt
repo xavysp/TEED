@@ -1,1 +1,1 @@
-[' V14-l1-300 TED-BIPEDaug0 BIRND+BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-2Bef1Aft AF sum RL= 0.0005 WD= 0.0 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Sun Nov 13 20:44:17 2022']
+[' V14-l1-300 aug0 BIRND+BIPED-trainingdataLoaderSetting AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-1After AF sum RL= 0.0005 WD= 0.0 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Mon Nov 14 00:22:18 2022 trained onBIPED']
