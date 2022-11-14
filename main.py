@@ -17,8 +17,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipb
 from loss2 import *
 
 # from tedRelu import TED
-# from ted import TED # LDC-B3 modified V10
-from tedXaf import TED # TEd with new AF
+from ted import TED # LDC-B3 modified V10
+# from tedXaf import TED # TEd with new AF
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -283,7 +283,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='3/3_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
