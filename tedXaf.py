@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = Smish # nn.Tanh # #nn.ReLU(inplace=True)
+AF = Xaf # nn.Tanh # #nn.ReLU(inplace=True)
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -89,14 +89,14 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.af= AF()#nn.ReLU(inplace=True) # Smish()#
+        self.af= Smish()#nn.ReLU(inplace=True) # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        # attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] self.smish(
-        attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
+        attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] self.smish(
+        # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
         # attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
         # attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
@@ -106,8 +106,8 @@ class CoFusionDWC(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
-        # return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
+        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
