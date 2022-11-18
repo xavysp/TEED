@@ -548,7 +548,7 @@ class BipedDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
-        if i_w> 420 and i_h>420: #before np.random.random() > 0.4
+        if i_w> 400 and i_h>400: #before 420
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
 
@@ -559,7 +559,7 @@ class BipedDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 256#208 B300  # l BIPED=208-352, # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 400#256 B300  # l BIPED=208-352, # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
