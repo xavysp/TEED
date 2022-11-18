@@ -559,7 +559,7 @@ class BipedDataset(Dataset):
                 img = img[i:i + LR_img_size , j:j + LR_img_size ]
                 gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
             else:
-                LR_img_size = 400#256 B300  # l BIPED=208-352, # MDBD= 352-480- BSDS= 176-320
+                LR_img_size = 300# 400 256 B300  # l BIPED=208-352, # MDBD= 352-480- BSDS= 176-320
                 i = random.randint(0, h - LR_img_size)
                 j = random.randint(0, w - LR_img_size)
                 # if img.
