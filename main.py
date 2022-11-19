@@ -223,7 +223,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='LDC trainer.')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=14,
+                        default=-1,
                         help='Choose a dataset for testing: 0 - 8')
     # UDED=14
     # ----------- test -------0--
@@ -232,7 +232,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =True
+    is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -283,7 +283,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='4/4_model.pth',# 37 for biped 60 MDBD
+                        default='7/7_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -316,7 +316,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-300-5 aug0 BIPED+BRIND-trainingdataLoaderSetting2-300 AF=smish+Xaf -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3smish AF sum',
+                        default='V14-l1-300-5 aug0 BRIND-trainingdataLoader AF=smish+Xaf -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
