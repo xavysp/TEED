@@ -95,18 +95,18 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        # attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] self.smish(
+        attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] self.smish(
         # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
-        attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
+        # attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        # attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
+        attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
         # attn2 = self.af(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14-l1
         return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
@@ -126,7 +126,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(F.tanh(x1))  # F.relu() ORI
+        new_features = super(_DenseLayer, self).forward(torch.tanh(x1))  # F.relu() ORI
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
