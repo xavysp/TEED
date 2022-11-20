@@ -13,6 +13,7 @@ import torch.nn.functional as F
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
+from utils.AF.Xxaf import Xaf as XAF
 from utils.AF.Fmish import mish as Fmish
 
 
@@ -89,7 +90,7 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.AF= nn.Tanh()#Smish()#   # Smish()#
+        self.AF= XAF() #nn.Tanh()# XAF() #Smish()#   # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
