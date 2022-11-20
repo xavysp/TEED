@@ -575,9 +575,6 @@ class BipedDataset(Dataset):
         # BRIND Best for TEDD+BIPED
         gt[gt > 0.1] +=0.2#0.4
         gt = np.clip(gt, 0., 1.)
-        # # for BIPED
-        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        # gt = np.clip(gt, 0., 1.)  # BIPED
         # # for MDBD
         # gt[gt > 0.3] +=0.7#0.4
         # gt = np.clip(gt, 0., 1.)
