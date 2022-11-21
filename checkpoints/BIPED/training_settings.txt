@@ -1,1 +1,1 @@
-['V14-l1-5 TED BIPED+BRIND-trainingdataLoader AF=smish+Xaf -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-2Smish1Xaf AF sum RL= 0.001 WD= 0.0001 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Mon Nov 21 17:40:23 2022 trained onBIPED']
+['V14-l1-5 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum RL= 0.001 WD= 0.0001 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Mon Nov 21 20:28:39 2022 trained onBIPED']
