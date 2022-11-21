@@ -90,7 +90,7 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.AF= XAF() #nn.Tanh()# XAF() #Smish()#   # Smish()#
+        # self.AF= Smish()#XAF() #nn.Tanh()# XAF() #   # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
@@ -107,8 +107,8 @@ class CoFusionDWC(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
-        return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        # return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
