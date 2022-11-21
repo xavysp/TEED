@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = nn.Tanh # nn.Tanh # #nn.ReLU(inplace=True)
+AF = Smish()#nn.Tanh # nn.Tanh # #nn.ReLU(inplace=True)
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -106,8 +106,8 @@ class CoFusionDWC(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
-        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14-l1
-        return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14-l1
+        # return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
@@ -126,7 +126,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(torch.tanh(x1))  # F.relu() ORI
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu() ORI
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
