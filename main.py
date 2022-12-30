@@ -297,6 +297,8 @@ def parse_args():
                         type=str,
                         default='result',
                         help='Result directory')
+    parser.add_argument('--use_gpu',type=str,
+                        default="cuda:0", help='use GPU')
     parser.add_argument('--log_interval_vis',
                         type=int,
                         default=200,# 100
@@ -368,11 +370,6 @@ def parse_args():
 
 def main(args, train_inf):
 
-    print(f"Number of GPU's available: {torch.cuda.device_count()}")
-    print(f"Pytorch version: {torch.__version__}")
-    print(f'Trainimage mean: {args.mean_train}')
-    print(f'Test image mean: {args.mean_test}')
-
     # Tensorboard summary writer
 
     # torch.autograd.set_detect_anomaly(True)
@@ -389,7 +386,7 @@ def main(args, train_inf):
                           + str(args.wd) + ' image size = ' + str(args.img_width)
                           + ' adjust LR=' + str(args.adjust_lr) +' LRs= '
                           + str(args.lrs)+' Loss Function= CAST-loss2.py '
-                          + str(time.asctime())+' trained on'+args.train_data]
+                          + str(time.asctime())+' trained on '+args.train_data]
         info_txt = open(os.path.join(training_dir, 'training_settings.txt'), 'w')
         info_txt.write(str(training_notes))
         info_txt.close()
@@ -397,7 +394,15 @@ def main(args, train_inf):
 
     # Get computing device
     device = torch.device('cpu' if torch.cuda.device_count() == 0
-                          else 'cuda')
+                          else args.use_gpu)
+    # device(0)
+
+    print(f"Number of GPU's available: {torch.cuda.device_count()}")
+    print(f"Pytorch version: {torch.__version__}")
+    print(f'Trainimage mean: {args.mean_train}')
+    print(f'Test image mean: {args.mean_test}')
+    print(f'Test image mean: {torch.get_device_name()}')
+
 
     # Instantiate model and move it to the computing device
     model = TED().to(device)
