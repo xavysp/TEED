@@ -96,11 +96,11 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.PSconv1(self.DWconv1(self.AF(x))) # This [8, 32, 352, 352] self.smish(
+        attn = self.PSconv1(self.DWconv1(self.AF(x))) # #TED best res TEDv14 [8, 32, 352, 352]
         # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
         # attn = self.AF(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # This self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # #TED best res TEDv14[8, 3, 352, 352]
         # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
         # attn2 = self.AF(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
