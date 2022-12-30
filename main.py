@@ -401,7 +401,7 @@ def main(args, train_inf):
     print(f"Pytorch version: {torch.__version__}")
     print(f'Trainimage mean: {args.mean_train}')
     print(f'Test image mean: {args.mean_test}')
-    print(f'Test image mean: {torch.get_device_name()}')
+    print(f'Test image mean: {torch.cuda.get_device_name()}')
 
 
     # Instantiate model and move it to the computing device
