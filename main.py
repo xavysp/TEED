@@ -7,7 +7,7 @@ import time, platform
 #    k   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
 import cv2
 import numpy as np
-os.environ['CUDA_LAUNCH_BLOCKING']="1"
+os.environ['CUDA_LAUNCH_BLOCKING']="0"
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader
