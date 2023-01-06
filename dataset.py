@@ -320,7 +320,7 @@ class TestDataset(Dataset):
         self.test_data = test_data
         self.test_list = test_list
         self.args = arg
-        # self.arg = arg
+        self.up_scale = arg.up_scale
         # self.mean_bgr = arg.mean_pixel_values[0:3] if len(arg.mean_pixel_values) == 4 \
         #     else arg.mean_pixel_values
         self.mean_bgr = arg.mean_test if len(arg.mean_test) == 3 else arg.mean_test[:3]
@@ -408,14 +408,18 @@ class TestDataset(Dataset):
 
     def transform(self, img, gt):
         # gt[gt< 51] = 0 # test without gt discrimination
-
+        # up scale test image
+        if self.up_scale:
+            # i_h,i_w=img.shape
+            img = cv2.resize(img,(0,0),fx=1.3,fy=1.3)
         # Make images and labels at least 512 by 512
-        if img.shape[0] < 512 or img.shape[1] < 512:
-            img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
+        # print(f" before reshaping {img.shape}")
+        # if img.shape[0] < 512 or img.shape[1] < 512:
+        #     img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
             # gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
 
         # Make sure images and labels are divisible by 2^4=16
-        elif img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
+        if img.shape[0] % 8 != 0 or img.shape[1] % 8 != 0:
             img_width = ((img.shape[1] // 8) + 1) * 8
             img_height = ((img.shape[0] // 8) + 1) * 8
             img = cv2.resize(img, (img_width, img_height))

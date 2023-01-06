@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = Smish#nn.Tanh # nn.Tanh # #nn.ReLU(inplace=True)
+AF = nn.ReLU# Smish#nn.Tanh # nn.Tanh # #nn.ReLU(inplace=True)#
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -77,10 +77,12 @@ class CoFusion2(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return ((x * attn).sum(1)).unsqueeze(1)
 
-class CoFusionDWC(nn.Module):
+class DoubleFusion(nn.Module):
+    # CoFusionDWC(nn.Module)
+
     # with depth wise convolution
     def __init__(self, in_ch, out_ch):
-        super(CoFusionDWC, self).__init__()
+        super(DoubleFusion, self).__init__()
         self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
                                stride=1, padding=1, groups=in_ch) # before 64
         self.PSconv1 = nn.PixelShuffle(1)
@@ -95,11 +97,11 @@ class CoFusionDWC(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] self.smish(
+        attn = self.PSconv1(self.DWconv1(self.af(x))) # [8, 32, 352, 352] Best
         # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
         # attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # Best[8, 3, 352, 352]
         # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
         # attn2 = self.af(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
@@ -223,7 +225,7 @@ class DoubleConvBlock(nn.Module):
 
 
 class TED(nn.Module):
-    """ Definition of  Tiny Dense CNN for Edge Detection. """
+    """ Definition of  Tiny but Efficient Edge Detector"""
 
     def __init__(self):
         super(TED, self).__init__()
@@ -245,7 +247,7 @@ class TED(nn.Module):
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
-        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
+        self.block_cat = DoubleFusion(3,3)# cats fusion modified
         # self.block_cat = CoFusion2(3,3)# cats fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method ori
 

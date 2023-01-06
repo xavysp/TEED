@@ -224,7 +224,7 @@ class DoubleConvBlock(nn.Module):
 
 
 class TED(nn.Module):
-    """ Definition of  Tiny Dense CNN for Edge Detection. """
+    """ Definition of  Tiny but Efficient Edge Detector """
 
     def __init__(self):
         super(TED, self).__init__()

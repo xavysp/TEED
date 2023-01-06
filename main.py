@@ -224,7 +224,7 @@ def parse_args():
     parser.add_argument('--choose_test_data',
                         type=int,
                         default=-1,
-                        help='Choose a dataset for testing: 0 - 8')
+                        help='Choose a dataset for testing: 0 - 15')
     # UDED=14
     # ----------- test -------0--
 
@@ -273,6 +273,11 @@ def parse_args():
     parser.add_argument('--is_testing',type=bool,
                         default=is_testing,
                         help='Script in testing mode.')
+    parser.add_argument('--up_scale',
+                        type=bool,
+                        default=False,
+                        help='True: up scale x1.5 test image')  # Just for test
+
     parser.add_argument('--double_img',
                         type=bool,
                         default=False,
@@ -297,8 +302,8 @@ def parse_args():
                         type=str,
                         default='result',
                         help='Result directory')
-    parser.add_argument('--use_gpu',type=str,
-                        default="cuda:0", help='use GPU')
+    parser.add_argument('--use_gpu',type=int,
+                        default=0, help='use GPU')
     parser.add_argument('--log_interval_vis',
                         type=int,
                         default=200,# 100
@@ -311,14 +316,14 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
                         help='Initial learning rate. =1e-3') # 1e-3
-    parser.add_argument('--lrs', default=[7e-5], type=float,
+    parser.add_argument('--lrs', default=[8e-5], type=float,
                         help='LR for epochs5') #  [7e-5]
     parser.add_argument('--wd', type=float, default=1e-4, metavar='WD',
                         help='weight decay (Good 5e-4/1e-4  )') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-5 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
+                        default='V14-l1-5 TED BIPED+BRIND-trainingdataLoader AF=Relu -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -394,14 +399,14 @@ def main(args, train_inf):
 
     # Get computing device
     device = torch.device('cpu' if torch.cuda.device_count() == 0
-                          else args.use_gpu)
-    # device(0)
+                          else 'cuda')
+    # torch.cuda.set_device(args.use_gpu) # set a desired gpu
 
     print(f"Number of GPU's available: {torch.cuda.device_count()}")
     print(f"Pytorch version: {torch.__version__}")
+    # print(f'GPU: {torch.cuda.get_device_name()}')
     print(f'Trainimage mean: {args.mean_train}')
     print(f'Test image mean: {args.mean_test}')
-    print(f'Test image mean: {torch.cuda.get_device_name()}')
 
 
     # Instantiate model and move it to the computing device
