@@ -1,1 +1,1 @@
-['V14-l1-1 TEDxaf BIPED+BRIND-trainingdataLoader AF=relu -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum RL= 0.001 WD= 0.0001 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Sat Jan  7 14:57:36 2023 trained on BIPED']
+['V14-l1-2 TEDxaf BIPED+BRIND-trainingdataLoader AF=tanh -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum RL= 0.001 WD= 0.0001 image size = 300 adjust LR=[4] LRs= [7e-05] Loss Function= CAST-loss2.py Sat Jan  7 16:41:58 2023 trained on BIPED']
