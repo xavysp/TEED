@@ -17,8 +17,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipb
 from loss2 import *
 
 # from tedRelu import TED
-# from ted import TED # LDC-B3 modified V10
-from tedXaf import TED # TEd with new AF
+from ted import TED # LDC-B3 modified V10
+# from tedXaf import TED # TEd with new AF
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -311,7 +311,7 @@ def parse_args():
     parser.add_argument('--show_log', type=int, default=20, help='display logs')
     parser.add_argument('--epochs',
                         type=int,
-                        default=15,
+                        default=8,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
@@ -323,7 +323,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-1-2 TEDxaf BIPED+BRIND-trainingdataLoader AF=relu -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-2Smish AF sum',
+                        default='V14-l1-3v2 TEDxaf BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',

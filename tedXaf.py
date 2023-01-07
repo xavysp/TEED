@@ -15,8 +15,8 @@ from utils.AF.Xsmish import Smish
 # from utils.AF.Fxaf import xaf as Fxaf
 # from utils.AF.Xxaf import Xaf
 
-AF = nn.ReLU# ##nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
-AFf= F.relu #Fsmish # torch.relu # torch.tanh# Fxaf#
+AF = Smish# ##nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
+AFf= Fsmish #Fsmish # torch.relu # torch.tanh# Fxaf#
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -102,8 +102,8 @@ class DoubleFusion(nn.Module):
         # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
         # attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        # attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # Best[8, 3, 352, 352]
-        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
+        attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # Best[8, 3, 352, 352]
+        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
         # attn2 = self.af(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
@@ -129,7 +129,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
         # carefull here changed
-        new_features = super(_DenseLayer, self).forward(F.relu(x1))  # F.relu() ORI
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu() ORI
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',

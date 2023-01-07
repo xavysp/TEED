@@ -78,10 +78,10 @@ class CoFusion2(nn.Module):
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return ((x * attn).sum(1)).unsqueeze(1)
 
-class CoFusionDWC(nn.Module):
-    # with depth wise convolution
+class DoubleFusion(nn.Module):
+    # TED fusion before the final edge map prediction
     def __init__(self, in_ch, out_ch):
-        super(CoFusionDWC, self).__init__()
+        super(DoubleFusion, self).__init__()
         self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
                                stride=1, padding=1, groups=in_ch) # before 64
         self.PSconv1 = nn.PixelShuffle(1)
@@ -246,7 +246,7 @@ class TED(nn.Module):
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method
-        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
+        self.block_cat = DoubleFusion(3,3)# cats fusion modified
         # self.block_cat = CoFusion2(3,3)# cats fusion method
         # self.block_cat = CoFusion(3,3)# cats fusion method ori
 
