@@ -15,8 +15,8 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = Smish#nn.Tanh #Smish#nn.ReLU#Smish#nn.ReLU# nn.Tanh # nn.Tanh # #
-
+AF = Xaf##nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
+AFf= Fxaf#Fsmish # torch.relu # torch.tanh# Fxaf#
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
@@ -127,8 +127,8 @@ class _DenseLayer(nn.Sequential):
 
     def forward(self, x):
         x1, x2 = x
-
-        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu() ORI
+        # carefull here changed
+        new_features = super(_DenseLayer, self).forward(AFf(x1))  # F.relu() ORI
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
