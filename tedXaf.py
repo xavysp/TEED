@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = nn.ReLU# Smish#nn.Tanh # nn.Tanh # #nn.ReLU(inplace=True)#
+AF = nn.ReLU#Smish#nn.ReLU# nn.Tanh # nn.Tanh # #
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -101,8 +101,8 @@ class DoubleFusion(nn.Module):
         # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
         # attn = self.af(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # Best[8, 3, 352, 352]
-        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
+        # attn2 = self.PSconv1(self.DWconv2(self.af(attn))) # Best[8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
         # attn2 = self.af(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori

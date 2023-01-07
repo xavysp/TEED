@@ -414,8 +414,9 @@ class TestDataset(Dataset):
             img = cv2.resize(img,(0,0),fx=1.3,fy=1.3)
         # Make images and labels at least 512 by 512
         # print(f" before reshaping {img.shape}")
-        # if img.shape[0] < 512 or img.shape[1] < 512:
-        #     img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
+        if img.shape[0] < 500 or img.shape[1] < 500:
+            img = cv2.resize(img, (0, 0), fx=1.5, fy=1.5)
+            # img = cv2.resize(img, (self.args.test_img_width, self.args.test_img_height))  # 512
             # gt = cv2.resize(gt, (self.args.test_img_width, self.args.test_img_height))  # 512
 
         # Make sure images and labels are divisible by 2^4=16
