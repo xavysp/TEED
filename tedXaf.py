@@ -15,8 +15,8 @@ from utils.AF.Xsmish import Smish
 # from utils.AF.Fxaf import xaf as Fxaf
 # from utils.AF.Xxaf import Xaf
 
-AF = nn.ReLU#nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
-AFf= torch.relu #Fsmish # torch.relu # torch.tanh# Fxaf#
+AF = nn.Tanh ##nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
+AFf= F.tanh #Fsmish # torch.relu # torch.tanh# Fxaf#
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
@@ -129,7 +129,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
         # carefull here changed
-        new_features = super(_DenseLayer, self).forward(F.relu(x1))  # F.relu() ORI
+        new_features = super(_DenseLayer, self).forward(F.tanh(x1))  # F.relu() ORI
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
