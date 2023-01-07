@@ -15,7 +15,7 @@ from utils.AF.Xsmish import Smish
 from utils.AF.Fxaf import xaf as Fxaf
 from utils.AF.Xxaf import Xaf
 
-AF = nn.Tanh #Smish#nn.ReLU#Smish#nn.ReLU# nn.Tanh # nn.Tanh # #
+AF = Smish#nn.Tanh #Smish#nn.ReLU#Smish#nn.ReLU# nn.Tanh # nn.Tanh # #
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
