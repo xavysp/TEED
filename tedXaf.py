@@ -12,11 +12,12 @@ import torch.nn.functional as F
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
-from utils.AF.Fxaf import xaf as Fxaf
-from utils.AF.Xxaf import Xaf
+# from utils.AF.Fxaf import xaf as Fxaf
+# from utils.AF.Xxaf import Xaf
 
-AF = Xaf##nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
-AFf= Fxaf#Fsmish # torch.relu # torch.tanh# Fxaf#
+AF = nn.ReLU#nn.Tanh #nn.ReLU# Smish# nn.ReLU#  Xaf#
+AFf= torch.relu #Fsmish # torch.relu # torch.tanh# Fxaf#
+
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
