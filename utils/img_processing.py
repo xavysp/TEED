@@ -239,8 +239,9 @@ if __name__ == '__main__':
 
     img_base_dir='tmp_edge'
     # gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
+    # gt_base_dir='C:/Users/xavysp/dataset/BRIND/test_edges'
     gt_base_dir='C:/Users/xavysp/dataset/UDED/gt'
-    vers = 'TEED model in UDED'
+    vers = 'TEED model in BIPED'
     list_img = os.listdir(img_base_dir)
     list_gt = os.listdir(gt_base_dir)
     mse_list=[]
@@ -253,12 +254,16 @@ if __name__ == '__main__':
         tmp_img = cv2.imread(os.path.join(img_base_dir,img_name),0)
         tmp_img = cv2.bitwise_not(tmp_img)
         tmp_gt = cv2.imread(os.path.join(gt_base_dir,gt_name),0)
-
+        # print(f"image {img_name} {tmp_img.shape}")
+        # print(f"gt {gt_name} {tmp_gt.shape}")
+        a = tmp_img.copy()
         tmp_img = image_normalization(tmp_img, img_max=1.)
         tmp_gt = image_normalization(tmp_gt, img_max=1.)
         psnr = peak_signal_noise_ratio(tmp_gt, tmp_img)
         mse = mean_squared_error(tmp_gt, tmp_img)
         mae = mean_absolute_error(tmp_gt, tmp_img)
+        # a = cv2.bitwise_not(a)
+        # cv2.imwrite(os.path.join("tmp_res",img_name), a)
 
         psnr_list.append(psnr)
         mse_list.append(mse)

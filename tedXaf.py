@@ -129,7 +129,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
         # carefull here changed
-        new_features = super(_DenseLayer, self).forward(AFf(x1))  # F.relu() ORI Fsmish
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu() ORI Fsmish
         # new_features = super(_DenseLayer, self).forward(x1)  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
