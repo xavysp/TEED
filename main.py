@@ -288,7 +288,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='0/0_model.pth',# 37 for biped 60 MDBD
+                        default='4/4_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -311,7 +311,7 @@ def parse_args():
     parser.add_argument('--show_log', type=int, default=20, help='display logs')
     parser.add_argument('--epochs',
                         type=int,
-                        default=8,
+                        default=15,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
@@ -323,7 +323,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-3v4 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
+                        default='V14-l1-3v5 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
