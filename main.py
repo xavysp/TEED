@@ -235,7 +235,7 @@ def parse_args():
     is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
-    TRAIN_DATA = DATASET_NAMES[6] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
+    TRAIN_DATA = DATASET_NAMES[13] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
     train_inf = dataset_info(TRAIN_DATA, is_linux=IS_LINUX)
     train_dir = train_inf['data_dir']
 
@@ -323,7 +323,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-3v3 TEDXaf BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
+                        default='V14-l1-3v3 TEDXaf BIPED+BRIND-trainingdataLoader BIPBRIall AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -485,7 +485,7 @@ def main(args, train_inf):
     # Count parameters:
     num_param = count_parameters(model)
     print('-------------------------------------------------------')
-    print('LDC parameters:')
+    print('TEED parameters:')
     print(num_param)
     print( " ***** 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 *****")
     print('-------------------------------------------------------')
