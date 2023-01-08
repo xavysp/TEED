@@ -94,7 +94,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
 
             vis_imgs = cv2.resize(vis_imgs,
                                   (int(vis_imgs.shape[1]*0.8), int(vis_imgs.shape[0]*0.8)))
-            img_test = 'Epoch: {0} Sample {1}/{2} Loss: {3}' \
+            img_test = 'Epoch: {0} Iter: {1}/{2} Loss: {3}' \
                 .format(epoch, batch_id, len(dataloader), round(tLoss.item(),4))
 
             BLACK = (0, 0, 255)
@@ -307,11 +307,11 @@ def parse_args():
     parser.add_argument('--log_interval_vis',
                         type=int,
                         default=200,# 100
-                        help='The No. to to wait before printing test predictions. 200')
+                        help='Interval to visualize predictions. 200')
     parser.add_argument('--show_log', type=int, default=20, help='display logs')
     parser.add_argument('--epochs',
                         type=int,
-                        default=15,
+                        default=8,
                         metavar='N',
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
@@ -323,7 +323,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-3v5 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
+                        default='V14-l1-3v6 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
