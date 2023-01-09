@@ -107,8 +107,8 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
                                    img_test,
                                    (x, y),
                                    font, font_size, font_color, font_thickness, cv2.LINE_AA)
-            tmp_vis_name = str(batch_id)+'-results.png'
-            cv2.imwrite(os.path.join(imgs_res_folder, tmp_vis_name), vis_imgs)
+            # tmp_vis_name = str(batch_id)+'-results.png'
+            cv2.imwrite(os.path.join(imgs_res_folder, 'results.png'), vis_imgs)
     loss_avg = np.array(loss_avg).mean()
     return loss_avg
 
@@ -319,7 +319,7 @@ def parse_args():
                         help='Initial learning rate. =1e-3') # 1e-3
     parser.add_argument('--lrs', default=[7e-5], type=float,
                         help='LR for epochs5') #  [7e-5]
-    parser.add_argument('--wd', type=float, default=2e-4, metavar='WD',
+    parser.add_argument('--wd', type=float, default=9e-5, metavar='WD',
                         help='weight decay (Good 5e-4/1e-4  )') # Test left= WD 5e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
