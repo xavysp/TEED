@@ -255,7 +255,7 @@ def dataset_info(dataset_name, is_linux=True):
             'BIPED': {'img_height': 720,  # 720
                       'img_width': 1280,  # 1280
                       'test_list': 'test_pair.lst',
-                      'train_list': 'train_rgb.lst',
+                      'train_list': 'train_pair0.lst',
                       # 'train_list': 'train_rgb.lst',
                       'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
                       'yita': 0.5,
