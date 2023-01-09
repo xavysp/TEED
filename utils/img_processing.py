@@ -252,7 +252,8 @@ if __name__ == '__main__':
 
         # print(img_name, '   ', gt_name)
         tmp_img = cv2.imread(os.path.join(img_base_dir,img_name),0)
-        tmp_img = cv2.bitwise_not(tmp_img)
+        # tmp_img = cv2.bitwise_not(tmp_img) # if the image's background
+        # is white uncomment this line
         tmp_gt = cv2.imread(os.path.join(gt_base_dir,gt_name),0)
         # print(f"image {img_name} {tmp_img.shape}")
         # print(f"gt {gt_name} {tmp_gt.shape}")
