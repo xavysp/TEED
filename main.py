@@ -233,7 +233,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =True
+    is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
