@@ -289,7 +289,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='3/3_model.pth',# 37 for biped 60 MDBD
+                        default='4/4_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -321,7 +321,7 @@ def parse_args():
                         help='LR for epochs5') #  [7e-5]
     parser.add_argument('--wd', type=float, default=12e-5, metavar='WD',
                         help='weight decay (Good 5e-4/1e-4  )') # good 12e-5
-    parser.add_argument('--adjust_lr', default=[3], type=int,
+    parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
                         default='V14-l1-3v8 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
