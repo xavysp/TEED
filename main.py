@@ -317,14 +317,14 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
                         help='Initial learning rate. =1e-3') # 1e-3
-    parser.add_argument('--lrs', default=[7e-5], type=float,
+    parser.add_argument('--lrs', default=[75e-6], type=float,
                         help='LR for epochs5') #  [7e-5]
     parser.add_argument('--wd', type=float, default=1e-4, metavar='WD',
                         help='weight decay (Good 5e-4/1e-4  )') # good 12e-5
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-3v8 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
+                        default='V14-l1-3v6 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet---noBN xav init normal bdcnLoss2+cats2loss +DoubleF-DWC-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
