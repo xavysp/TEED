@@ -317,7 +317,7 @@ def parse_args():
                         help='Number of training epochs (default: 25).')
     parser.add_argument('--lr', default=1e-3, type=float,
                         help='Initial learning rate. =1e-3') # 1e-3
-    parser.add_argument('--lrs', default=[6e-5], type=float,
+    parser.add_argument('--lrs', default=[5e-5], type=float,
                         help='LR for epochs5') #  [7e-5]
     parser.add_argument('--wd', type=float, default=5e-4, metavar='WD',
                         help='weight decay (Good 5e-4/1e-4  )') # good 12e-5
