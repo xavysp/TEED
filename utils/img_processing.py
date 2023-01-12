@@ -67,14 +67,14 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
             tensor2 = np.array(edge_maps2)
         else:
             fuse_name = 'fused'
-            av_name = 'avg'
+            # av_name = 'avg'
             tensor2=None
             tmp_img2 = None
 
         output_dir_f = os.path.join(output_dir, fuse_name)
-        output_dir_a = os.path.join(output_dir, av_name)
+        # output_dir_a = os.path.join(output_dir, av_name)
         os.makedirs(output_dir_f, exist_ok=True)
-        os.makedirs(output_dir_a, exist_ok=True)
+        # os.makedirs(output_dir_a, exist_ok=True)
 
         # 255.0 * (1.0 - em_a)
         edge_maps = []
@@ -139,13 +139,13 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
 
                         # print(fuse.shape, fuse_mask.shape)
 
-            # Get the mean prediction of all the 7 outputs
-            average = np.array(preds, dtype=np.float32)
-            average = np.uint8(np.mean(average, axis=0))
+            # Save predicted edge maps
+            # average = np.array(preds, dtype=np.float32)
+            # average = np.uint8(np.mean(average, axis=0))
             output_file_name_f = os.path.join(output_dir_f, file_name)
-            output_file_name_a = os.path.join(output_dir_a, file_name)
+            # output_file_name_a = os.path.join(output_dir_a, file_name)
             cv2.imwrite(output_file_name_f, fuse)
-            cv2.imwrite(output_file_name_a, average)
+            # cv2.imwrite(output_file_name_a, average)
 
             idx += 1
 
