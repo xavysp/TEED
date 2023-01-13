@@ -1,1 +1,0 @@
-['V14-l1-3v8 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum RL= 0.0007 WD= 0.0001 image size = 300 adjust LR=[4] LRs= [8e-05] Loss Function= CAST-loss2.py Fri Jan 13 00:10:19 2023 trained on BIPED']
