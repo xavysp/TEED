@@ -80,7 +80,8 @@ class CoFusion1(nn.Module):
 
 
 class CoFusion2(nn.Module):
-        # CoFusion with standard convolutions
+        # CoFusion with standard convolutions TED+DoubleFusiio with standard Conv
+
     def __init__(self, in_ch, out_ch):
         super(CoFusion2, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
