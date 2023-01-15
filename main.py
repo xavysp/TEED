@@ -17,8 +17,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipb
 from loss2 import *
 
 # from tedRelu import TED
-from ted import TED # LDC-B3 modified V10
-# from tedXaf import TED # TEd with new AF
+# from ted import TED # LDC-B3 modified V10
+from tedCats import TED # CAts loss and coFusion
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -53,13 +53,12 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
         # tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
-        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3]
+        # loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3] TED
         # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
-        # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss
-        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused]
+        tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss all
+        # loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused] TED
         # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
-        tLoss = loss2+loss1 # ori
-        # tLoss = (loss2+loss1)*0.6
+        # tLoss = loss2+loss1 # TED
         optimizer.zero_grad()
         tLoss.backward()
         optimizer.step()
@@ -237,7 +236,7 @@ def parse_args():
     is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
-    TRAIN_DATA = DATASET_NAMES[13] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
+    TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
     train_inf = dataset_info(TRAIN_DATA, is_linux=IS_LINUX)
     train_dir = train_inf['data_dir']
 
@@ -277,7 +276,7 @@ def parse_args():
                         help='Script in testing mode.')
     parser.add_argument('--up_scale',
                         type=bool,
-                        default=False,
+                        default=False, # for Upsale test set in 30%
                         help='True: up scale x1.5 test image')  # Just for test
 
     parser.add_argument('--double_img',
@@ -290,7 +289,7 @@ def parse_args():
                         help='use previous trained data')  # Just for test
     parser.add_argument('--checkpoint_data',
                         type=str,
-                        default='4/4_model.pth',# 37 for biped 60 MDBD
+                        default='5/5_model.pth',# 37 for biped 60 MDBD
                         help='Checkpoint path.')
     parser.add_argument('--test_img_width',
                         type=int,
@@ -325,7 +324,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='V14-l1-3v73 TED BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum BIPBRI light',
+                        default='TEDcats TED BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum BIPBRI light',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',

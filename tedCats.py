@@ -12,6 +12,9 @@ import torch.nn.functional as F
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
+from utils.AF.Fxaf import xaf as Fxaf
+from utils.AF.Xxaf import Xaf as XAF
+# from utils.AF.Fmish import mish as Fmish
 
 
 def weight_init(m):
@@ -32,11 +35,36 @@ def weight_init(m):
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
 
+
 class CoFusion(nn.Module):
-    # from LDC
 
     def __init__(self, in_ch, out_ch):
         super(CoFusion, self).__init__()
+        self.conv1 = nn.Conv2d(in_ch, 64, kernel_size=3,
+                               stride=1, padding=1)
+        self.conv2 = nn.Conv2d(64, 64, kernel_size=3,
+                               stride=1, padding=1)
+        self.conv3 = nn.Conv2d(64, out_ch, kernel_size=3,
+                               stride=1, padding=1)
+        self.relu = nn.ReLU()
+
+        self.norm_layer1 = nn.GroupNorm(4, 64)
+        self.norm_layer2 = nn.GroupNorm(4, 64)
+
+    def forward(self, x):
+        fusecat = torch.cat(x, dim=1)
+        attn = self.relu(self.norm_layer1(self.conv1(fusecat)))
+        attn = self.relu(self.norm_layer2(self.conv2(attn)))
+        attn = F.softmax(self.conv3(attn), dim=1)
+
+        return ((fusecat * attn).sum(1)).unsqueeze(1)
+
+
+class CoFusion1(nn.Module):
+    # from LDC
+
+    def __init__(self, in_ch, out_ch):
+        super(CoFusion1, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, 32, kernel_size=3,
                                stride=1, padding=1) # before 64
         self.conv3= nn.Conv2d(32, out_ch, kernel_size=3,
@@ -61,24 +89,24 @@ class CoFusion2(nn.Module):
         #                        stride=1, padding=1)# before 64
         self.conv3 = nn.Conv2d(32, out_ch, kernel_size=3,
                                stride=1, padding=1)# before 64  instead of 32
-        self.AF= Smish()# nn.ReLU(inplace=True) #
+        self.smish= Smish()#nn.ReLU(inplace=True)
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64 last change
         # self.norm_layer2 = nn.GroupNorm(4, 32)  # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.conv1(self.AF(x))
+        attn = self.conv1(self.smish(x))
         # attn = self.relu(self.norm_layer2(self.conv2(attn)))
-        attn = self.conv3(self.AF(attn)) # before , )dim=1)
+        attn = self.conv3(self.smish(attn)) # before , )dim=1)
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1)
         return ((x * attn).sum(1)).unsqueeze(1)
 
-class CoFusionDWC(nn.Module):
-    # with depth wise convolution
+class DoubleFusion(nn.Module):
+    # TED fusion before the final edge map prediction
     def __init__(self, in_ch, out_ch):
-        super(CoFusionDWC, self).__init__()
+        super(DoubleFusion, self).__init__()
         self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
                                stride=1, padding=1, groups=in_ch) # before 64
         self.PSconv1 = nn.PixelShuffle(1)
@@ -87,24 +115,25 @@ class CoFusionDWC(nn.Module):
                                stride=1, padding=1,groups=24)# before 64  instead of 32
         # self.PSconv2 = nn.PixelShuffle(1)
 
-        self.AF=  Smish()#nn.ReLU(inplace=True) #
+        self.AF= Smish()#XAF() #nn.Tanh()# XAF() #   # Smish()#
 
         # self.norm_layer1 = nn.GroupNorm(4, 32) # before 64
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.PSconv1(self.DWconv1(self.AF(x))) # [8, 32, 352, 352] self.smish(
-        # attn = self.PSconv1(self.DWconv1(x)) # [8, 32, 352, 352] self.smish(
-        # attn = self.smish(self.PSconv1(self.DWconv1(x)))
+        attn = self.PSconv1(self.DWconv1(self.AF(x))) # #TED best res TEDv14 [8, 32, 352, 352]
+        # attn = self.PSconv1(self.DWconv1(x)) #self.smish( BIPBRI
+        # attn = self.AF(self.PSconv1(self.DWconv1(x))) # v14-5-352
 
-        attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        # attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
-        # attn2 = self.smish(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( commented for evaluation [8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # #TED best res TEDv14[8, 3, 352, 352]
+        # attn2 = self.PSconv1(self.DWconv2(attn)) # self.smish( self.relu(  4BIPBRI
+        # attn2 = self.AF(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
         # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # ori TEDv14-6
         # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) #Fsmish Ori TEDv14-5
         return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        # return Fxaf(((attn2 +attn).sum(1)).unsqueeze(1)) #Mine
         # return ((attn2 +attn).sum(1)).unsqueeze(1) #Fsmish Ori mine
         # return Fsmish((((attn2 + attn)/2).sum(1)).unsqueeze(1)) #Fsmish TEDv14-4
 
@@ -116,7 +145,7 @@ class _DenseLayer(nn.Sequential):
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        # self.add_module('af1', nn.ReLU(inplace=True)), # Smish() this
+        self.add_module('smish1', Smish()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True)),
         # self.add_module('norm2', nn.BatchNorm2d(out_features))
@@ -124,7 +153,7 @@ class _DenseLayer(nn.Sequential):
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(x1)# this (F.relu(x1))  # F.relu() Fsmish
+        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
         #                                 align_corners=False)
@@ -159,7 +188,7 @@ class UpConvBlock(nn.Module):
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
             # layers.append(nn.BatchNorm2d(out_features))
-            # layers.append(nn.ReLU(inplace=True)) # Smish() this
+            layers.append(Smish())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
@@ -179,15 +208,16 @@ class SingleConvBlock(nn.Module):
         self.use_ac=use_ac
         self.conv = nn.Conv2d(in_features, out_features, 1, stride=stride,
                               bias=True)
-        # if self.use_ac:
-        #     self.af = nn.ReLU(inplace=True)#Smish() nn.ReLU(inplace=True) This
+        if self.use_ac:
+            self.smish = Smish()
         # self.bn = nn.BatchNorm2d(out_features)
 
     def forward(self, x):
         x = self.conv(x)
-        # if self.use_ac:
-        #     x= self.af(x) # this
-        return x
+        if self.use_ac:
+            return self.smish(x)
+        else:
+            return x
 
 
 class DoubleConvBlock(nn.Module):
@@ -205,21 +235,21 @@ class DoubleConvBlock(nn.Module):
         # self.bn1 = nn.BatchNorm2d(mid_features)
         self.conv2 = nn.Conv2d(mid_features, out_features, 3, padding=1)
         # self.bn2 = nn.BatchNorm2d(out_features)
-        # self.af= nn.ReLU(inplace=True) # Smish()# This
+        self.smish= Smish()#nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.conv1(x)
         # x = self.bn1(x)
-        # x = self.af(x)
+        x = self.smish(x)
         x = self.conv2(x)
         # x = self.bn2(x)
-        # if self.use_act:
-        #     x = self.af(x) This
+        if self.use_act:
+            x = self.smish(x)
         return x
 
 
 class TED(nn.Module):
-    """ Definition of  Tiny Dense CNN for Edge Detection. """
+    """ Definition of  Tiny but Efficient Edge Detector """
 
     def __init__(self):
         super(TED, self).__init__()
@@ -240,10 +270,10 @@ class TED(nn.Module):
         self.up_block_3 = UpConvBlock(48, 2) # (32, 64, 1)
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
-        # self.block_cat = CoFusion(3,3)# cats fusion method
-        self.block_cat = CoFusionDWC(3,3)# cats fusion modified
-        # self.block_cat = CoFusion2(3,3)# cats fusion method
-        # self.block_cat = CoFusion(3,3)# cats fusion method ori
+        self.block_cat = CoFusion(3,3)# cats fusion method
+        # self.block_cat = CoFusion1(3,3)# cats fusion method from LDC
+        # self.block_cat = CoFusion2(3,3)# cats fusion method ori
+        # self.block_cat = DoubleFusion(3,3)# TEED Fusion
 
 
         self.apply(weight_init)

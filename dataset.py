@@ -410,11 +410,11 @@ class TestDataset(Dataset):
         # gt[gt< 51] = 0 # test without gt discrimination
         # up scale test image
         if self.up_scale:
-            # i_h,i_w=img.shape
+            # For TEED BIPBRIlight Upscale
             img = cv2.resize(img,(0,0),fx=1.3,fy=1.3)
-        # Make images and labels at least 512 by 512
-        # print(f" before reshaping {img.shape}")
-        if img.shape[0] < 500 or img.shape[1] < 500:
+
+        if img.shape[0] < 512 or img.shape[1] < 512:
+            #TEED BIPED standard proposal if you want speed up the test, comment this block
             img = cv2.resize(img, (0, 0), fx=1.5, fy=1.5)
         # else:
         #     img = cv2.resize(img, (0, 0), fx=1.1, fy=1.1)
