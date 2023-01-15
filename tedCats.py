@@ -270,9 +270,9 @@ class TED(nn.Module):
         self.up_block_3 = UpConvBlock(48, 2) # (32, 64, 1)
 
         # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
-        self.block_cat = CoFusion(3,3)# cats fusion method
+        # self.block_cat = CoFusion(3,3)# cats fusion method
         # self.block_cat = CoFusion1(3,3)# cats fusion method from LDC
-        # self.block_cat = CoFusion2(3,3)# cats fusion method ori
+        self.block_cat = CoFusion2(3,3)# DoubleFusion with Standard Convs.
         # self.block_cat = DoubleFusion(3,3)# TEED Fusion
 
 
