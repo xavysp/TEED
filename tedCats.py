@@ -52,12 +52,12 @@ class CoFusion(nn.Module):
         self.norm_layer2 = nn.GroupNorm(4, 64)
 
     def forward(self, x):
-        fusecat = torch.cat(x, dim=1)
-        attn = self.relu(self.norm_layer1(self.conv1(fusecat)))
+        # fusecat = torch.cat(x, dim=1)
+        attn = self.relu(self.norm_layer1(self.conv1(x)))
         attn = self.relu(self.norm_layer2(self.conv2(attn)))
         attn = F.softmax(self.conv3(attn), dim=1)
 
-        return ((fusecat * attn).sum(1)).unsqueeze(1)
+        return ((x * attn).sum(1)).unsqueeze(1)
 
 
 class CoFusion1(nn.Module):
