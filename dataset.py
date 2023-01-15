@@ -413,7 +413,7 @@ class TestDataset(Dataset):
             # For TEED BIPBRIlight Upscale
             img = cv2.resize(img,(0,0),fx=1.3,fy=1.3)
 
-        if img.shape[0] < 512 or img.shape[1] < 512:
+        if img.shape[0] < 500 or img.shape[1] < 500:
             #TEED BIPED standard proposal if you want speed up the test, comment this block
             img = cv2.resize(img, (0, 0), fx=1.5, fy=1.5)
         # else:
