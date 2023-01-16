@@ -131,8 +131,8 @@ class DoubleFusion(nn.Module):
         # attn2 = self.AF(self.PSconv1(self.DWconv2(attn))) # self.smish( self.relu( # v14-5-352
 
         # return ((attn2 * attn).sum(1)).unsqueeze(1) # TED+DoubleFusDWC
-        return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) # TED+smishDFprodDWC-2
-        # return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED publication
+        # return Fsmish(((attn2 * attn).sum(1)).unsqueeze(1)) # TED+smishDFprodDWC-2
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED publication
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
