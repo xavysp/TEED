@@ -119,16 +119,14 @@ class _DenseLayer(nn.Sequential):
         # self.add_module('relu2', nn.ReLU(inplace=True)),
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
-        # self.add_module('norm1', nn.BatchNorm2d(out_features)),
-        self.add_module('smish1', Smish()),
+        self.add_module('af1', nn.ReLU()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
-                                           kernel_size=3, stride=1, bias=True)),
-        # self.add_module('norm2', nn.BatchNorm2d(out_features))
+                                           kernel_size=3, stride=1, bias=True))
 
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(Fsmish(x1))  # F.relu()
+        new_features = super(_DenseLayer, self).forward(F.relu(x1))  # F.relu()
         # if new_features.shape[-1]!=x2.shape[-1]:
         #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
         #                                 align_corners=False)
@@ -162,8 +160,7 @@ class UpConvBlock(nn.Module):
             pad = all_pads[up_scale]  # kernel_size-1
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
-            # layers.append(nn.BatchNorm2d(out_features))
-            layers.append(Smish())
+            layers.append(nn.ReLU())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
@@ -184,13 +181,12 @@ class SingleConvBlock(nn.Module):
         self.conv = nn.Conv2d(in_features, out_features, 1, stride=stride,
                               bias=True)
         if self.use_ac:
-            self.smish = Smish()
-        # self.bn = nn.BatchNorm2d(out_features)
+            self.af = nn.ReLU()
 
     def forward(self, x):
         x = self.conv(x)
         if self.use_ac:
-            return self.smish(x)
+            return self.af(x)
         else:
             return x
 
@@ -207,19 +203,17 @@ class DoubleConvBlock(nn.Module):
             out_features = mid_features
         self.conv1 = nn.Conv2d(in_features, mid_features,
                                3, padding=1, stride=stride)
-        # self.bn1 = nn.BatchNorm2d(mid_features)
         self.conv2 = nn.Conv2d(mid_features, out_features, 3, padding=1)
-        # self.bn2 = nn.BatchNorm2d(out_features)
-        self.smish= Smish()#nn.ReLU(inplace=True)
+        self.af= nn.ReLU()#Smish()#nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.conv1(x)
         # x = self.bn1(x)
-        x = self.smish(x)
+        x = self.af(x)
         x = self.conv2(x)
         # x = self.bn2(x)
         if self.use_act:
-            x = self.smish(x)
+            x = self.af(x)
         return x
 
 
