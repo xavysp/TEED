@@ -1,27 +1,20 @@
 # TDC: is a Tiny but Efficient Edge Detection, it comes from the LDC-B3
 # with a slightly modification
-# It has less than 200K parameters
-# LDC parameters:
-# 155665
-# TED > 58K
+# It has less than 60K parameters
+# TED ~58K
 # Check Relu, Gelu, Mish, Smish and
-# AF RELU
+# AF Tanh
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
-from utils.AF.Fxaf import xaf as Fxaf
-from utils.AF.Xxaf import Xaf as XAF
-# from utils.AF.Fmish import mish as Fmish
 
 
 def weight_init(m):
     if isinstance(m, (nn.Conv2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
-        # if m.weight.data.shape[1] == torch.Size([1]):
-        #     torch.nn.init.normal_(m.weight, mean=0.0,)
 
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
@@ -30,8 +23,6 @@ def weight_init(m):
     if isinstance(m, (nn.ConvTranspose2d,)):
         torch.nn.init.xavier_normal_(m.weight, gain=1.0)
 
-        # if m.weight.data.shape[1] == torch.Size([1]):
-        #     torch.nn.init.normal_(m.weight, std=0.1)
         if m.bias is not None:
             torch.nn.init.zeros_(m.bias)
 
@@ -88,7 +79,6 @@ class DoubleFusion(nn.Module):
 
         self.DWconv2 = nn.Conv2d(24, 24*1, kernel_size=3,
                                stride=1, padding=1,groups=24)# before 64  instead of 32
-        # self.PSconv2 = nn.PixelShuffle(1)
 
         self.AF= Smish()#XAF() #nn.Tanh()# XAF() #   # Smish()#
 
@@ -116,20 +106,18 @@ class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
         super(_DenseLayer, self).__init__()
 
-        # self.add_module('relu2', nn.ReLU(inplace=True)),
+
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
-        self.add_module('af1', nn.ReLU()),
+        self.add_module('af1', nn.Tanh()),
         self.add_module('conv2', nn.Conv2d(out_features, out_features,
                                            kernel_size=3, stride=1, bias=True))
 
     def forward(self, x):
         x1, x2 = x
 
-        new_features = super(_DenseLayer, self).forward(F.relu(x1))  # F.relu()
-        # if new_features.shape[-1]!=x2.shape[-1]:
-        #     new_features =F.interpolate(new_features,size=(x2.shape[2],x2.shape[-1]), mode='bicubic',
-        #                                 align_corners=False)
+        new_features = super(_DenseLayer, self).forward(F.tanh(x1))  # F.relu()
+
         return 0.5 * (new_features + x2), x2
 
 
@@ -160,7 +148,7 @@ class UpConvBlock(nn.Module):
             pad = all_pads[up_scale]  # kernel_size-1
             out_features = self.compute_out_features(i, up_scale)
             layers.append(nn.Conv2d(in_features, out_features, 1))
-            layers.append(nn.ReLU())
+            layers.append(nn.Tanh())
             layers.append(nn.ConvTranspose2d(
                 out_features, out_features, kernel_size, stride=2, padding=pad))
             in_features = out_features
@@ -176,12 +164,11 @@ class UpConvBlock(nn.Module):
 class SingleConvBlock(nn.Module):
     def __init__(self, in_features, out_features, stride, use_ac=False):
         super(SingleConvBlock, self).__init__()
-        # self.use_bn = use_bs
         self.use_ac=use_ac
         self.conv = nn.Conv2d(in_features, out_features, 1, stride=stride,
                               bias=True)
         if self.use_ac:
-            self.af = nn.ReLU()
+            self.af = nn.Tanh()
 
     def forward(self, x):
         x = self.conv(x)
@@ -204,14 +191,13 @@ class DoubleConvBlock(nn.Module):
         self.conv1 = nn.Conv2d(in_features, mid_features,
                                3, padding=1, stride=stride)
         self.conv2 = nn.Conv2d(mid_features, out_features, 3, padding=1)
-        self.af= nn.ReLU()#Smish()#nn.ReLU(inplace=True)
+        self.af= nn.Tanh()#Smish()#nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.conv1(x)
-        # x = self.bn1(x)
         x = self.af(x)
         x = self.conv2(x)
-        # x = self.bn2(x)
+
         if self.use_act:
             x = self.af(x)
         return x

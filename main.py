@@ -19,7 +19,8 @@ from loss2 import *
 # from tedRelu import TED
 # from ted import TED # LDC-B3 modified V10
 # from tedCats import TED # CAts loss and coFusion
-from tedRelu import TED # TED with relu
+# from tedRelu import TED # TED with relu
+from tedTanh import TED # TED with relu
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -325,7 +326,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TEDrelu BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
+                        default='TEDtanh BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
