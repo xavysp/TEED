@@ -20,7 +20,8 @@ from loss2 import *
 # from ted import TED # LDC-B3 modified V10
 # from tedCats import TED # CAts loss and coFusion
 # from tedRelu import TED # TED with relu
-from tedTanh import TED # TED with relu
+# from tedTanh import TED # TED with relu
+from tedB2 import TED # TED with relu
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
@@ -58,7 +59,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3] TED
         # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
         # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss all
-        loss2 = criterion1(preds_list[-1], labels, l_weight[3], device) # cats_loss [fused] TED
+        loss2 = criterion1(preds_list[-1], labels, l_weight[-1], device) # cats_loss [fused] TED
         # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
         tLoss = loss2+loss1 # TED
         optimizer.zero_grad()
@@ -326,7 +327,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TEDtanh BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
+                        default='TED-B2 BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
