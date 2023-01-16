@@ -17,8 +17,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipb
 from loss2 import *
 
 # from tedRelu import TED
-# from ted import TED # LDC-B3 modified V10
-from tedCats import TED # CAts loss and coFusion
+from ted import TED # LDC-B3 modified V10
+# from tedCats import TED # CAts loss and coFusion
 # from tedRelu import TED # TED with relu
 # from tedTanh import TED # TED with relu
 # from tedB2 import TED # TED with relu
@@ -327,7 +327,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TED+smishDFprodDWC-2 BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
+                        default='TED-2 BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
