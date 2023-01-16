@@ -80,9 +80,9 @@ class CoFusion2(nn.Module):
 
 class DoubleFusion(nn.Module):
     # TED fusion before the final edge map prediction
-    def __init__(self, in_ch, out_ch):
+    def __init__(self, in_ch, out_ch): # B2 = 2*12
         super(DoubleFusion, self).__init__()
-        self.DWconv1 = nn.Conv2d(in_ch, in_ch*8, kernel_size=3,
+        self.DWconv1 = nn.Conv2d(in_ch, in_ch*12, kernel_size=3,
                                stride=1, padding=1, groups=in_ch) # before 64
         self.PSconv1 = nn.PixelShuffle(1)
 
