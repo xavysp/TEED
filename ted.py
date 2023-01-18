@@ -87,14 +87,12 @@ class DoubleFusion(nn.Module):
 
         attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # #TED best res TEDv14[8, 3, 352, 352]
 
-        # return ((fusecat * attn).sum(1)).unsqueeze(1) # ori
         return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
         super(_DenseLayer, self).__init__()
 
-        # self.add_module('relu2', nn.ReLU(inplace=True)),
         self.add_module('conv1', nn.Conv2d(input_features, out_features,
                                            kernel_size=3, stride=1, padding=2, bias=True)),
         self.add_module('smish1', Smish()),
@@ -210,11 +208,7 @@ class TED(nn.Module):
         self.up_block_2 = UpConvBlock(32, 1)
         self.up_block_3 = UpConvBlock(48, 2) # (32, 64, 1)
 
-        # self.block_cat = SingleConvBlock(3, 1, stride=1, use_bs=False) # hed fusion method
-        # self.block_cat = CoFusion(3,3)# cats fusion method
-        self.block_cat = DoubleFusion(3,3)# cats fusion modified
-        # self.block_cat = CoFusion2(3,3)# cats fusion method
-        # self.block_cat = CoFusion(3,3)# cats fusion method ori
+        self.block_cat = DoubleFusion(3,3)# TEED fusion
 
 
         self.apply(weight_init)

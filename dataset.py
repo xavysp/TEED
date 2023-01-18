@@ -433,8 +433,7 @@ class TestDataset(Dataset):
         #     gt = cv2.resize(gt, (img_width, img_height))
         # # For FPS
         # img = cv2.resize(img, (496,320))
-        # if self.yita is not None:
-        #     gt[gt >= self.yita] = 1
+
         img = np.array(img, dtype=np.float32)
         # if self.rgb:
         #     img = img[:, :, ::-1]  # RGB->BGR
@@ -580,9 +579,6 @@ class BipedDataset(Dataset):
         # BRIND Best for TEDD+BIPED
         gt[gt > 0.1] +=0.2#0.4
         gt = np.clip(gt, 0., 1.)
-        # # for MDBD
-        # gt[gt > 0.3] +=0.7#0.4
-        # gt = np.clip(gt, 0., 1.)
 
         img = img.transpose((2, 0, 1))
         img = torch.from_numpy(img.copy()).float()

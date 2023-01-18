@@ -17,8 +17,8 @@ from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipb
 from loss2 import *
 
 # from tedRelu import TED
-# from ted import TED # LDC-B3 modified V10
-from tedCats import TED # CAts loss and coFusion
+from ted import TED # TEED architecture
+# from tedCats import TED # CAts loss and coFusion
 # from tedRelu import TED # TED with relu
 # from tedTanh import TED # TED with relu
 # from tedB2 import TED # TED with relu
@@ -43,11 +43,6 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
     model.train()
 
     l_weight0 = [1.1,0.7,1.1,1.3] # for bdcn loss2-B4
-    # l_weight0 = [0.7, 0.7, 1.1, 1.1, 0.3, 0.3, 1.3] # for bdcn loss2-B6
-
-    # l_weight = [[0.05, 2.], [0.05, 2.], [0.05, 2.],
-    #             [0.1, 1.], [0.1, 1.], [0.1, 1.],
-    #             [0.01, 4.]]  # for cats loss
     l_weight = [[0.05, 2.], [0.05, 2.], [0.01, 1.],
                 [0.01, 3.]]  # for cats loss [0.01, 4.]
     loss_avg =[]
@@ -55,13 +50,10 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         images = sample_batched['images'].to(device)  # BxCxHxW
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
-        # tLoss = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list,l_weight0)]) # bdcn_loss2 all
-        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3] TED
-        # loss1 = criterion2(preds_list[-1], labels,l_weight0[-1]) # bdcn_loss2 [fused]
-        # tLoss = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list, l_weight)])  # cats_loss all
-        loss2 = criterion1(preds_list[-1], labels, l_weight[-1], device) # cats_loss [fused] TED
-        # loss2 = sum([criterion1(preds, labels, l_w, device) for preds, l_w in zip(preds_list[:-1], l_weight)]) # cats_loss [1,2,3]
-        tLoss = loss2+loss1 # TED
+        loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3] TEED
+        loss2 = criterion1(preds_list[-1], labels, l_weight[-1], device) # cats_loss [fused] TEED
+        tLoss = loss2+loss1 # TEED
+
         optimizer.zero_grad()
         tLoss.backward()
         optimizer.step()
@@ -224,7 +216,7 @@ def testPich(checkpoint_path, dataloader, model, device, output_dir, args, resiz
 
 def parse_args():
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description='LDC trainer.')
+    parser = argparse.ArgumentParser(description='TEED model')
     parser.add_argument('--choose_test_data',
                         type=int,
                         default=-1,     # UDED=14
@@ -282,10 +274,6 @@ def parse_args():
                         default=False, # for Upsale test set in 30%
                         help='True: up scale x1.5 test image')  # Just for test
 
-    parser.add_argument('--double_img',
-                        type=bool,
-                        default=False,
-                        help='True: use same 2 imgs changing channels')  # Just for test
     parser.add_argument('--resume',
                         type=bool,
                         default=False,
@@ -327,7 +315,7 @@ def parse_args():
     parser.add_argument('--adjust_lr', default=[4], type=int,
                         help='Learning rate step size.')  # [4] [6,9,19]
     parser.add_argument('--version_notes',
-                        default='TED-3 tedCasts.py BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
+                        default='TED-4 BIPED+BRIND-trainingdataLoader AF=smish -USNet--noBN xav init normal bdcnLoss2+cats2loss +DoubleFusio-3Smish AF sum',
                         type=str,
                         help='version notes')
     parser.add_argument('--batch_size',
@@ -394,7 +382,7 @@ def main(args, train_inf):
         training_notes =[args.version_notes+ ' RL= ' + str(args.lr) + ' WD= '
                           + str(args.wd) + ' image size = ' + str(args.img_width)
                           + ' adjust LR=' + str(args.adjust_lr) +' LRs= '
-                          + str(args.lrs)+' Loss Function= CAST-loss2.py '
+                          + str(args.lrs)+' Loss Function= BDCNloss2 + CAST-loss2.py '
                           + str(time.asctime())+' trained on '+args.train_data]
         info_txt = open(os.path.join(training_dir, 'training_settings.txt'), 'w')
         info_txt.write(str(training_notes))
@@ -463,13 +451,9 @@ def main(args, train_inf):
 
         output_dir = os.path.join(args.res_dir, args.train_data+"2"+ args.test_data)
         print(f"output_dir: {output_dir}")
-        if args.double_img:
-            # run twice the same image changing the image's channels
-            testPich(checkpoint_path, dataloader_val, model, device,
-                     output_dir, args,if_resize_img)
-        else:
-            test(checkpoint_path, dataloader_val, model, device,
-                 output_dir, args,if_resize_img)
+
+        test(checkpoint_path, dataloader_val, model, device,
+             output_dir, args,if_resize_img)
 
         # Count parameters:
         num_param = count_parameters(model)
@@ -553,7 +537,7 @@ def main(args, train_inf):
 
     num_param = count_parameters(model)
     print('-------------------------------------------------------')
-    print('LDC parameters:')
+    print('TEED parameters:')
     print(num_param)
     print('-------------------------------------------------------')
 

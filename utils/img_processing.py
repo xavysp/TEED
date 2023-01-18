@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
         # print(img_name, '   ', gt_name)
         tmp_img = cv2.imread(os.path.join(img_base_dir,img_name),0)
-        tmp_img = cv2.bitwise_not(tmp_img) # if the image's background
+        # tmp_img = cv2.bitwise_not(tmp_img) # if the image's background
         # is white uncomment this line
         tmp_gt = cv2.imread(os.path.join(gt_base_dir,gt_name),0)
         # print(f"image {img_name} {tmp_img.shape}")
@@ -263,8 +263,8 @@ if __name__ == '__main__':
         psnr = peak_signal_noise_ratio(tmp_gt, tmp_img)
         mse = mean_squared_error(tmp_gt, tmp_img)
         mae = mean_absolute_error(tmp_gt, tmp_img)
-        # a = cv2.bitwise_not(a)
-        # cv2.imwrite(os.path.join("tmp_res",img_name), a)
+        a = cv2.bitwise_not(a)
+        cv2.imwrite(os.path.join("tmp_res",img_name), a)
 
         psnr_list.append(psnr)
         mse_list.append(mse)
