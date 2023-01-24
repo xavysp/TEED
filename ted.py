@@ -83,11 +83,11 @@ class DoubleFusion(nn.Module):
 
     def forward(self, x):
         # fusecat = torch.cat(x, dim=1)
-        attn = self.PSconv1(self.DWconv1(self.AF(x))) # #TED best res TEDv14 [8, 32, 352, 352]
+        attn = self.PSconv1(self.DWconv1(self.AF(x))) # #TEED best res TEDv14 [8, 32, 352, 352]
 
-        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # #TED best res TEDv14[8, 3, 352, 352]
+        attn2 = self.PSconv1(self.DWconv2(self.AF(attn))) # #TEED best res TEDv14[8, 3, 352, 352]
 
-        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res TEDv14
+        return Fsmish(((attn2 +attn).sum(1)).unsqueeze(1)) #TED best res
 
 class _DenseLayer(nn.Sequential):
     def __init__(self, input_features, out_features):
