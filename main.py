@@ -219,7 +219,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='TEED model')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=14,     # UDED=14
+                        default=-1,     # UDED=14
                         help='Choose a dataset for testing: 0 - 15')
 
     # ----------- test -------0--
@@ -271,7 +271,7 @@ def parse_args():
                         help='Script in testing mode.')
     parser.add_argument('--up_scale',
                         type=bool,
-                        default=False, # for Upsale test set in 30%
+                        default=True, # for Upsale test set in 30%
                         help='True: up scale x1.5 test image')  # Just for test
 
     parser.add_argument('--resume',
