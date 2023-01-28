@@ -1,4 +1,4 @@
-# TDC: is a Tiny but Efficient Edge Detection, it comes from the LDC-B3
+# TEED: is a Tiny but Efficient Edge Detection, it comes from the LDC-B3
 # with a slightly modification
 # It has less than 200K parameters
 # LDC parameters:
