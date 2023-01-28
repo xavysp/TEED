@@ -16,12 +16,9 @@ from thop import profile
 from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipbriDataset
 from loss2 import *
 
-# from tedRelu import TED
+
 from ted import TED # TEED architecture
-# from tedCats import TED # CAts loss and coFusion
-# from tedRelu import TED # TED with relu
-# from tedTanh import TED # TED with relu
-# from tedB2 import TED # TED with relu
+
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
