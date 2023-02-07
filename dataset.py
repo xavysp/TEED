@@ -686,7 +686,8 @@ class bipbriDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
-        if i_w> 420 and i_h>420: #before np.random.random() > 0.4
+        # if i_w> 420 and i_h>420: #before np.random.random() > 0.4 Before
+        if i_w> 400 and i_h>400: #before np.random.random() > 0.4
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
 
@@ -710,12 +711,12 @@ class bipbriDataset(Dataset):
             # New addidings
             img = cv2.resize(img, dsize=(crop_size, crop_size))
             gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # # BRIND
-        # gt[gt > 0.1] +=0.2#0.4
-        # gt = np.clip(gt, 0., 1.)
-        # for BIPED
-        gt[gt > 0.2] += 0.6  # 0.5 for BIPED
-        gt = np.clip(gt, 0., 1.)  # BIPED
+        # BRIND
+        gt[gt > 0.1] +=0.2#0.4
+        gt = np.clip(gt, 0., 1.)
+        # # for BIPED
+        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED before results here ****
+        # gt = np.clip(gt, 0., 1.)  # BIPED ***** with this setting biggger edges
 
 
         img = img.transpose((2, 0, 1))

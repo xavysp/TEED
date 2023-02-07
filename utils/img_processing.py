@@ -39,6 +39,7 @@ def count_parameters(model=None):
 def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg=None, is_inchannel=False):
 
     os.makedirs(output_dir, exist_ok=True)
+    predict_all = arg.predict_all
     if not arg.is_testing:
         assert len(tensor.shape) == 4, tensor.shape
         img_height,img_width = img_shape[0].item(),img_shape[1].item()
@@ -75,6 +76,21 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
         # output_dir_a = os.path.join(output_dir, av_name)
         os.makedirs(output_dir_f, exist_ok=True)
         # os.makedirs(output_dir_a, exist_ok=True)
+        if predict_all:
+            all_data_dir = os.path.join(output_dir, "all_edges")
+            os.makedirs(all_data_dir, exist_ok=True)
+            out1_dir = os.path.join(all_data_dir,"o1")
+            out2_dir = os.path.join(all_data_dir,"o2")
+            out3_dir = os.path.join(all_data_dir,"o3")#  output 3
+            out4_dir = os.path.join(all_data_dir,"o4") # average
+            out5_dir = os.path.join(all_data_dir,"o5")# fusion
+            out6_dir = os.path.join(all_data_dir,"o6") # fusion
+            os.makedirs(out1_dir, exist_ok=True)
+            os.makedirs(out2_dir, exist_ok=True)
+            os.makedirs(out3_dir, exist_ok=True)
+            os.makedirs(out4_dir, exist_ok=True)
+            os.makedirs(out5_dir, exist_ok=True)
+            os.makedirs(out6_dir, exist_ok=True)
 
         # 255.0 * (1.0 - em_a)
         edge_maps = []
@@ -140,12 +156,19 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
                         # print(fuse.shape, fuse_mask.shape)
 
             # Save predicted edge maps
-            # average = np.array(preds, dtype=np.float32)
-            # average = np.uint8(np.mean(average, axis=0))
+            average = np.array(preds, dtype=np.float32)
+            average = np.uint8(np.mean(average, axis=0))
             output_file_name_f = os.path.join(output_dir_f, file_name)
             # output_file_name_a = os.path.join(output_dir_a, file_name)
             cv2.imwrite(output_file_name_f, fuse)
             # cv2.imwrite(output_file_name_a, average)
+            if predict_all:
+                cv2.imwrite(os.path.join(out1_dir,file_name),preds[0])
+                cv2.imwrite(os.path.join(out2_dir,file_name),preds[1])
+                cv2.imwrite(os.path.join(out3_dir,file_name),preds[2])
+                cv2.imwrite(os.path.join(out4_dir,file_name),average)
+                cv2.imwrite(os.path.join(out5_dir,file_name),fuse)
+                cv2.imwrite(os.path.join(out6_dir,file_name),fuse)
 
             idx += 1
 
@@ -263,8 +286,8 @@ if __name__ == '__main__':
         psnr = peak_signal_noise_ratio(tmp_gt, tmp_img)
         mse = mean_squared_error(tmp_gt, tmp_img)
         mae = mean_absolute_error(tmp_gt, tmp_img)
-        a = cv2.bitwise_not(a)
-        cv2.imwrite(os.path.join("tmp_res",img_name), a)
+        # a = cv2.bitwise_not(a) # save data
+        # cv2.imwrite(os.path.join("tmp_res",img_name), a) # save data
 
         psnr_list.append(psnr)
         mse_list.append(mse)

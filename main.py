@@ -225,7 +225,7 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =True
+    is_testing =False
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[13] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -266,9 +266,13 @@ def parse_args():
     parser.add_argument('--is_testing',type=bool,
                         default=is_testing,
                         help='Script in testing mode.')
+    parser.add_argument('--predict_all',
+                        type=bool,
+                        default=True,
+                        help='True: Generate all TEED outputs in all_edges ')
     parser.add_argument('--up_scale',
                         type=bool,
-                        default=True, # for Upsale test set in 30%
+                        default=False, # for Upsale test set in 30%
                         help='True: up scale x1.5 test image')  # Just for test
 
     parser.add_argument('--resume',
