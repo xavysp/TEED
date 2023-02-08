@@ -36,8 +36,8 @@ def dataset_info(dataset_name, is_linux=True):
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
                 'train_list': 'train_pair0.lst', # LDC base augmentation
-                'train_list2': 'train_pair_all.lst', # biped+brind ori
-                # 'train_list2': 'train_pair.lst', # for brind mine
+                # 'train_list2': 'train_pair_all.lst', # biped+brind ori
+                'train_list2': 'train_pair.lst', # for brind mine
                 'test_list': None,
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
