@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 from utils.AF.Fsmish import smish as Fsmish
 
-
 def bdcn_loss2(inputs, targets, l_weight=1.1):
     # bdcn loss modified in DexiNed
 
@@ -19,7 +18,6 @@ def bdcn_loss2(inputs, targets, l_weight=1.1):
     return l_weight*cost
 
 # ------------ cats losses ----------
-
 def bdrloss(prediction, label, radius,device='cpu'):
     '''
     The boundary tracing loss that handles the confusing pixels.
@@ -32,8 +30,6 @@ def bdrloss(prediction, label, radius,device='cpu'):
     bdr_pred = prediction * label
     pred_bdr_sum = label * F.conv2d(bdr_pred, filt, bias=None, stride=1, padding=radius)
 
-
-
     texture_mask = F.conv2d(label.float(), filt, bias=None, stride=1, padding=radius)
     mask = (texture_mask != 0).float()
     mask[label == 1] = 0
@@ -44,8 +40,6 @@ def bdrloss(prediction, label, radius,device='cpu'):
     cost[label == 0] = 0
 
     return torch.sum(cost.float().mean((1, 2, 3)))
-
-
 
 def textureloss(prediction, label, mask_radius, device='cpu'):
     '''
@@ -96,6 +90,3 @@ def cats_loss(prediction, label, l_weight=[0.,0.], device='cpu'):
     bdrcost = bdrloss(prediction.float(), label_w.float(), radius=4, device=device)
 
     return cost + bdr_factor * bdrcost + tex_factor * textcost
-    # return (cost + bdr_factor * bdrcost + tex_factor * textcost)*0.75 # mine
-    # return cost + bdr_factor * bdrcost
-    # return cost + tex_factor * textcost

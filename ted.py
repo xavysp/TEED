@@ -1,11 +1,9 @@
 # TEED: is a Tiny but Efficient Edge Detection, it comes from the LDC-B3
-# with a slightly modification
-# It has less than 200K parameters
+# with a Slightly modification
 # LDC parameters:
 # 155665
 # TED > 58K
-# Check Relu, Gelu, Mish, Smish and
-# AF SMISH
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -189,7 +187,7 @@ class DoubleConvBlock(nn.Module):
 
 
 class TED(nn.Module):
-    """ Definition of  Tiny but Efficient Edge Detector """
+    """ Definition of  Tiny and Efficient Edge Detector """
 
     def __init__(self):
         super(TED, self).__init__()
@@ -249,9 +247,6 @@ class TED(nn.Module):
          # supose the image size is 352x352
 
         # Block 1
-        # img_H, img_W = x.shape[2],x.shape[-1]
-        # if single_test:
-        #     x = self.resize_input(x)
         block_1 = self.block_1(x) # [8,16,176,176]
         block_1_side = self.side_1(block_1) # 16 [8,32,88,88]
 
@@ -274,12 +269,6 @@ class TED(nn.Module):
         # concatenate multiscale outputs
         block_cat = torch.cat(results, dim=1)  # Bx6xHxW
         block_cat = self.block_cat(block_cat)  # Bx1xHxW DoubleFusion
-
-        # num_paramDF = count_parameters(self.block_cat)
-        # print('-------------------------------------------------------')
-        # print('TEED-DoubleFusion parameters:')
-        # print(num_paramDF)
-        # print('-------------------------------------------------------')
 
         results.append(block_cat)
         return results
