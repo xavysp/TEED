@@ -6,7 +6,7 @@
 
 ## UDED dataset
 
-Here the (link)[https://github.com/xavysp/UDED] to access the UDED dataset for edge detection
+Here the [link](https://github.com/xavysp/UDED) to access the UDED dataset for edge detection
 
 ## Citation
 
