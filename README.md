@@ -2,6 +2,8 @@
 
 ## Overview
 
+<div style="text-align:center"><img src='imgs/teedBanner.png' width=800>
+</div>
 ... In construction
 
 ## Training with TEED
