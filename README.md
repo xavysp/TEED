@@ -7,6 +7,11 @@
 
 ... In construction
 
+    git clone https://github.com/xavysp/TEED.git
+    cd TEED
+
+Then,
+
 ## Training with TEED
 
 ## Testing with TEED
