@@ -12,6 +12,7 @@ import torch.nn.functional as F
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
+from utils.img_processing import count_parameters
 
 
 def weight_init(m):
@@ -272,7 +273,13 @@ class TED(nn.Module):
 
         # concatenate multiscale outputs
         block_cat = torch.cat(results, dim=1)  # Bx6xHxW
-        block_cat = self.block_cat(block_cat)  # Bx1xHxW
+        block_cat = self.block_cat(block_cat)  # Bx1xHxW DoubleFusion
+
+        # num_paramDF = count_parameters(self.block_cat)
+        # print('-------------------------------------------------------')
+        # print('TEED-DoubleFusion parameters:')
+        # print(num_paramDF)
+        # print('-------------------------------------------------------')
 
         results.append(block_cat)
         return results

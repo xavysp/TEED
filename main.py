@@ -13,11 +13,12 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from thop import profile
 
-from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info, bipbriDataset
+from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 
 
 from ted import TED # TEED architecture
+# from tedCats import TED # TEED architecture
 
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
@@ -48,7 +49,7 @@ def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
         labels = sample_batched['labels'].to(device)  # BxHxW
         preds_list = model(images)
         loss1 = sum([criterion2(preds, labels,l_w) for preds, l_w in zip(preds_list[:-1],l_weight0)]) # bdcn_loss2 [1,2,3] TEED
-        loss2 = criterion1(preds_list[-1], labels, l_weight[-1], device) # cats_loss [fused] TEED
+        loss2 = criterion1(preds_list[-1], labels, l_weight[-1], device) # cats_loss [dfuse] TEED
         tLoss = loss2+loss1 # TEED
 
         optimizer.zero_grad()
@@ -133,26 +134,21 @@ def test(checkpoint_path, dataloader, model, device, output_dir, args,resize_inp
                                      map_location=device))
 
     model.eval()
+    # just for the new dataset
+    # os.makedirs(os.path.join(output_dir,"healthy"), exist_ok=True)
+    # os.makedirs(os.path.join(output_dir,"infected"), exist_ok=True)
 
     with torch.no_grad():
         total_duration = []
         for batch_id, sample_batched in enumerate(dataloader):
             images = sample_batched['images'].to(device)
-            if not args.test_data == "CLASSIC":
-                labels = sample_batched['labels'].to(device)
+            # if not args.test_data == "CLASSIC":
+            labels = sample_batched['labels'].to(device)
             file_names = sample_batched['file_names']
             image_shape = sample_batched['image_shape']
 
+
             print(f"{file_names}: {images.shape}")
-            # if batch_id==0:
-            #     mac,param = profile(model,inputs=(images,))
-            #     end = time.perf_counter()
-            #     if device.type == 'cuda':
-            #         torch.cuda.synchronize()
-            #     preds = model(images)
-            #     if device.type == 'cuda':
-            #         torch.cuda.synchronize()
-            # else:
             end = time.perf_counter()
             if device.type == 'cuda':
                 torch.cuda.synchronize()
@@ -162,7 +158,7 @@ def test(checkpoint_path, dataloader, model, device, output_dir, args,resize_inp
             tmp_duration = time.perf_counter() - end
             total_duration.append(tmp_duration)
             save_image_batch_to_disk(preds,
-                                     output_dir,
+                                     output_dir, # output_dir
                                      file_names,
                                      image_shape,
                                      arg=args)
@@ -216,19 +212,17 @@ def parse_args():
     parser = argparse.ArgumentParser(description='TEED model')
     parser.add_argument('--choose_test_data',
                         type=int,
-                        default=-1,     # UDED=14
+                        default=-1,     # UDED=15
                         help='Choose a dataset for testing: 0 - 15')
 
     # ----------- test -------0--
-
-
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =False
+    is_testing =True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
-    TRAIN_DATA = DATASET_NAMES[13] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
+    TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
     train_inf = dataset_info(TRAIN_DATA, is_linux=IS_LINUX)
     train_dir = train_inf['data_dir']
 
@@ -268,7 +262,7 @@ def parse_args():
                         help='Script in testing mode.')
     parser.add_argument('--predict_all',
                         type=bool,
-                        default=True,
+                        default=False,
                         help='True: Generate all TEED outputs in all_edges ')
     parser.add_argument('--up_scale',
                         type=bool,
@@ -357,11 +351,6 @@ def parse_args():
                         default=train_inf['mean'],
                         type=float)  # [103.939,116.779,123.68,137.86] [104.00699, 116.66877, 122.67892]
 
-
-    # BRIND mean = [104.007, 116.669, 122.679, 137.86]
-    # BIPEDaug mean_bgr processed [159.510, 159.451,162.230,137.86]
-    # test BSDS with [97.939,116.779,123.68]
-    # BIPED ori [103.939,116.779,123.68,137.86]
     args = parser.parse_args()
     return args, train_inf
 
@@ -412,30 +401,19 @@ def main(args, train_inf):
             ini_epoch=8
             model.load_state_dict(torch.load(checkpoint_path2,
                                          map_location=device))
-        if args.train_data.lower()=='bipbri':
-            dataset_train = bipbriDataset(args.input_dir,
-                                         img_width=args.img_width,
-                                         img_height=args.img_height,
-                                         train_mode='train',
-                                         arg=args, extra_inf=train_inf
-                                         )
-            dataloader_train = DataLoader(dataset_train,
-                                          batch_size=args.batch_size,
-                                          shuffle=True,
-                                          num_workers=args.workers)
-        else:
 
-            dataset_train = BipedDataset(args.input_dir,
-                                         img_width=args.img_width,
-                                         img_height=args.img_height,
-                                         train_mode='train',
-                                         arg=args
-                                         )
-            dataloader_train = DataLoader(dataset_train,
-                                          batch_size=args.batch_size,
-                                          shuffle=True,
-                                      num_workers=args.workers)
-
+    # Dataset Loading...
+    dataset_train = BipedDataset(args.input_dir,
+                                 img_width=args.img_width,
+                                 img_height=args.img_height,
+                                 train_mode='train',
+                                 arg=args
+                                 )
+    dataloader_train = DataLoader(dataset_train,
+                                  batch_size=args.batch_size,
+                                  shuffle=True,
+                              num_workers=args.workers)
+    # Test dataset loading
     dataset_val = TestDataset(args.input_val_dir,
                               test_data=args.test_data,
                               img_width=args.test_img_width,
@@ -447,7 +425,7 @@ def main(args, train_inf):
                                 shuffle=False,
                                 num_workers=args.workers)
     # Testing
-    if_resize_img = False if args.test_data in ['BIPED', 'CID', 'MDBD','BIPBRI'] else True
+    if_resize_img = False if args.test_data in ['BIPED', 'CID', 'MDBD'] else True
     if args.is_testing:
 
         output_dir = os.path.join(args.res_dir, args.train_data+"2"+ args.test_data)

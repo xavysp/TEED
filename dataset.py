@@ -15,14 +15,16 @@ DATASET_NAMES = [
     'BIPED-B6',
     'BSDS', # 5
     'BRIND', # 6
+    'ICEDA', #7
     'BSDS300',
-    'CID', #8
+    'CID', #9
     'DCD',
-    'MDBD', #10
+    'MDBD', #11
     'PASCAL',
-    'NYUD', #12
+    'NYUD', #13
     'BIPBRI',
-    'UDED', # 14 just for testing
+    'UDED', # 15 just for testing
+    'DMRIR',
     'CLASSIC'
 ]  # 8
 # [108, 109.451,112.230,137.86]
@@ -32,18 +34,6 @@ def dataset_info(dataset_name, is_linux=True):
     if is_linux:
 
         config = {
-            'BIPBRI': {
-                'img_height': 512,  # 321
-                'img_width': 512,  # 481
-                'train_list': 'train_pair0.lst', # LDC base augmentation
-                # 'train_list2': 'train_pair_all.lst', # biped+brind ori
-                'train_list2': 'train_pair.lst', # for brind mine
-                'test_list': None,
-                'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
-                'data_dir2': '/root/workspace/datasets/BRIND',  # mean_rgb
-                'yita': 0.5,
-                'mean': BIPED_mean
-            },
             'UDED': {
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
@@ -73,6 +63,15 @@ def dataset_info(dataset_name, is_linux=True):
                 'yita': 0.5,
                 'mean': [104.007, 116.669, 122.679, 137.86]
             },
+            'ICEDA': {
+            'img_height': 1024,  # 321
+            'img_width': 1408,  # 481
+            'train_list': None,
+            'test_list': 'test_pair.lst',
+            'data_dir': '/root/workspace/datasets/ICEDA',  # mean_rgb
+            'yita': 0.5,
+            'mean': [104.007, 116.669, 122.679, 137.86]
+        },
             'BSDS300': {
                 'img_height': 512, #321
                 'img_width': 512, #481
@@ -128,8 +127,7 @@ def dataset_info(dataset_name, is_linux=True):
                 'data_dir': '/root/workspace/datasets/BIPED',  # mean_rgb
                 'yita': 0.5,
                 'mean':BIPED_mean
-                # train_pairB5.lst this for DexiNed and LDC train_pair0.lst
-            # ori [159.510, 159.451,162.230,137.86]
+            #
             },
             'CLASSIC': {
                 'img_height': 512,#
@@ -180,31 +178,19 @@ def dataset_info(dataset_name, is_linux=True):
         }
     else:
         config = {
-            'BIPBRI': {
-                'img_height': 512,  # 321
-                'img_width': 512,  # 481
-                'train_list': 'train_pair0.lst', # 0=LDC augmentation
-                'train_list2': 'train_pair_all.lst',
-                # 'train_list2': 'train_pair.lst', # for brind
-                'test_list': None,
-                'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # mean_rgb
-                'data_dir2': 'C:/Users/xavysp/dataset/BRIND',  # mean_rgb
-                'yita': 0.5,
-                'mean': BIPED_mean
-            },
             'UDED': {
                 'img_height': 512,  # 321
                 'img_width': 512,  # 481
                 'train_list': None,
                 'test_list': 'test_pair.lst',
-                'data_dir': 'C:/Users/xavysp/dataset/UDED',  # mean_rgb
+                'data_dir': 'C:/dataset/UDED',  # mean_rgb
                 'yita': 0.5,
                 'mean':[104.007, 116.669, 122.679, 137.86] # [183.939,196.779,203.68,137.86] # [104.007, 116.669, 122.679, 137.86]
             },
             'BSDS': {'img_height': 480,  # 321
                      'img_width': 480,  # 481
                      'test_list': 'test_pair.lst',
-                     'data_dir': 'C:/Users/xavysp/dataset/BSDS',  # mean_rgb
+                     'data_dir': 'C:/dataset/BSDS',  # mean_rgb
                      'yita': 0.5,
                     'mean':[103.939, 116.669, 122.679, 137.86] },
             # [103.939, 116.669, 122.679, 137.86]
@@ -216,11 +202,19 @@ def dataset_info(dataset_name, is_linux=True):
                 # all train_pair_all.lst
                 # less train_pair.lst
                 'test_list': 'test_pair.lst',
-                'data_dir': 'C:/Users/xavysp/dataset/BRIND',  # mean_rgb
+                'data_dir': 'C:/dataset/BRIND',  # mean_rgb
                 'yita': 0.5,
                 'mean': [104.007, 116.669, 122.679, 137.86]
             },
-
+            'ICEDA': {
+            'img_height': 1024,  # 321
+            'img_width': 1408,  # 481
+            'train_list': None,
+            'test_list': 'test_pair.lst',
+            'data_dir': 'C:/dataset/ICEDA',  # mean_rgb
+            'yita': 0.5,
+            'mean': [104.007, 116.669, 122.679, 137.86]
+        },
             'BSDS300': {'img_height': 512,  # 321
                         'img_width': 512,  # 481
                         'test_list': 'test_pair.lst',
@@ -230,26 +224,26 @@ def dataset_info(dataset_name, is_linux=True):
             'PASCAL': {'img_height': 375,
                        'img_width': 500,
                        'test_list': 'test_pair.lst',
-                       'data_dir': 'C:/Users/xavysp/dataset/PASCAL',  # mean_rgb
+                       'data_dir': 'C:/dataset/PASCAL',  # mean_rgb
                        'yita': 0.3,
                     'mean': [104.007, 116.669, 122.679, 137.86]},
             'CID': {'img_height': 512,
                     'img_width': 512,
                     'test_list': 'test_pair.lst',
-                    'data_dir': 'C:/Users/xavysp/dataset/CID',  # mean_rgb
+                    'data_dir': 'C:/dataset/CID',  # mean_rgb
                     'yita': 0.3,
                     'mean': [104.007, 116.669, 122.679, 137.86]},
             'NYUD': {'img_height': 425,
                      'img_width': 560,
                      'test_list': 'test_pair.lst',
-                     'data_dir': 'C:/Users/xavysp/dataset/NYUD',  # mean_rgb
+                     'data_dir': 'C:/dataset/NYUD',  # mean_rgb
                      'yita': 0.5,
                     'mean': [104.007, 116.669, 122.679, 137.86]},
             'MDBD': {'img_height': 720,
                          'img_width': 1280,
                          'test_list': 'test_pair.lst',
                          'train_list': 'train_pair.lst',
-                         'data_dir': 'C:/Users/xavysp/dataset/MDBD',  # mean_rgb
+                         'data_dir': 'C:/dataset/MDBD',  # mean_rgb
                          'yita': 0.3,
                          'mean': [104.007, 116.669, 122.679, 137.86]},
             'BIPED': {'img_height': 720,  # 720
@@ -257,21 +251,21 @@ def dataset_info(dataset_name, is_linux=True):
                       'test_list': 'test_pair.lst',
                       'train_list': 'train_pair0.lst',
                       # 'train_list': 'train_rgb.lst',
-                      'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
+                      'data_dir': 'C:/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
                       'yita': 0.5,
                       'mean':BIPED_mean},
             'BIPED-B2': {'img_height': 720,  # 720
                       'img_width': 1280,  # 1280
                       'test_list': 'test_pair.lst',
                       'train_list': 'train_rgb.lst',
-                      'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
+                      'data_dir': 'C:/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
                       'yita': 0.5,
                       'mean':BIPED_mean},
             'BIPED-B3': {'img_height': 720,  # 720
                       'img_width': 1280,  # 1280
                       'test_list': 'test_pair.lst',
                       'train_list': 'train_rgb.lst',
-                      'data_dir': 'C:/Users/xavysp/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
+                      'data_dir': 'C:/dataset/BIPED',  # WIN: '../.../dataset/BIPED/edges'
                       'yita': 0.5,
                       'mean':BIPED_mean},
             'BIPED-B5': {'img_height': 720,  # 720
@@ -298,7 +292,7 @@ def dataset_info(dataset_name, is_linux=True):
             'DCD': {'img_height': 240,
                     'img_width': 360,
                     'test_list': 'test_pair.lst',
-                    'data_dir': 'C:/Users/xavysp/dataset/DCD',  # mean_rgb
+                    'data_dir': 'C:/dataset/DCD',  # mean_rgb
                     'yita': 0.2,
                     'mean': [104.007, 116.669, 122.679, 137.86]}
         }
@@ -321,8 +315,6 @@ class TestDataset(Dataset):
         self.test_list = test_list
         self.args = arg
         self.up_scale = arg.up_scale
-        # self.mean_bgr = arg.mean_pixel_values[0:3] if len(arg.mean_pixel_values) == 4 \
-        #     else arg.mean_pixel_values
         self.mean_bgr = arg.mean_test if len(arg.mean_test) == 3 else arg.mean_test[:3]
         self.img_height = img_height
         self.img_width = img_width
@@ -344,7 +336,7 @@ class TestDataset(Dataset):
                     f"Test list not provided for dataset: {self.test_data}")
 
             list_name = os.path.join(self.data_root, self.test_list)
-            if self.test_data.upper() in ['BIPED', 'BRIND','UDED']:
+            if self.test_data.upper() in ['BIPED', 'BRIND','UDED','ICEDA']:
 
                 with open(list_name) as f:
                     files = json.load(f)
@@ -437,10 +429,8 @@ class TestDataset(Dataset):
         img = np.array(img, dtype=np.float32)
         # if self.rgb:
         #     img = img[:, :, ::-1]  # RGB->BGR
-        # print(self.mean_bgr)
+
         img -= self.mean_bgr
-        # img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
-        #     0.225, 0.224,0.229] # New normalization
         img = img.transpose((2, 0, 1))
         img = torch.from_numpy(img.copy()).float()
 
@@ -456,6 +446,9 @@ class TestDataset(Dataset):
 
         return img, gt
 
+# *************************************************
+# ************* training **************************
+# *************************************************
 class BipedDataset(Dataset):
     train_modes = ['train', 'test', ]
     dataset_types = ['rgbr', ]
@@ -552,6 +545,7 @@ class BipedDataset(Dataset):
         #     gt = gt[i:i + crop_size, j:j + crop_size]
 
         # for BIPED/MDBD
+        # Second augmentation
         if i_w> 400 and i_h>400: #before 420
             h,w = gt.shape
             if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
@@ -579,145 +573,6 @@ class BipedDataset(Dataset):
         # BRIND Best for TEDD+BIPED
         gt[gt > 0.1] +=0.2#0.4
         gt = np.clip(gt, 0., 1.)
-
-        img = img.transpose((2, 0, 1))
-        img = torch.from_numpy(img.copy()).float()
-        gt = torch.from_numpy(np.array([gt])).float()
-        return img, gt
-
-    # two datasets
-class bipbriDataset(Dataset):
-    train_modes = ['train', 'test', ]
-    dataset_types = ['rgbr', ]
-    data_types = ['aug', ]
-
-    def __init__(self,
-                 data_root,
-                 img_height,
-                 img_width,
-                 train_mode='train',
-                 dataset_type='rgbr',
-                 #  is_scaling=None,
-                 # Whether to crop image or otherwise resize image to match image height and width.
-                 crop_img=False,
-                 arg=None,
-                 extra_inf=None
-                 ):
-        self.data_root = data_root
-        self.data_root2 = extra_inf['data_dir2']
-        self.train_mode = train_mode
-        self.dataset_type = dataset_type
-        self.data_type = 'aug'  # be aware that this might change in the future
-        self.img_height = img_height
-        self.img_width = img_width
-        self.mean_bgr = arg.mean_train if len(arg.mean_train) == 3 else arg.mean_train[:3]
-        self.crop_img = crop_img
-        self.arg = arg
-        self.extra_info=extra_inf
-        self.train_list = arg.train_list
-        self.train_list2 = extra_inf['train_list2']
-
-        self.data_index = self._build_index()
-
-    def _build_index(self):
-        assert self.train_mode in self.train_modes, self.train_mode
-        assert self.dataset_type in self.dataset_types, self.dataset_type
-        assert self.data_type in self.data_types, self.data_type
-
-        data_root = os.path.abspath(self.data_root)
-
-        sample_indices = []
-        list_name = os.path.join(self.data_root, self.train_list)
-        list_name2 = os.path.join(self.data_root2, self.train_list2)
-        with open(list_name) as f:
-            files = json.load(f)
-        for pair in files:
-            tmp_img = pair[0]
-            tmp_gt = pair[1]
-            sample_indices.append(
-                (os.path.join(self.data_root, tmp_img),
-                 os.path.join(self.data_root, tmp_gt),))
-
-        with open(list_name2) as f:
-            files2 = json.load(f)
-        for pair2 in files2:
-            tmp_img = pair2[0]
-            tmp_gt = pair2[1]
-            sample_indices.append(
-                (os.path.join(self.data_root2, tmp_img),
-                 os.path.join(self.data_root2, tmp_gt),))
-
-        return sample_indices
-
-    def __len__(self):
-        return len(self.data_index)
-
-    def __getitem__(self, idx):
-        # get data sample
-        image_path, label_path = self.data_index[idx]
-
-        # load data
-        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
-        label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)
-        image, label = self.transform(img=image, gt=label)
-        return dict(images=image, labels=label)
-
-    def transform(self, img, gt):
-        gt = np.array(gt, dtype=np.float32)
-        if len(gt.shape) == 3:
-            gt = gt[:, :, 0]
-
-        gt /= 255.  # for LDC input and BDCN
-
-        img = np.array(img, dtype=np.float32)
-        img -= self.mean_bgr
-        # img = ((img/255.)- [103.939/255., 116.779/255.,123.68/255.])/[
-        #     0.225, 0.224,0.229] # New normalization
-
-        i_h, i_w, _ = img.shape
-        #  400 for BIPEd and 352 for BSDS check with 384
-        crop_size = self.img_height if self.img_height == self.img_width else None  # 448# MDBD=480 BIPED=480/400 BSDS=352
-
-        # # for BSDS 352/BRIND
-        # if i_w > crop_size and i_h > crop_size:  # later 400, before crop_size
-        #     i = random.randint(0, i_h - crop_size)
-        #     j = random.randint(0, i_w - crop_size)
-        #     img = img[i:i + crop_size, j:j + crop_size]
-        #     gt = gt[i:i + crop_size, j:j + crop_size]
-
-        # for BIPED/MDBD
-        # if i_w> 420 and i_h>420: #before np.random.random() > 0.4 Before
-        if i_w> 400 and i_h>400: #before np.random.random() > 0.4
-            h,w = gt.shape
-            if np.random.random() > 0.4: #before i_w> 500 and i_h>500:
-
-                LR_img_size = crop_size #l BIPED=256, 240 200 # MDBD= 352 BSDS= 176
-                i = random.randint(0, h - LR_img_size)
-                j = random.randint(0, w - LR_img_size)
-                # if img.
-                img = img[i:i + LR_img_size , j:j + LR_img_size ]
-                gt = gt[i:i + LR_img_size , j:j + LR_img_size ]
-            else:
-                LR_img_size = 256#300 B256 # l BIPED=300(before) # MDBD= 352-480- BSDS= 176-320
-                i = random.randint(0, h - LR_img_size)
-                j = random.randint(0, w - LR_img_size)
-                # if img.
-                img = img[i:i + LR_img_size, j:j + LR_img_size]
-                gt = gt[i:i + LR_img_size, j:j + LR_img_size]
-                img = cv2.resize(img, dsize=(crop_size, crop_size), )
-                gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-
-        else:
-            # New addidings
-            img = cv2.resize(img, dsize=(crop_size, crop_size))
-            gt = cv2.resize(gt, dsize=(crop_size, crop_size))
-        # BRIND
-        gt[gt > 0.1] +=0.2#0.4
-        gt = np.clip(gt, 0., 1.)
-        # # for BIPED
-        # gt[gt > 0.2] += 0.6  # 0.5 for BIPED before results here ****
-        # gt = np.clip(gt, 0., 1.)  # BIPED ***** with this setting biggger edges
-
 
         img = img.transpose((2, 0, 1))
         img = torch.from_numpy(img.copy()).float()

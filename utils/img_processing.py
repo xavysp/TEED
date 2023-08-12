@@ -72,7 +72,8 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
             tensor2=None
             tmp_img2 = None
 
-        output_dir_f = os.path.join(output_dir, fuse_name)
+        output_dir_f = os.path.join(output_dir, fuse_name)# normal execution
+        # output_dir_f = output_dir# for DMRIR
         # output_dir_a = os.path.join(output_dir, av_name)
         os.makedirs(output_dir_f, exist_ok=True)
         # os.makedirs(output_dir_a, exist_ok=True)
@@ -81,9 +82,9 @@ def save_image_batch_to_disk(tensor, output_dir, file_names, img_shape=None, arg
             os.makedirs(all_data_dir, exist_ok=True)
             out1_dir = os.path.join(all_data_dir,"o1")
             out2_dir = os.path.join(all_data_dir,"o2")
-            out3_dir = os.path.join(all_data_dir,"o3")#  output 3
-            out4_dir = os.path.join(all_data_dir,"o4") # average
-            out5_dir = os.path.join(all_data_dir,"o5")# fusion
+            out3_dir = os.path.join(all_data_dir,"o3")#   TEED =output 3
+            out4_dir = os.path.join(all_data_dir,"o4") # TEED = average
+            out5_dir = os.path.join(all_data_dir,"o5")# fusion # TEED
             out6_dir = os.path.join(all_data_dir,"o6") # fusion
             os.makedirs(out1_dir, exist_ok=True)
             os.makedirs(out2_dir, exist_ok=True)
@@ -261,9 +262,9 @@ def visualize_result(imgs_list, arg):
 if __name__ == '__main__':
 
     img_base_dir='tmp_edge'
-    # gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
+    gt_base_dir='C:/Users/xavysp/dataset/BIPED/edges/edge_maps/test/rgbr'
     # gt_base_dir='C:/Users/xavysp/dataset/BRIND/test_edges'
-    gt_base_dir='C:/Users/xavysp/dataset/UDED/gt'
+    # gt_base_dir='C:/Users/xavysp/dataset/UDED/gt'
     vers = 'TEED model in BIPED'
     list_img = os.listdir(img_base_dir)
     list_gt = os.listdir(gt_base_dir)
@@ -275,7 +276,7 @@ if __name__ == '__main__':
 
         # print(img_name, '   ', gt_name)
         tmp_img = cv2.imread(os.path.join(img_base_dir,img_name),0)
-        # tmp_img = cv2.bitwise_not(tmp_img) # if the image's background
+        tmp_img = cv2.bitwise_not(tmp_img) # if the image's background
         # is white uncomment this line
         tmp_gt = cv2.imread(os.path.join(gt_base_dir,gt_name),0)
         # print(f"image {img_name} {tmp_img.shape}")
