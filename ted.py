@@ -197,7 +197,7 @@ class TED(nn.Module):
 
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        # left skip connections, figure in Journal
+        # left skip connections, figure in the paper
         self.side_1 = SingleConvBlock(16, 32, 2)
 
         self.pre_dense_3 = SingleConvBlock(32, 48, 1)  # before (32, 64, 1)

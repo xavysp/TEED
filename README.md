@@ -4,6 +4,10 @@
 
 ... In construction
 
+## Training with TEED
+
+## Testing with TEED
+
 ## UDED dataset
 
 Here the [link](https://github.com/xavysp/UDED) to access the UDED dataset for edge detection
