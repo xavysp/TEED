@@ -12,9 +12,15 @@
 
 Then,
 
+## Testing with TEED
+
+Copy and paste your images into data/ folder, and:
+
+    python main.py --choose_test_data=-1
+
 ## Training with TEED
 
-## Testing with TEED
+
 
 ## UDED dataset
 
@@ -30,7 +36,7 @@ Please cite our Dataset if you find helpful in your academic/scientific publicat
 ```
 @inproceedings{xsoria2023teed,
     author={Soria, Xavier and Li, Yachuan and Rouhani, Mohammad and Sappa, Angel Domingo},
-    booktitle={Proceedings of the IEEE/CVF international conference on computer vision Workshop (ICCVW)},
+    booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision Workshop (ICCVW)},
     title={Tiny and Efficient Model for the Edge Detection Generalization},
     year={2023},
   pages={0},
