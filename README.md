@@ -14,7 +14,7 @@ dataset takes *less than 30 minutes*, with each epoch requiring
 *less than 5 minutes*. Our proposed model is easy to train
 and it quickly converges within very first few epochs, while the 
 predicted edge-maps are crisp and of high quality, see image above.
-[This paper has been accepted by ICCV 2023 - Workshop RCV] (https://arxiv.org/abs/2308.06468).
+[This paper has been accepted by ICCV 2023-Workshop RCV](https://arxiv.org/abs/2308.06468).
 
 ... In construction
 
