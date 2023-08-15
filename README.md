@@ -29,7 +29,7 @@ Copy and paste your images into data/ folder, and:
 
 ## Training with TEED
 
-Set the following lines:
+Set the following lines in main.py:
 
     25: is_testing =False
     # training with BIPED
