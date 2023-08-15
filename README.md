@@ -6,6 +6,7 @@
 </div>
 
 
+
 Tiny and Efficient Edge Detector (TEED) is a light convolutional neural
 network with only $58K$ parameters, less than $0.2$% of the 
 state-of-the-art models. Training on the [BIPED](https://www.kaggle.com/datasets/xavysp/biped)
