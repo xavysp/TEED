@@ -5,6 +5,15 @@
 <div style="text-align:center"><img src='imgs/teedBanner.png' width=800>
 </div>
 
+
+Tiny and Efficient Edge Detector (TEED) is a light convolutional neural
+network with only $58K$ parameters, less than $0.2$% of the 
+state-of-the-art models. Training on the [BIPED](https://www.kaggle.com/datasets/xavysp/biped)
+dataset takes *less than 30 minutes*, with each epoch requiring 
+*less than 5 minutes*. Our proposed model is easy to train
+and it quickly converges within very first few epochs, while the 
+predicted edge-maps are crisp and of high quality, see image above.
+
 ... In construction
 
     git clone https://github.com/xavysp/TEED.git
