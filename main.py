@@ -1,10 +1,11 @@
-
+"""
+Hello, welcome on board,
+"""
 from __future__ import print_function
 
 import argparse
 import os
 import time, platform
-#    k   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
 import cv2
 import numpy as np
 os.environ['CUDA_LAUNCH_BLOCKING']="0"
@@ -16,14 +17,12 @@ from thop import profile
 from dataset import DATASET_NAMES, BipedDataset, TestDataset, dataset_info
 from loss2 import *
 
-
 from ted import TED # TEED architecture
-# from tedCats import TED # TEED architecture
-
 
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
 
+is_testing =True
 IS_LINUX = True if platform.system()=="Linux" else False
 
 def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
@@ -207,7 +206,7 @@ def testPich(checkpoint_path, dataloader, model, device, output_dir, args, resiz
     print("Average time per image: %f.4" % total_duration.mean(), "seconds")
     print("Time spend in the Dataset: %f.4" % total_duration.sum(), "seconds")
 
-def parse_args():
+def parse_args(is_testing=True):
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(description='TEED model')
     parser.add_argument('--choose_test_data',
@@ -219,7 +218,6 @@ def parse_args():
     TEST_DATA = DATASET_NAMES[parser.parse_args().choose_test_data] # max 8
     test_inf = dataset_info(TEST_DATA, is_linux=IS_LINUX)
 
-    is_testing =True
     # Training settings
     # BIPED-B2=1, BIPDE-B3=2, just for evaluation, using LDC trained with 2 or 3 bloacks
     TRAIN_DATA = DATASET_NAMES[0] # BIPED=0, BRIND=6, MDBD=10, BIPBRI=13
@@ -521,5 +519,7 @@ def main(args, train_inf):
     print('-------------------------------------------------------')
 
 if __name__ == '__main__':
-    args, train_info = parse_args()
+    # os.system(" ".join(command))
+    is_testing =True # True to use TEED for testing
+    args, train_info = parse_args(is_testing=is_testing)
     main(args, train_info)
