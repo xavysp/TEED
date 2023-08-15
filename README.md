@@ -39,6 +39,9 @@ then run
     
     python main.py
 
+Check the configurations of the datasets in dataset.py
+
+
 ## UDED dataset
 
 Here the [link](https://github.com/xavysp/UDED) to access the UDED dataset for edge detection
