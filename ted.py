@@ -209,7 +209,6 @@ class TED(nn.Module):
 
         self.block_cat = DoubleFusion(3,3)# TEED fusion
 
-
         self.apply(weight_init)
 
     def slice(self, tensor, slice_shape):
