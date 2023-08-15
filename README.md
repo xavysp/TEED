@@ -29,7 +29,15 @@ Copy and paste your images into data/ folder, and:
 
 ## Training with TEED
 
+Set the following lines:
 
+    25: is_testing =False
+    # training with BIPED
+    223: TRAIN_DATA = DATASET_NAMES[0] 
+
+then run
+    
+    python main.py
 
 ## UDED dataset
 
