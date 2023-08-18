@@ -1,3 +1,5 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/tiny-and-efficient-model-for-the-edge/edge-detection-on-uded)](https://paperswithcode.com/sota/edge-detection-on-uded?p=tiny-and-efficient-model-for-the-edge)
+
 # Tiny and Efficient Model for the Edge Detection Generalization (Paper)
 
 ## Overview
