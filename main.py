@@ -400,17 +400,17 @@ def main(args, train_inf):
             model.load_state_dict(torch.load(checkpoint_path2,
                                          map_location=device))
 
-    # Dataset Loading...
-    dataset_train = BipedDataset(args.input_dir,
-                                 img_width=args.img_width,
-                                 img_height=args.img_height,
-                                 train_mode='train',
-                                 arg=args
-                                 )
-    dataloader_train = DataLoader(dataset_train,
-                                  batch_size=args.batch_size,
-                                  shuffle=True,
-                              num_workers=args.workers)
+        # Dataset Loading...
+        dataset_train = BipedDataset(args.input_dir,
+                                     img_width=args.img_width,
+                                     img_height=args.img_height,
+                                     train_mode='train',
+                                     arg=args
+                                     )
+        dataloader_train = DataLoader(dataset_train,
+                                      batch_size=args.batch_size,
+                                      shuffle=True,
+                                  num_workers=args.workers)
     # Test dataset loading
     dataset_val = TestDataset(args.input_val_dir,
                               test_data=args.test_data,
