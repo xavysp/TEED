@@ -187,19 +187,22 @@ class DoubleConvBlock(nn.Module):
 
 
 class TED(nn.Module):
-    """ Definition of  Tiny and Efficient Edge Detector """
+    """ Definition of  Tiny and Efficient Edge Detector
+    model
+    """
 
     def __init__(self):
         super(TED, self).__init__()
         self.block_1 = DoubleConvBlock(3, 16, 16, stride=2,)
         self.block_2 = DoubleConvBlock(16, 32, use_act=False)
-        self.dblock_3 = _DenseBlock(1, 32, 48) # [128,256,100,100] before (2, 32, 64)
+        self.dblock_3 = _DenseBlock(1, 32, 48) # [32,48,100,100] before (2, 32, 64)
 
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        # left skip connections, figure in the paper
+        # skip1 connection, see fig. 2
         self.side_1 = SingleConvBlock(16, 32, 2)
 
+        # skip2 connection, see fig. 2
         self.pre_dense_3 = SingleConvBlock(32, 48, 1)  # before (32, 64, 1)
 
         # USNet
@@ -207,7 +210,7 @@ class TED(nn.Module):
         self.up_block_2 = UpConvBlock(32, 1)
         self.up_block_3 = UpConvBlock(48, 2) # (32, 64, 1)
 
-        self.block_cat = DoubleFusion(3,3)# TEED fusion
+        self.block_cat = DoubleFusion(3,3) # TEED: DoubleFusion
 
         self.apply(weight_init)
 
@@ -233,8 +236,8 @@ class TED(nn.Module):
             new_tensor = tensor
         return new_tensor
 
-    # Based on BDCN Implementation @ https://github.com/pkuCactus/BDCN
     def crop_bdcn(data1, h, w, crop_h, crop_w):
+        # Based on BDCN Implementation @ https://github.com/pkuCactus/BDCN
         _, _, h1, w1 = data1.size()
         assert (h <= h1 and w <= w1)
         data = data1[:, :, crop_h:crop_h + h, crop_w:crop_w + w]

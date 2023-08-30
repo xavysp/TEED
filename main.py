@@ -22,7 +22,7 @@ from ted import TED # TEED architecture
 from utils.img_processing import (image_normalization, save_image_batch_to_disk,
                    visualize_result, count_parameters)
 
-is_testing =True
+is_testing =True # set False to train with TEED model
 IS_LINUX = True if platform.system()=="Linux" else False
 
 def train_one_epoch(epoch, dataloader, model, criterions, optimizer, device,
@@ -400,7 +400,7 @@ def main(args, train_inf):
             model.load_state_dict(torch.load(checkpoint_path2,
                                          map_location=device))
 
-        # Dataset Loading...
+        # Training dataset loading...
         dataset_train = BipedDataset(args.input_dir,
                                      img_width=args.img_width,
                                      img_height=args.img_height,
@@ -411,7 +411,7 @@ def main(args, train_inf):
                                       batch_size=args.batch_size,
                                       shuffle=True,
                                   num_workers=args.workers)
-    # Test dataset loading
+    # Test dataset loading...
     dataset_val = TestDataset(args.input_val_dir,
                               test_data=args.test_data,
                               img_width=args.test_img_width,
@@ -452,7 +452,6 @@ def main(args, train_inf):
     print('-------------------------------------------------------')
     print('TEED parameters:')
     print(num_param)
-    print( " ***** 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 *****")
     print('-------------------------------------------------------')
 
     # Main training loop
