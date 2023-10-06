@@ -58,10 +58,11 @@ If you like TEED, why not starring the project on GitHub!
 
 Please cite our Dataset if you find helpful in your academic/scientific publication,
 ```
-@inproceedings{xsoria2023teed,
-    author={Soria, Xavier and Li, Yachuan and Rouhani, Mohammad and Sappa, Angel Domingo},
-    booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision Workshop (ICCVW)},
-    title={Tiny and Efficient Model for the Edge Detection Generalization},
-    year={2023},
-  pages={0},
-  doi={00.0000/00000.2023.00000}}
+@InProceedings{Soria_2023teed,
+    author    = {Soria, Xavier and Li, Yachuan and Rouhani, Mohammad and Sappa, Angel D.},
+    title     = {Tiny and Efficient Model for the Edge Detection Generalization},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) Workshops},
+    month     = {October},
+    year      = {2023},
+    pages     = {1364-1373}
+}
