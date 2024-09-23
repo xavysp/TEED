@@ -7,7 +7,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from huggingface_hub import PyTorchModelHubMixin,
+from huggingface_hub import PyTorchModelHubMixin
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
