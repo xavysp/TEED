@@ -7,6 +7,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from huggingface_hub import PyTorchModelHubMixin,
 
 from utils.AF.Fsmish import smish as Fsmish
 from utils.AF.Xsmish import Smish
@@ -186,7 +187,12 @@ class DoubleConvBlock(nn.Module):
         return x
 
 
-class TED(nn.Module):
+class TED(nn.Module,
+          PyTorchModelHubMixin,
+          library_name="teed",
+          repo_url="https://github.com/xavysp/TEED",
+          tags=["edge-detection"]
+         ):
     """ Definition of  Tiny and Efficient Edge Detector
     model
     """
